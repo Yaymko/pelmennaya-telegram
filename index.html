@@ -1276,11 +1276,14 @@ function start(data){
     const sn=$('snow');sn.hidden=false;sn.innerHTML=Array.from({length:34},()=>{const z=2+Math.random()*4;return `<i style="left:${Math.random()*100}%;width:${z}px;height:${z}px;--dx:${(Math.random()*60-30).toFixed(0)}px;animation-duration:${(7+Math.random()*8).toFixed(1)}s;animation-delay:-${(Math.random()*15).toFixed(1)}s"></i>`}).join('');}
   if(P.cloud&&typeof P.cloud==='object'&&P.cloud.level&&P.cloud.level>=S.level)S=Object.assign(S,P.cloud);
   if(data&&data.S)S=Object.assign(S,data.S);
+  // старые игроки проходили уровни до появления звёзд: засчитываем им по 2 звезды, можно переиграть на 3
+  if(!S.mig1){S.best=S.best||{};const top=(S.replay?S.lastLevel:S.level)||1;for(let i=1;i<top;i++)if(!S.best[i])S.best[i]=2;S.mig1=1;save()}
   applySkin();
   if(data&&data.cols){G.cols=data.cols;startLevel(true)}else startLevel();
   window.__pel={S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
   try{P.ready&&P.ready()}catch(e){}
   goal('game_start',{level:S.level});
+  setTimeout(lbPush,1500);
 }
 if(window.claude&&window.claude.hot&&window.claude.hot.snapshot){try{window.claude.hot.snapshot(()=>({S,cols:G.cols}))}catch(e){}}
 const hot=window.claude&&window.claude.hot;
