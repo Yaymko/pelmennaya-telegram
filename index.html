@@ -775,7 +775,7 @@ let G={cols:[],hist:[],sel:null,busy:false,extra:false,hint:null,just:-1,hid:[],
 const visRun=i=>runLen(G.cols[i]);  // скрытые того же цвета едут вместе с верхним
 function par3(){if(!G.par)return 0;const p=hiddenFor(curL())?G.par*1.2:G.par;return Math.ceil(p*1.15)+1}   // столько ходов или меньше = 3 звезды
 function par2(){return Math.ceil(par3()*1.35)}
-function starsFor(m){if(!G.par)return 3;let st=m<=par3()?3:m<=par2()?2:1;if(G.extra)st=Math.min(st,2);return st}
+function starsFor(m){if(!G.par)return 3;let st=m<=par3()?3:m<=par2()?2:1;return st}
 function load(){try{const v=JSON.parse(localStorage.getItem(KEY));if(v&&typeof v==='object')S=Object.assign(S,v)}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}try{P.saveCloud&&P.saveCloud(S)}catch(e){}}
 
@@ -933,7 +933,7 @@ function extra(){
   if(G.busy)return;ensureAC();
   if(G.extra){toast(T('oneExtra'));return}
   if(S.coins<30){if(P.rewarded){adOffer();return}toast(T('need30'));sfx.bad();return}
-  S.coins-=30;save();G.extra=true;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();if(G.par)toast(T('extraCap'));
+  S.coins-=30;save();G.extra=true;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();
 }
 
 /* ---------- surprise / win ---------- */
@@ -957,7 +957,7 @@ function win(){
   if(G.mode==='dp'){
     const moves=G.hist.length,st=starsFor(moves),n=dpStreak(),p3=par3();S.dp={last:dayStr(new Date()),streak:n};
     const reward=25+5*st+Math.min(n,10)*3;S.coins+=reward;G.mode='';save();hud();achCheck();goal('dp_done',{streak:n,stars:st,moves});
-    openOv(`<h2>${T('dpWinT')}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,p3)}${G.extra&&st<3&&moves<=p3?'<br>'+T('extraCap'):''}</p><p>${T('dpWinP')(n)}</p>
+    openOv(`<h2>${T('dpWinT')}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,p3)}</p><p>${T('dpWinP')(n)}</p>
       <div class="reward"><span class="coin"></span>+${reward}</div>
       <button class="big-btn" id="next">${T('dpBack')}</button>
       <button class="alt-btn" id="dpShare">${T('shareBtn')}</button>`);
@@ -976,10 +976,10 @@ function win(){
     $('next').onclick=()=>{closeOv();nextLevel()};return;
   }
   const reward=10+5*st;S.coins+=reward;S.level++;save();hud();achCheck();
-  surprise({title:T('winT')(passed),sub:T('winP'),reward,stars:st,moves,passed,par3:par3(),capped:G.extra&&st<3&&moves<=par3()});
+  surprise({title:T('winT')(passed),sub:T('winP'),reward,stars:st,moves,passed,par3:par3()});
 }
 function surprise(o){
-  openOv(`<h2>${o.title}</h2>${o.stars?starsRow(o.stars)+`<p class="mv">${T('movesWin')(o.moves,o.par3)}${o.capped?'<br>'+T('extraCap'):''}</p>`:''}<p>${o.sub}</p>
+  openOv(`<h2>${o.title}</h2>${o.stars?starsRow(o.stars)+`<p class="mv">${T('movesWin')(o.moves,o.par3)}</p>`:''}<p>${o.sub}</p>
     <div class="reward"><span class="coin"></span>+${o.reward}</div>
     <div class="mys-wrap"><div class="rays"></div><button class="mys" id="mys" aria-label="${T('squeeze')}">${dumpling('#f7ecd9',null,null,{mystery:true})}</button></div>
     <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
