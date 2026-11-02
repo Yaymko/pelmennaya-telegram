@@ -174,8 +174,16 @@ button:focus-visible,.col:focus-visible{outline:3px solid var(--coin);outline-of
 .app{height:100%;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));box-sizing:border-box;max-width:760px;margin:0 auto}
 header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .brand{font-family:var(--font-display);font-weight:800;font-size:17px;letter-spacing:.01em;color:var(--bamboo-hi)}
-.titles{display:flex;flex-direction:column;gap:2px;margin-right:auto;min-width:0}
-.lvl{font-family:var(--font-display);font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.titles{display:flex;flex-direction:column;gap:2px;margin-right:auto;min-width:0;text-align:left;color:inherit;font:inherit;padding:0}
+.lv-ic{width:11px;height:11px;vertical-align:-1px;margin-left:5px;opacity:.85}
+.lvls{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
+.lv{background:var(--panel);border-radius:12px;padding:8px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text);font:inherit;font-weight:800;font-size:16px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
+.lv .ss{display:flex;gap:1px;color:var(--bamboo-dk)}.lv .ss svg{width:11px;height:11px}.lv .ss .on{color:#f3c24b}
+.lv.cur{background:var(--chili);color:#fff8ee}.lv.cur .ss{color:#fff8ee}
+.lv.locked{opacity:.35;pointer-events:none}
+.lvl{font-family:var(--font-display);font-weight:600;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:normal;line-height:1.3}
+@media(max-width:390px){.coins .plus{display:none}.lvl{letter-spacing:.05em!important}header{gap:8px!important}.tool{font-size:11px!important;letter-spacing:-.01em}}
+@media(max-width:340px){.tool{font-size:10px!important;padding-inline:2px!important}}
 .coins .plus{font-size:15px;line-height:1;color:var(--muted);margin-left:1px}
 .coins{color:inherit;font:inherit;font-weight:800;display:flex;align-items:center;gap:6px;background:var(--panel);padding:5px 10px 5px 6px;border-radius:999px;font-weight:800;font-variant-numeric:tabular-nums}
 .coin{width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ffe9a3,var(--coin) 55%,#b9861d);box-shadow:inset 0 0 0 1.5px #b9861d;display:inline-block;flex:none}
@@ -218,7 +226,7 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .fly svg{width:100%;height:100%;display:block;overflow:visible}
 .toast{position:fixed;z-index:200;left:50%;bottom:max(18px,env(safe-area-inset-bottom,0px));translate:-50% 0;background:var(--panel);color:var(--text);padding:8px 14px;border-radius:12px;font-size:14px;font-weight:700;max-width:90%;text-align:center;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.on{opacity:1}
-.bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-block:8px 14px}
+.bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;padding-block:8px 14px}
 .tool{background:var(--panel);border-radius:14px;padding:9px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:800;line-height:1.1;min-height:56px;justify-content:center;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
 .tool:active{transform:translateY(2px);box-shadow:none}
 .tool[disabled]{opacity:.45;cursor:default}
@@ -266,6 +274,21 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .share-img{display:block;width:100%;max-height:52vh;object-fit:contain;border-radius:16px;margin:12px auto 0;-webkit-touch-callout:default;user-select:auto;-webkit-user-select:auto}
 .win-stars{display:flex;justify-content:center;gap:10px;margin:10px 0 2px;color:var(--bamboo-dk)}.win-stars span{width:42px;height:42px;display:block}.win-stars span.on{color:#f3c24b;animation:starPop .45s cubic-bezier(.3,1.6,.5,1) both}.win-stars svg{width:100%;height:100%}@keyframes starPop{from{transform:scale(0) rotate(-40deg);opacity:0}to{transform:none;opacity:1}}.sheet p.mv{margin-top:2px;font-size:13px}
 .dp.hid{filter:saturate(.2) brightness(.8)}
+.dp.gold svg{filter:drop-shadow(0 0 5px #ffd54a) drop-shadow(0 0 2px #fff3b0)}
+.dp.gold::after{content:"";position:absolute;right:2%;top:4%;width:22%;height:22%;background:radial-gradient(circle,#fff 0 18%,#ffe27a 30%,transparent 62%);animation:twinkle 1.6s ease-in-out infinite}
+@keyframes twinkle{50%{transform:scale(.4) rotate(45deg);opacity:.4}}
+.dp.hot::after{content:"";position:absolute;right:-2%;top:-2%;width:30%;height:30%;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15 3c-1 2 0 3 1 3' stroke='%233a7a2a' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M16 6c4 1 5 6 2 11-3 4-9 5-13 4 6-2 8-6 8-10 0-3 1-5 3-5z' fill='%23e8402a' stroke='%237a1508' stroke-width='1.2'/%3E%3C/svg%3E");animation:hotwig 1s ease-in-out infinite}
+@keyframes hotwig{50%{rotate:14deg}}
+.board.shaking{animation:shake .45s ease-in-out 2}
+.ach-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;text-align:left}
+.ach{display:flex;align-items:center;gap:10px;background:var(--panel);border-radius:14px;padding:9px 12px}
+.ach .ic{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.25);color:var(--muted)}
+.ach.got .ic{background:var(--coin);color:#3a2606}.ach .ic svg{width:20px;height:20px}
+.ach b{display:block;font-size:14px}.ach small{color:var(--muted);font-size:12px}.ach .rw{margin-left:auto;font-weight:800;font-size:13px;color:var(--coin);white-space:nowrap}.ach:not(.got){opacity:.7}
+.wheel-wrap{position:relative;width:250px;height:250px;margin:14px auto 4px}
+.wheel{width:100%;height:100%;transition:transform 3.6s cubic-bezier(.15,.85,.2,1)}
+.wheel-ptr{position:absolute;left:50%;top:-6px;translate:-50% 0;width:0;height:0;border:12px solid transparent;border-top:22px solid var(--chili);filter:drop-shadow(0 2px 2px rgba(0,0,0,.4));z-index:2}
+.wheel-hub{position:absolute;left:50%;top:50%;width:46px;height:46px;translate:-50% -50%;border-radius:50%;background:var(--st);box-shadow:inset 0 -3px 0 var(--st-dk)}
 .stars{display:flex;justify-content:center;gap:6px;margin-top:14px}.stars button{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;color:var(--bamboo-dk);transition:transform .12s}.stars button svg{width:34px;height:34px}.stars button.on{color:#f3c24b}.stars button:active{transform:scale(.9)}
 .rate-txt{margin-top:12px;width:100%;box-sizing:border-box;min-height:84px;resize:none;border:0;border-radius:14px;padding:10px 12px;background:var(--panel);color:var(--text);font:inherit;font-size:15px;user-select:text;-webkit-user-select:text}.rate-txt::placeholder{color:var(--muted)}
 .shop-h{margin:16px 0 6px;font-weight:800;font-size:14px;color:var(--muted);text-align:left}
@@ -296,7 +319,7 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 
 <div class="app" id="app">
   <header>
-    <div class="titles"><div class="brand" data-t="brand">Пельменная</div><div class="lvl" id="lvl">Уровень 1</div></div>
+    <button class="titles" id="lvlBtn"><div class="brand" data-t="brand">Пельменная</div><div class="lvl"><span id="lvl">Уровень 1</span><svg class="lv-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg></div></button>
     <button class="coins" id="coinsBtn"><span class="coin"></span><span id="coins" class="count">0</span><span class="plus">+</span></button>
     <button class="icon-btn" id="btnSound" aria-label="Звук"></button>
     <button class="icon-btn" id="btnRestart" aria-label="Restart" data-ta="restart"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v5h5"/></svg></button>
@@ -310,6 +333,7 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
   <nav class="bar">
     <button class="tool" id="btnUndo"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg><span data-t="undo">Отменить</span></button>
     <button class="tool" id="btnHint"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><span data-t="hint">Подсказка</span><span class="price"><span class="coin"></span>10</span></button>
+    <button class="tool" id="btnShake"><svg viewBox="0 0 24 24"><path d="M4 7h11l-3-3M20 17H9l3 3"/><path d="M19 7c1 1 1 3 0 4M5 17c-1-1-1-3 0-4"/></svg><span data-t="shake">Встряхнуть</span><span class="price"><span class="coin"></span>20</span></button>
     <button class="tool" id="btnExtra"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span data-t="steamer">Пароварка</span><span class="price"><span class="coin"></span>30</span></button>
     <button class="tool" id="btnAlbum"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span data-t="album">Альбом</span><span class="count" id="albumCount">0/18</span></button>
   </nav>
@@ -377,6 +401,14 @@ const STR={
   shareBtn:'Похвастаться',shareT:'Карточка героя',shareHint:'Зажми картинку и сохрани, чтобы отправить друзьям или выложить в сторис.',shareHintDesk:'Нажми на картинку правой кнопкой и сохрани.',
   shareTg:'Отправить друзьям в Telegram',shareText:n=>'Мне выпал «'+n+'» в «Пельменной»! Сможешь собрать всех?',cardTop:'Мой новый герой',cardBottom:'Сортируй пельмени и собирай героев',
   dailyBtn:n=>'Ежедневный сюрприз · день '+n,dailyT:'Ежедневный сюрприз',dailyP:n=>'День '+n+' подряд. '+(n%7===0?'Сегодня гарантированно редкий герой!':'Заходи завтра, награда вырастет. На 7-й день будет редкий герой.'),
+  shake:'Встряхнуть',shakeNo:'Нечего встряхивать',shakeDone:'Перемешал! Решение есть.',need20:'Нужно 20 монет',noUndoShake:'Встряску не отменить',
+  combo:(n,b)=>'Комбо ×'+n+'! +'+b,goldGot:'Золотые пельмени! +15',hotTip:n=>'Острые! Закрой их за '+n+' ходов и получи +20',hotGot:'Остудил острые! +20',hotLost:'Острые остыли, бонус сгорел',hotHud:n=>'🌶 '+n,
+  achT:'Достижения',achBtn:(g,t)=>'Достижения '+g+'/'+t,achGot:(n,c)=>'Достижение: '+n+' +'+c,
+  ach:{first3:['Отличник','Пройти уровень на 3 звезды'],stars25:['Перфекционист','25 уровней на 3 звезды'],lvl20:['Повар','Дойти до 20 уровня'],lvl30:['Шеф','Дойти до 30 уровня'],lvl50:['Мастер теста','Дойти до 50 уровня'],
+    heroes10:['Коллекционер','Собрать 10 героев'],heroesAll:['Полный альбом','Собрать всех героев'],daily7:['Завсегдатай','Подарок 7 дней подряд'],dp3:['Задачник','Пельмень дня 3 дня подряд'],
+    combo3:['Скороварка','Комбо ×3'],gold10:['Золотоискатель','Собрать 10 золотых пароварок'],hot5:['Огнеборец','Остудить острые 5 раз'],skin:['Модник','Первая покупка в лавке']},
+  wheelBtn:'Колесо удачи',wheelT:'Колесо удачи',wheelP:'Раз в день крути бесплатно.',spin:'Крутить',wheelCoins:n=>'+'+n+' монет!',wheelHints:n=>'+'+n+' бесплатн'+(n>1?'ые подсказки':'ая подсказка')+'!',freeHint:n=>'🎁 '+n,
+  lvT:'Уровни',lvP:(n,s)=>'Пройдено '+n+', звёзд '+s+'. Нажми на уровень, чтобы перепройти его и добрать звёзды.',lvBtn:'Уровни',lvCur:'сейчас',toCur:n=>'К уровню '+n,
   shopT:'Лавка',shopP:'Трать монеты на пароварки и фоны. Всё остаётся навсегда.',shopSt:'Пароварки',shopBg:'Фоны',wear:'Надето',pick:'Надеть',noCoins:n=>'Не хватает '+n+' монет. Проходи уровни на 3 звезды!',bought:'Куплено!',shopBtn:'Лавка',
   sk:{bamboo:'Бамбук',lacquer:'Красный лак',porcelain:'Фарфор',gold:'Золото',jade:'Нефрит',night:'Ночь',cherry:'Вишня',dacha:'Дача',snow:'Снежная'},
   dpBtn:n=>'Пельмень дня'+(n>1?' · серия '+n:''),dpHud:'Пельмень дня',dpTip:'Задача дня одна для всех. Реши её, чтобы продлить серию.',dpBack:'К уровням',
@@ -399,6 +431,14 @@ const STR={
   adT:'Not enough coins',adP:'Watch a short ad to get 20 coins.',adBtn:'Watch ad',adNo:'Not now',adFail:'Ads are unavailable right now. Try again later.',adGot:'+20 coins!',
   shareBtn:'Show off',shareT:'Hero card',shareHint:'Press and hold the picture to save it and send it to friends or post it to your story.',shareHintDesk:'Right-click the picture to save it.',
   shareTg:'Send to friends on Telegram',shareText:n=>'I got "'+n+'" in Dumpling Sort! Can you collect them all?',cardTop:'My new hero',cardBottom:'Sort dumplings, collect heroes',
+  shake:'Shuffle',shakeNo:'Nothing to shuffle',shakeDone:'Shuffled! Still solvable.',need20:'You need 20 coins',noUndoShake:"Can't undo a shuffle",
+  combo:(n,b)=>'Combo ×'+n+'! +'+b,goldGot:'Golden dumplings! +15',hotTip:n=>'Spicy! Close them within '+n+' moves for +20',hotGot:'Spicy ones cooled! +20',hotLost:'The spicy bonus is gone',hotHud:n=>'🌶 '+n,
+  achT:'Achievements',achBtn:(g,t)=>'Achievements '+g+'/'+t,achGot:(n,c)=>'Achievement: '+n+' +'+c,
+  ach:{first3:['Top marks','Beat a level with 3 stars'],stars25:['Perfectionist','25 levels with 3 stars'],lvl20:['Cook','Reach level 20'],lvl30:['Chef','Reach level 30'],lvl50:['Dough master','Reach level 50'],
+    heroes10:['Collector','Collect 10 heroes'],heroesAll:['Full album','Collect every hero'],daily7:['Regular','Daily gift 7 days in a row'],dp3:['Puzzler','Puzzle of the day 3 days in a row'],
+    combo3:['Pressure cooker','Combo ×3'],gold10:['Gold digger','Close 10 golden steamers'],hot5:['Firefighter','Cool the spicy ones 5 times'],skin:['Trendsetter','First purchase in the shop']},
+  wheelBtn:'Lucky wheel',wheelT:'Lucky wheel',wheelP:'One free spin every day.',spin:'Spin',wheelCoins:n=>'+'+n+' coins!',wheelHints:n=>'+'+n+' free hint'+(n>1?'s':'')+'!',freeHint:n=>'🎁 '+n,
+  lvT:'Levels',lvP:(n,s)=>n+' beaten, '+s+' stars. Tap a level to replay it and earn more stars.',lvBtn:'Levels',lvCur:'now',toCur:n=>'Back to level '+n,
   shopT:'Shop',shopP:'Spend coins on steamers and backgrounds. Yours forever.',shopSt:'Steamers',shopBg:'Backgrounds',wear:'Equipped',pick:'Equip',noCoins:n=>'You need '+n+' more coins. Go for 3 stars!',bought:'Bought!',shopBtn:'Shop',
   sk:{bamboo:'Bamboo',lacquer:'Red lacquer',porcelain:'Porcelain',gold:'Gold',jade:'Jade',night:'Night',cherry:'Cherry',dacha:'Garden',snow:'Snowy'},
   dpBtn:n=>'Puzzle of the day'+(n>1?' · streak '+n:''),dpHud:'Puzzle of the day',dpTip:'Same puzzle for everyone today. Solve it to keep your streak.',dpBack:'Back to levels',
@@ -567,8 +607,96 @@ function shop(back){
       if(S.coins<x.p){sfx.bad();buzz(30);toast(T('noCoins')(x.p-S.coins));return}
       S.coins-=x.p;S.own[key]=1;goal('shop_buy',{item:key,price:x.p});sfx.chime(1);buzz([20,40,20]);toast(T('bought'));
     }else sfx.pick();
-    S.skin[kind]=x.id;save();applySkin();hud();shop(back);
+    S.skin[kind]=x.id;save();applySkin();hud();shop(back);achCheck();
   });
+}
+/* ---------- достижения ---------- */
+const ACH=[['first3',20],['stars25',100],['lvl20',50],['lvl30',80],['lvl50',150],['heroes10',50],['heroesAll',200],['daily7',100],['dp3',60],['combo3',40],['gold10',60],['hot5',60],['skin',20]];
+function achCheck(){
+  S.ach=S.ach||{};const st=S.stat||{};const b=Object.values(S.best||{}).filter(x=>x===3).length;const got=visibleChars().filter(c=>S.coll[c.id]).length;
+  const ok={first3:b>=1,stars25:b>=25,lvl20:S.level>=20,lvl30:S.level>=30,lvl50:S.level>=50,heroes10:got>=10,heroesAll:got>=visibleChars().length,
+    daily7:S.daily&&S.daily.streak>=7,dp3:S.dp&&S.dp.streak>=3,combo3:(st.combo||0)>=3,gold10:(st.gold||0)>=10,hot5:(st.hot||0)>=5,skin:Object.keys(S.own||{}).length>0};
+  const fresh=[];for(const [id,c] of ACH)if(ok[id]&&!S.ach[id]){S.ach[id]=1;S.coins+=c;fresh.push([id,c]);goal('achievement',{id})}
+  if(fresh.length){save();hud();fresh.forEach(([id,c],i)=>setTimeout(()=>{toast('🏆 '+T('achGot')(T('ach')[id][0],c));sfx.chime(2);buzz([20,40,20])},600+i*2200))}
+}
+function stat(k,n){S.stat=S.stat||{};S.stat[k]=Math.max(S.stat[k]||0,0)+(n||1)}
+const TROPHY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/></svg>';
+function achSheet(back){
+  S.ach=S.ach||{};const g=ACH.filter(([id])=>S.ach[id]).length;
+  openOv(`<h2>${T('achT')}</h2><p>${g} / ${ACH.length}</p><div class="ach-list">${ACH.map(([id,c])=>`<div class="ach${S.ach[id]?' got':''}"><span class="ic">${TROPHY}</span><span><b>${T('ach')[id][0]}</b><small>${T('ach')[id][1]}</small></span><span class="rw">${S.ach[id]?'✓':'+'+c}</span></div>`).join('')}</div>
+    <button class="big-btn" id="achBack">${T('back')}</button>`);
+  $('achBack').onclick=()=>{closeOv();back&&back()};
+}
+/* ---------- колесо удачи ---------- */
+const WHEEL=[['c',10,22],['c',20,20],['h',1,14],['c',30,14],['c',10,0],['c',50,8],['h',2,8],['c',100,3]];  // [тип, сколько, вес]
+WHEEL[4][2]=11;
+function wheelReady(){return S.level>=3&&S.wheel!==dayStr(new Date())}
+function wheel(){
+  ensureAC();if(G.busy||!wheelReady())return;
+  const n=WHEEL.length,cols=['#e85a3c','#f3c24b','#6fd6c8','#a596f2'];
+  let seg='';for(let i=0;i<n;i++){const a0=(i/n)*2*Math.PI-Math.PI/2,a1=((i+1)/n)*2*Math.PI-Math.PI/2,am=(a0+a1)/2;
+    seg+=`<path d="M100 100L${100+98*Math.cos(a0)} ${100+98*Math.sin(a0)}A98 98 0 0 1 ${100+98*Math.cos(a1)} ${100+98*Math.sin(a1)}Z" fill="${cols[i%4]}" stroke="#0003"/>`;
+    const w=WHEEL[i];seg+=`<text x="${100+66*Math.cos(am)}" y="${100+66*Math.sin(am)}" transform="rotate(${am*180/Math.PI+90} ${100+66*Math.cos(am)} ${100+66*Math.sin(am)})" text-anchor="middle" dominant-baseline="middle" font-size="${w[0]==='h'?18:17}" font-weight="800" fill="#2b1a08" font-family="sans-serif">${w[0]==='h'?'💡'+w[1]:w[1]}</text>`}
+  openOv(`<h2>${T('wheelT')}</h2><p>${T('wheelP')}</p><div class="wheel-wrap"><div class="wheel-ptr"></div><svg class="wheel" id="wheel" viewBox="0 0 200 200">${seg}</svg><div class="wheel-hub"></div></div>
+    <button class="big-btn" id="spin">${T('spin')}</button>`);
+  $('spin').onclick=()=>{
+    if(!wheelReady())return;S.wheel=dayStr(new Date());save();$('spin').disabled=true;
+    const tot=WHEEL.reduce((a,w)=>a+w[2],0);let r=Math.random()*tot,k=0;for(;k<n;k++){r-=WHEEL[k][2];if(r<0)break}
+    const ang=360*6-(k+.5)*360/n+(Math.random()-.5)*(300/n/1.2);$('wheel').style.transform=`rotate(${ang}deg)`;
+    let tick=0;const tk=setInterval(()=>{if(tick++<22)sfx.pick();else clearInterval(tk)},150);
+    setTimeout(()=>{const w=WHEEL[k];if(w[0]==='c')S.coins+=w[1];else S.freeHint=(S.freeHint||0)+w[1];save();hud();goal('wheel',{prize:w[0]+w[1]});
+      sfx.chime(w[1]>=50||w[0]==='h'?2:1);buzz([20,40,20]);sparks($('wheel'),20,'#f3c24b');
+      $('spin').outerHTML=`<div class="reward">${w[0]==='c'?'<span class="coin"></span>'+T('wheelCoins')(w[1]):T('wheelHints')(w[1])}</div><button class="big-btn" id="wOk">${T('play')}</button>`;$('wOk').onclick=closeOv},3700);
+  };
+}
+/* ---------- особые пельмени, комбо, встряска ---------- */
+function rollSpecial(){
+  G.gold=-1;G.hot=-1;G.hotN=0;G.goldPaid=G.hotPaid=false;G.lastDone=-9;G.combo=0;G.shakeAt=0;
+  const L=curL(),f=[...new Set(G.cols.flat())];
+  if(L>=6&&Math.random()<.35)G.gold=f[Math.floor(Math.random()*f.length)];
+  if(L>=12&&Math.random()<.3){const g=f.filter(x=>x!==G.gold);G.hot=g[Math.floor(Math.random()*g.length)];G.hotN=Math.max(8,Math.ceil(par3()*.7))}
+  if(G.hot>=0)setTimeout(()=>toast('🌶 '+T('hotTip')(G.hotN)),700);
+}
+function onDone(b){
+  const msg=[];const x=G.cols[b][0],m=G.hist.length;
+  G.combo=(m-G.lastDone<=2)?G.combo+1:1;G.lastDone=m;
+  if(G.combo>=2){const bo=Math.min(G.combo-1,5);S.coins+=bo;stat('comboMax',0);S.stat.combo=Math.max(S.stat.combo||0,G.combo);msg.push(T('combo')(G.combo,bo));sparks(board.children[b],10+G.combo*4,'#ffffff')}
+  if(x===G.gold&&!G.goldPaid){G.goldPaid=true;S.coins+=15;stat('gold');msg.push(T('goldGot'));sparks(board.children[b],22,'#f3c24b');sfx.chime(2)}
+  if(x===G.hot&&!G.hotPaid&&m<=G.hotN){G.hotPaid=true;S.coins+=20;stat('hot');msg.push(T('hotGot'));sparks(board.children[b],18,'#e8402a');sfx.chime(1)}
+  if(msg.length){save();hud();toast(msg.join(' · '));achCheck()}
+}
+function shuffleBoard(){
+  if(G.busy)return;ensureAC();
+  const idx=G.cols.map((c,i)=>i).filter(i=>G.cols[i].length&&!isDone(G.cols[i]));
+  if(idx.length<2){toast(T('shakeNo'));sfx.bad();return}
+  if(S.coins<20){if(P.rewarded){adOffer();return}toast(T('need20'));sfx.bad();return}
+  const pool=idx.flatMap(i=>G.cols[i]);let best=null;
+  for(let t=0;t<40&&!best;t++){const q=pool.slice();for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}
+    const c=G.cols.map(x=>x.slice());let k=0;idx.forEach(i=>{c[i]=q.slice(k,k+G.cols[i].length);k+=G.cols[i].length});
+    if(c.some(x=>x.length===CAP&&isDone(x)))continue;if(shortest(c,40000,1.5))best=c}
+  if(!best){toast(T('stuck'));sfx.bad();return}
+  S.coins-=20;save();goal('shake');G.busy=true;G.sel=null;G.hint=null;board.classList.add('shaking');sfx.squish(2);buzz([30,30,30]);
+  setTimeout(()=>{board.classList.remove('shaking');G.cols=best;G.extra=true;G.shakeAt=G.hist.length;G.busy=false;render();hud();toast(T('shakeDone'))},500);
+}
+/* ---------- экран уровней ---------- */
+function playLevel(n){
+  G.mode='';
+  const cur=S.replay?S.lastLevel:S.level;
+  if(n>=cur){S.level=cur;S.replay=0}else{S.lastLevel=cur;S.level=n;S.replay=n}
+  save();goal('level_pick',{level:n});startLevel();
+}
+function levels(back){
+  ensureAC();const cur=S.replay?S.lastLevel:S.level,best=S.best||{};
+  const tot=Object.values(best).reduce((a,b)=>a+b,0);
+  let h='';const max=Math.max(cur+4,20);
+  for(let i=1;i<=max;i++){
+    const st=best[i]||0,isCur=i===cur,lock=i>cur;
+    h+=`<button class="lv${isCur?' cur':''}${lock?' locked':''}" data-l="${i}"${lock?' tabindex="-1"':''}>${i}<span class="ss">${isCur?`<small style="font-size:10px">${T('lvCur')}</small>`:lock?'&nbsp;':[1,2,3].map(k=>`<span class="${k<=st?'on':''}">${STAR_SVG}</span>`).join('')}</span></button>`;
+  }
+  openOv(`<h2>${T('lvT')}</h2><p>${T('lvP')(cur-1,tot)}</p><div class="lvls">${h}</div><button class="big-btn" id="lvBack">${T('back')}</button>`);
+  $('lvBack').onclick=()=>{closeOv();back&&back()};
+  document.querySelectorAll('.lv:not(.locked)').forEach(el=>el.onclick=()=>{closeOv();playLevel(+el.dataset.l)});
+  const c=document.querySelector('.lv.cur');if(c)c.scrollIntoView({block:'center'});
 }
 /* ---------- пельмень дня ---------- */
 const DP_L=[32,13,14,15,16,22,23];   // вс: скрытые, пн–чт: 8 начинок, пт–сб: одна пустая
@@ -655,11 +783,13 @@ function startLevel(keepCols){
   G.par=shortest(G.cols,60000,1)||genLevel.par||0;
   G.hid=G.cols.map(c=>hiddenFor(curL())?Math.max(0,c.length-1):0);
   G.hist=[];G.sel=null;G.extra=false;G.hint=null;G.just=-1;G.busy=false;
+  rollSpecial();
   render();layout();hud();
   try{P.gpStart&&P.gpStart()}catch(e){}
 }
 function hud(){
-  $('lvl').textContent=(G.mode==='dp'?T('dpHud'):T('level')+S.level)+' · '+T('movesHud')(G.hist.length,par3())+(S.replay===S.level?' · '+T('replayTag'):'');
+  $('lvl').textContent=(G.mode==='dp'?T('dpHud'):T('level')+S.level)+' · '+T('movesHud')(G.hist.length,par3())+(S.replay===S.level?' · '+T('replayTag'):'')+(G.hot>=0&&!G.hotPaid&&G.hist.length<G.hotN?' · '+T('hotHud')(G.hotN-G.hist.length):'');
+  $('btnHint').querySelector('.price').innerHTML=S.freeHint>0?T('freeHint')(S.freeHint):'<span class="coin"></span>10';
   $('coins').textContent=S.coins;
   const got=visibleChars().filter(c=>S.coll[c.id]).length;$('albumCount').textContent=got+'/'+visibleChars().length;
   $('btnUndo').disabled=!G.hist.length;
@@ -677,7 +807,12 @@ function hud(){
   else if(SEASON&&S.level%2===0) tip.textContent=T('nyTip');
   else tip.textContent=T('tipN')(colorsFor(S.level));
   if(G.mode==='dp'){tip.innerHTML=`<span>${T('dpTip')}</span> <button class="daily" id="dpBack" style="animation:none">${T('dpBack')}</button>`;$('dpBack').onclick=()=>{if(G.busy)return;G.mode='';startLevel()};return}
-  if(dpReady()&&!(S.level>=2&&dailyReady())){
+  if(S.replay===S.level&&S.lastLevel){tip.innerHTML=`<button class="daily" id="toCur" style="animation:none">${T('toCur')(S.lastLevel)}</button>`;$('toCur').onclick=()=>{if(!G.busy)playLevel(S.lastLevel)};return}
+  if(wheelReady()&&!(S.level>=2&&dailyReady())){
+    tip.innerHTML=`<button class="daily dp-chip" id="wheelBtn"><svg class="gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg>${T('wheelBtn')}</button>`;
+    $('wheelBtn').onclick=wheel;
+  }
+  else if(dpReady()&&!(S.level>=2&&dailyReady())){
     tip.innerHTML=`<button class="daily dp-chip" id="dpBtn"><svg class="gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>${T('dpBtn')(dpStreak())}</button>`;
     $('dpBtn').onclick=startDaily;
   }
@@ -693,7 +828,7 @@ function daily(){
   ensureAC();if(G.busy||!dailyReady())return;
   const n=nextStreak();S.daily={last:dayStr(new Date()),streak:n};
   const reward=10*Math.min(n,7);S.coins+=reward;save();hud();
-  goal('daily',{streak:n});
+  goal('daily',{streak:n});setTimeout(achCheck,2500);
   surprise({title:T('dailyT'),sub:T('dailyP')(n),reward,minR:n%7===0?1:0,daily:true});
 }
 function render(){
@@ -706,7 +841,7 @@ function render(){
     h+=`<div class="${cls}" data-i="${i}" role="button" tabindex="0" aria-label="${T('colAria')(i+1,c.map((x,t)=>t<hd?'?':fname(x)).join(', '))}"><div class="steam"><i></i><i></i><i></i></div><div class="lid"></div><div class="stack">`;
     for(let t=0;t<CAP;t++){
       const x=c[t];let dp='';
-      if(x!==undefined){const lift=G.sel===i&&t>=c.length-rl;dp=`<div class="dp${lift?' lift':''}${t<hd?' hid':''}">${t<hd?HIDDEN_SVG:fillSVG(x)}</div>`;}
+      if(x!==undefined){const lift=G.sel===i&&t>=c.length-rl;const sp=t<hd?'':x===G.gold?' gold':(x===G.hot&&!G.hotPaid&&G.hist.length<G.hotN)?' hot':'';dp=`<div class="dp${lift?' lift':''}${t<hd?' hid':''}${sp}">${t<hd?HIDDEN_SVG:fillSVG(x)}</div>`;}
       h+=`<div class="tier">${dp}</div>`;
     }
     h+='</div></div>';
@@ -771,18 +906,20 @@ function move(a,b){
     for(let k=0;k<n;k++)G.cols[b].push(G.cols[a].pop());G.hid[a]=Math.min(G.hid[a]||0,Math.max(0,G.cols[a].length-1));G.sel=null;
     const done=isDone(G.cols[b]);if(done){G.just=b}
     render();fls.forEach(f=>f.remove());hud();
-    if(done){sfx.lid();buzz(30)}
+    if(done){sfx.lid();buzz(30);onDone(b)}
+    if(G.hot>=0&&!G.hotPaid&&G.hist.length===G.hotN&&!isDone(G.cols[b])){setTimeout(()=>toast(T('hotLost')),300);render()}
     G.busy=false;
     if(solved(G.cols)){G.busy=true;setTimeout(win,900)}
   });
 }
-function undo(){if(G.busy||!G.hist.length)return;ensureAC();G.cols=G.hist.pop();G.sel=null;G.hint=null;sfx.pick();render();layout();hud()}
+function undo(){if(G.busy||!G.hist.length)return;if(G.hist.length<=G.shakeAt){toast(T('noUndoShake'));return}ensureAC();G.cols=G.hist.pop();G.sel=null;G.hint=null;sfx.pick();render();layout();hud()}
 function hint(){
   if(G.busy)return;ensureAC();
-  if(S.coins<10){if(P.rewarded){adOffer();return}toast(T('needHint'));sfx.bad();return}
+  const free=(S.freeHint||0)>0;
+  if(!free&&S.coins<10){if(P.rewarded){adOffer();return}toast(T('needHint'));sfx.bad();return}
   const p=shortest(G.cols,60000,1.5,true)||solve(G.cols,120000); // A*: подсказки не ходят по кругу
   if(!p||!p.length){toast(T('stuck'));sfx.bad();return}
-  S.coins-=10;save();goal('hint');G.hint=p[0];G.sel=null;sfx.pick();render();hud();
+  if(free)S.freeHint--;else S.coins-=10;save();goal('hint');G.hint=p[0];G.sel=null;sfx.pick();render();hud();
 }
 function extra(){
   if(G.busy)return;ensureAC();
@@ -811,7 +948,7 @@ function win(){
   sfx.win();buzz([20,40,20]);
   if(G.mode==='dp'){
     const moves=G.hist.length,st=starsFor(moves),n=dpStreak();S.dp={last:dayStr(new Date()),streak:n};
-    const reward=25+5*st+Math.min(n,10)*3;S.coins+=reward;G.mode='';save();hud();goal('dp_done',{streak:n,stars:st,moves});
+    const reward=25+5*st+Math.min(n,10)*3;S.coins+=reward;G.mode='';save();hud();achCheck();goal('dp_done',{streak:n,stars:st,moves});
     openOv(`<h2>${T('dpWinT')}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,par3())}</p><p>${T('dpWinP')(n)}</p>
       <div class="reward"><span class="coin"></span>+${reward}</div>
       <button class="big-btn" id="next">${T('dpBack')}</button>
@@ -827,10 +964,10 @@ function win(){
     const reward=5*Math.max(0,st-prev);S.coins+=reward;S.replay=0;S.level=S.lastLevel||passed+1;save();hud();
     openOv(`<h2>${T('winT')(passed)}</h2>${starsRow(st)}<p>${st>prev?T('replayBetter'):T('replaySame')}</p>
       ${reward?`<div class="reward"><span class="coin"></span>+${reward}</div>`:''}
-      <button class="big-btn" id="next">${T('next')}</button>`);
+      <button class="big-btn" id="next">${T('toCur')(S.level)}</button>`);
     $('next').onclick=()=>{closeOv();nextLevel()};return;
   }
-  const reward=10+5*st;S.coins+=reward;S.level++;save();hud();
+  const reward=10+5*st;S.coins+=reward;S.level++;save();hud();achCheck();
   surprise({title:T('winT')(passed),sub:T('winP'),reward,stars:st,moves,passed,par3:par3()});
 }
 function surprise(o){
@@ -853,7 +990,7 @@ function surprise(o){
 function reveal(o){
   o=o||{};const ch=roll(o.minR);
   goal('surprise',{hero:ch.id,rarity:ch.r,isNew:!S.coll[ch.id]});const isNew=!S.coll[ch.id];
-  if(isNew)S.coll[ch.id]=1;else S.coins+=10;save();hud();
+  if(isNew)S.coll[ch.id]=1;else S.coins+=10;save();hud();setTimeout(achCheck,1200);
   sfx.chime(ch.r);
   const ray=ch.r===2?'rgba(243,194,75,.35)':ch.r===1?'rgba(111,214,200,.3)':'rgba(247,236,217,.16)';
   openOv(`<div class="mys-wrap" style="--ray:${ray}"><div class="rays"></div><div class="mys char-in">${dumpling(ch.col,ch.face,ch.acc)}</div></div>
@@ -864,7 +1001,7 @@ function reveal(o){
     <button class="alt-btn" id="share">${T('shareBtn')}</button>
     ${o.stars&&o.stars<3?`<button class="ghost-btn" id="replay">${T('replayBtn')}</button>`:''}
     <button class="ghost-btn" id="toAlbum">${T('openAlbum')}</button>`);
-  if($('replay'))$('replay').onclick=()=>{closeOv();S.lastLevel=S.level;S.level=o.passed;S.replay=o.passed;save();startLevel()};
+  if($('replay'))$('replay').onclick=()=>{closeOv();playLevel(o.passed)};
   const r=document.querySelector('.mys');sparks(r,ch.r===2?26:ch.r===1?18:12,ch.r===2?'#f3c24b':ch.r===1?'#6fd6c8':'#f7ecd9');
   $('next').onclick=()=>{closeOv();if(!o.daily)nextLevel()};
   $('share').onclick=()=>share(ch,!o.daily);
@@ -946,11 +1083,15 @@ function album(fromWin){
   }
   openOv(`<h2>${T('albumT')}</h2><p>${T('albumP')(got,vis.length)}</p><div class="album">${cards}</div>
     <button class="big-btn" id="closeAlbum">${fromWin?T('next'):T('back')}</button>
+    <button class="alt-btn" id="lvBtn2">${T('lvBtn')}</button>
     <button class="alt-btn" id="shopBtn">${T('shopBtn')}</button>
+    <button class="alt-btn" id="achBtn">${T('achBtn')(ACH.filter(([id])=>(S.ach||{})[id]).length,ACH.length)}</button>
     ${P.review?`<button class="ghost-btn" id="rateBtn">${T('rateBtn')}</button>`:''}
     ${(P.donateStars||P.donateLink)?`<button class="ghost-btn" id="supBtn">${T('supBtn')}</button>`:''}`);
   if(P.donateStars||P.donateLink)$('supBtn').onclick=()=>support(()=>album(fromWin));
   $('shopBtn').onclick=()=>shop(()=>album(fromWin));
+  $('lvBtn2').onclick=()=>levels(()=>album(fromWin));
+  $('achBtn').onclick=()=>achSheet(()=>album(fromWin));
   $('closeAlbum').onclick=()=>{closeOv();if(fromWin)nextLevel()};
   if(P.review)$('rateBtn').onclick=()=>rate(()=>album(fromWin));
   document.querySelectorAll('.card.owned').forEach(el=>el.onclick=()=>share(CHARS.find(c=>c.id===el.dataset.id),fromWin,true));
@@ -994,7 +1135,7 @@ async function share(ch,fromWin,fromAlbum){
 board.addEventListener('click',e=>{const c=e.target.closest('.col');if(c)tap(+c.dataset.i)});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('owned')){e.preventDefault();e.target.click()}});
 board.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const c=e.target.closest('.col');if(c){e.preventDefault();tap(+c.dataset.i)}}});
-$('btnUndo').onclick=undo;$('btnHint').onclick=hint;$('btnExtra').onclick=extra;$('btnAlbum').onclick=()=>{ensureAC();album(false)};
+$('btnUndo').onclick=undo;$('btnHint').onclick=hint;$('lvlBtn').onclick=()=>{if(G.busy)return;levels()};$('btnExtra').onclick=extra;$('btnShake').onclick=shuffleBoard;$('btnAlbum').onclick=()=>{ensureAC();album(false)};
 $('btnSound').onclick=()=>{S.muted=!S.muted;save();ensureAC();hud();if(!S.muted)sfx.pick()};
 $('coinsBtn').onclick=()=>{if(G.busy)return;ensureAC();sfx.pick();shop()};
 $('btnRestart').onclick=()=>{if(G.busy)return;ensureAC();startLevel();toast(T('restarted'))};
@@ -1011,7 +1152,7 @@ function start(data){
   if(data&&data.S)S=Object.assign(S,data.S);
   applySkin();
   if(data&&data.cols){G.cols=data.cols;startLevel(true)}else startLevel();
-  window.__pel={S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop};
+  window.__pel={S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
   try{P.ready&&P.ready()}catch(e){}
   goal('game_start',{level:S.level});
 }
