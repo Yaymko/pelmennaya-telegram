@@ -145,6 +145,9 @@ window.PLATFORM={
     if(true){
       self.lb=d=>fetch('/api/lb',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({initData:tg.initData},d))})
         .then(r=>r.ok?r.json():Promise.reject(r.status));
+      try{self.uid=tg.initDataUnsafe.user.id;self.startParam=tg.initDataUnsafe.start_param||''}catch(e){}
+      self.ref=ref=>fetch('/api/ref',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({initData:tg.initData,ref:ref||0})}).then(r=>r.ok?r.json():Promise.reject(r.status));
+      self.invite=text=>{try{tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent('https://t.me/PelmennayaGameBot/play?startapp=r'+self.uid)+'&text='+encodeURIComponent(text))}catch(e){}};
       self.remind=on=>new Promise(res=>{
         const go=()=>fetch('/api/remind',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({initData:tg.initData,on:!!on,tz:-new Date().getTimezoneOffset(),lang:self.lang||'ru'})}).then(r=>res(r.ok)).catch(()=>res(false));
         if(on&&tg.requestWriteAccess&&tg.isVersionAtLeast&&tg.isVersionAtLeast('6.9')){try{tg.requestWriteAccess(ok=>ok?go():res(false))}catch(e){go()}}else go();});
@@ -303,6 +306,7 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .daily{display:inline-flex;align-items:center;gap:8px;background:var(--chili);color:#fff8ee;font-weight:800;font-size:14px;padding:8px 14px;border-radius:999px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2);animation:nudge 2.4s ease-in-out infinite}
 .daily .gift{width:16px;height:16px;flex:none}
 @keyframes nudge{0%,80%,100%{transform:none}86%{transform:rotate(-4deg) scale(1.05)}92%{transform:rotate(4deg) scale(1.05)}}
+.share-img.pending{aspect-ratio:4/5;width:auto;height:52vh;max-width:100%;padding:12% 10%;box-sizing:border-box;background:radial-gradient(#2b6660,#123230)}
 .share-img{display:block;width:100%;max-height:52vh;object-fit:contain;border-radius:16px;margin:12px auto 0;-webkit-touch-callout:default;user-select:auto;-webkit-user-select:auto}
 .win-stars{display:flex;justify-content:center;gap:10px;margin:10px 0 2px;color:var(--bamboo-dk)}.win-stars span{width:42px;height:42px;display:block}.win-stars span.on{color:#f3c24b;animation:starPop .45s cubic-bezier(.3,1.6,.5,1) both}.win-stars svg{width:100%;height:100%}@keyframes starPop{from{transform:scale(0) rotate(-40deg);opacity:0}to{transform:none;opacity:1}}.sheet p.mv{margin-top:2px;font-size:13px}
 .dp.hid{filter:saturate(.2) brightness(.8)}
@@ -327,6 +331,16 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .stars{display:flex;justify-content:center;gap:6px;margin-top:14px}.stars button{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;color:var(--bamboo-dk);transition:transform .12s}.stars button svg{width:34px;height:34px}.stars button.on{color:#f3c24b}.stars button:active{transform:scale(.9)}
 .rate-txt{margin-top:12px;width:100%;box-sizing:border-box;min-height:84px;resize:none;border:0;border-radius:14px;padding:10px 12px;background:var(--panel);color:var(--text);font:inherit;font-size:15px;user-select:text;-webkit-user-select:text}.rate-txt::placeholder{color:var(--muted)}
 .shop-h{margin:16px 0 6px;font-weight:800;font-size:14px;color:var(--muted);text-align:left}
+.cafe{position:relative;width:100%;aspect-ratio:8/5;border-radius:16px;overflow:hidden;margin-top:10px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.cafe-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cafe-g{position:absolute;width:15%;transform:translate(-50%,-50%);animation:cafeBob 2.4s ease-in-out infinite}
+.cafe-g.chef{width:14%}
+.cafe-g svg{width:100%;height:auto;display:block}
+@keyframes cafeBob{50%{transform:translate(-50%,-56%)}}
+.cafe-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.cafe-it{background:var(--panel);border:0;border-radius:14px;padding:10px 4px 8px;color:var(--text);font:inherit;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.cafe-it b{font-size:13px}.cafe-it small{font-size:11px;opacity:.75}.cafe-it .pr{display:inline-flex;align-items:center;gap:4px;font-weight:800;color:var(--coin);font-size:13px}
+#cafeTake[disabled]{opacity:.5}
 .shop{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .sk{background:var(--panel);border-radius:14px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text);font:inherit;font-weight:800;font-size:13px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
 .sk.on{box-shadow:inset 0 0 0 2px var(--coin)}
@@ -449,7 +463,7 @@ const STR={
   colAria:(i,list)=>'Пароварка '+i+': '+(list||'пусто'),
   emptyCol:'Пароварка пустая. Сначала выбери, откуда брать.',doneCol:'Эта пароварка уже готова.',nope:'Сюда нельзя.',
   needHint:'Нужно 10 монет. Их дают за уровни и повторных героев.',stuck:'Отсюда не решить. Отмени пару ходов или возьми пароварку.',
-  oneExtra:'Одна дополнительная пароварка на уровень.',need2:'Для отмены нужно 2 монеты',extraCap:'С лишней пароваркой за уровень максимум 2 звезды',need30:'Нужно 30 монет.',restarted:'Уровень начат заново.',
+  oneExtra:'Больше пароварок на этом уровне не поставить.',need2:'Для отмены нужно 2 монеты',extraCap:'С лишней пароваркой за уровень максимум 2 звезды',need30:'Нужно 30 монет.',restarted:'Уровень начат заново.',
   winT:n=>'Уровень '+n+' готов!',winP:'Пароварки пыхтят. Внутри сюрприз-пельмень.',squeeze:'Сжать сюрприз',squeezeTip:'Сожми его 4 раза',
   newHero:'Новый герой в альбоме!',dupe:'Уже есть в альбоме. Держи <b style="color:var(--coin)">+10</b> монет.',
   next:'Следующий уровень',openAlbum:'Открыть альбом',albumT:'Альбом',albumP:(g,t)=>'Собрано '+g+' из '+t+'. Каждый пройденный уровень дарит сюрприз-пельмень.',
@@ -487,7 +501,7 @@ const STR={
   colAria:(i,list)=>'Steamer '+i+': '+(list||'empty'),
   emptyCol:'This steamer is empty. Pick one to take from first.',doneCol:'This steamer is already done.',nope:"Can't go there.",
   needHint:'You need 10 coins. Levels and duplicate heroes give coins.',stuck:"Can't be solved from here. Undo a few moves or add a steamer.",
-  oneExtra:'One extra steamer per level.',need2:'Undo costs 2 coins',extraCap:'With an extra steamer this level gives 2 stars max',need30:'You need 30 coins.',restarted:'Level restarted.',
+  oneExtra:'No more extra steamers on this level.',need2:'Undo costs 2 coins',extraCap:'With an extra steamer this level gives 2 stars max',need30:'You need 30 coins.',restarted:'Level restarted.',
   winT:n=>'Level '+n+' done!',winP:'The steamers are puffing. A surprise dumpling is inside.',squeeze:'Squeeze the surprise',squeezeTip:'Squeeze it 4 times',
   newHero:'New hero in your album!',dupe:'Already in your album. Here are <b style="color:var(--coin)">+10</b> coins.',
   next:'Next level',openAlbum:'Open album',albumT:'Album',albumP:(g,t)=>g+' of '+t+' collected. Every level you finish gives a surprise dumpling.',
@@ -702,6 +716,95 @@ function shop(back){
     }else sfx.pick();
     S.skin[kind]=x.id;save();applySkin();hud();shop(back);achCheck();
   });
+}
+/* ---------- моя пельменная ---------- */
+// [id, цена, монет в час]
+const CAFE=[['sign',50,1],['lamp',80,1],['pic',100,1],['plant',120,1],['table1',150,2],['counter',200,2],['samovar',250,2],['table2',300,2],['garland',350,2],['chef',450,3],['table3',500,2]];
+const CAFE_CAP=8; // часов копятся чаевые
+const CT={ru:{t:'Моя пельменная',p:'Обустраивай кафе. Гости оставляют чаевые, даже когда ты не играешь. Копятся до 8 часов.',tips:'Чаевые',take:'Собрать',rate:n=>`+${n} в час`,buy:'Купить',all:'Пельменная обустроена полностью!',got:n=>`Чаевые собраны! +${n}`,chip:n=>`Чаевые в пельменной: ${n}`,btn:'🏠 Моя пельменная',bought:'Готово! Гостей станет больше',empty:'Пока пусто. Купи первый предмет, и придут гости.',guests:n=>`Гостей сегодня: ${n}`,
+  it:{sign:'Вывеска',lamp:'Лампы',pic:'Картина',plant:'Фикус',table1:'Столик',counter:'Стойка',samovar:'Самовар',table2:'Второй столик',garland:'Гирлянда',chef:'Повар',table3:'Третий столик'}},
+ en:{t:'My Dumpling Café',p:'Decorate your café. Guests leave tips even while you are away. Tips pile up for 8 hours.',tips:'Tips',take:'Collect',rate:n=>`+${n} per hour`,buy:'Buy',all:'Your café is complete!',got:n=>`Tips collected! +${n}`,chip:n=>`Café tips: ${n}`,btn:'🏠 My café',bought:'Done! More guests will come',empty:'Empty for now. Buy the first item and guests will come.',guests:n=>`Guests today: ${n}`,
+  it:{sign:'Sign',lamp:'Lamps',pic:'Painting',plant:'Plant',table1:'Table',counter:'Counter',samovar:'Samovar',table2:'Second table',garland:'Garland',chef:'Chef',table3:'Third table'}}};
+const CTx=()=>CT[LANG]||CT.en;
+function cafeRate(){const o=(S.cafe&&S.cafe.own)||{};return 1+CAFE.reduce((s,[id,,r])=>s+(o[id]?r:0),0)}
+function cafeTips(){if(!S.cafe||!S.cafe.t||!Object.keys(S.cafe.own||{}).length)return 0;const h=Math.min(CAFE_CAP,(Date.now()-S.cafe.t)/36e5);return Math.floor(h*cafeRate())}
+function cafeScene(){
+  const o=S.cafe.own,has=id=>!!o[id];
+  let s=`<svg viewBox="0 0 320 200" class="cafe-bg" aria-hidden="true">
+  <rect width="320" height="132" fill="#f1dfc0"/>${Array.from({length:16},(_,i)=>`<rect x="${i*20+8}" width="4" height="132" fill="#e8d2ae"/>`).join('')}
+  <rect y="128" width="320" height="72" fill="#b07a52"/>${Array.from({length:5},(_,i)=>`<rect y="${140+i*13}" width="320" height="1.5" fill="#97653f"/>`).join('')}
+  <rect y="126" width="320" height="5" fill="#8a5a3c"/>
+  <rect x="196" y="34" width="84" height="62" rx="6" fill="#8a5a3c"/><rect x="201" y="39" width="74" height="52" rx="3" fill="#9fd6e8"/><circle cx="258" cy="54" r="8" fill="#fff4c2"/><path d="M201 80q18-14 36 0t38-4v15h-74z" fill="#7cc08a"/><rect x="236" y="39" width="4" height="52" fill="#8a5a3c"/><rect x="201" y="63" width="74" height="3" fill="#8a5a3c"/>`;
+  if(has('garland'))s+=`<path d="M0 6q80 22 160 0t160 0" fill="none" stroke="#5a3a28" stroke-width="1.2"/>${Array.from({length:14},(_,i)=>{const x=12+i*22.5,y=6+Math.sin((x%160)/160*Math.PI)*11;return `<circle cx="${x}" cy="${y+4}" r="3.6" fill="${['#e85a3c','#f3c24b','#6fd6c8','#a596f2'][i%4]}"/>`}).join('')}`;
+  if(has('sign'))s+=`<rect x="34" y="14" width="140" height="28" rx="8" fill="#e85a3c"/><rect x="38" y="18" width="132" height="20" rx="6" fill="none" stroke="#fff4e0" stroke-width="1.2" stroke-dasharray="3 3"/><text x="104" y="33" text-anchor="middle" font-family="Unbounded,sans-serif" font-weight="800" font-size="12" fill="#fff8ee">${LANG==='ru'?'ПЕЛЬМЕННАЯ':'DUMPLINGS'}</text>`;
+  if(has('lamp'))s+=[60,150].map(x=>`<path d="M${x} 0v52" stroke="#5a3a28" stroke-width="1.5"/><path d="M${x-13} 64q13-18 26 0z" fill="#2f6e64"/><ellipse cx="${x}" cy="66" rx="5" ry="3" fill="#fff4c2"/><path d="M${x-22} 70l-14 40h72l-14-40z" fill="#fff4c2" opacity=".18"/>`).join('');
+  if(has('pic'))s+=`<rect x="128" y="58" width="44" height="34" rx="3" fill="#c8954e"/><rect x="132" y="62" width="36" height="26" fill="#2b6660"/><path d="M138 84q12-18 24 0z" fill="#f7ecd9"/><circle cx="146" cy="78" r="1.3" fill="#3a2a20"/><circle cx="154" cy="78" r="1.3" fill="#3a2a20"/>`;
+  if(has('counter'))s+=`<rect x="4" y="96" width="108" height="10" rx="3" fill="#6b4430"/><rect x="8" y="106" width="100" height="44" fill="#8a5a3c"/><rect x="14" y="112" width="88" height="32" rx="4" fill="#9b6a48"/><rect x="16" y="80" width="26" height="16" rx="3" fill="#3f4a52"/><rect x="20" y="83" width="18" height="6" fill="#9fe0c8"/>`;
+  if(has('samovar'))s+=`<g transform="translate(70 66)"><rect x="6" y="26" width="16" height="4" fill="#9b6a2a"/><path d="M4 8q10-10 20 0l2 18H2z" fill="#d9a441"/><rect x="11" y="0" width="6" height="6" rx="2" fill="#b98330"/><path d="M24 16h8v3h-6" fill="none" stroke="#b98330" stroke-width="2.4"/><ellipse cx="14" cy="15" rx="4" ry="5" fill="#f3d27a" opacity=".6"/></g>`;
+  if(has('plant'))s+=`<g transform="translate(288 92)"><path d="M14 40q-14-14-10-34q6 16 10 20q2-20 12-26q-2 22-6 30q10-10 18-8q-10 8-14 18z" fill="#4f9a5f"/><path d="M4 40h22l-3 20h-16z" fill="#c76b3f"/></g>`;
+  const tables=[['table1',176],['table2',236],['table3',120]].filter(([id])=>has(id));
+  for(const [,x] of tables)s+=`<ellipse cx="${x}" cy="184" rx="26" ry="5" fill="#000" opacity=".12"/><rect x="${x-24}" y="150" width="48" height="7" rx="3" fill="#6b4430"/><rect x="${x-3}" y="157" width="6" height="26" fill="#5a3a28"/><rect x="${x-10}" y="181" width="20" height="4" rx="2" fill="#5a3a28"/><circle cx="${x-6}" cy="146" r="5" fill="#f7ecd9"/><circle cx="${x+7}" cy="147" r="4" fill="#f7ecd9"/>`;
+  s+='</svg>';
+  // гости: собранные герои за столиками, у стойки повар
+  const owned=visibleChars().filter(c=>S.coll[c.id]&&c.id!=='shef');
+  const seed=dayStr(new Date()).split('').reduce((a,c)=>a*31+c.charCodeAt(0)>>>0,7);
+  const pick=[...owned].sort((a,b)=>((CHARS.indexOf(a)*2654435761+seed)>>>0)%997-((CHARS.indexOf(b)*2654435761+seed)>>>0)%997);
+  const spots=[];for(const [,x] of tables){spots.push([x-36,128],[x+36,128])}
+  if(!tables.length&&Object.keys(o).length)spots.push([150,124]);
+  let g='';const n=Math.min(spots.length,pick.length);
+  for(let i=0;i<n;i++){const c=pick[i],[x,y]=spots[i];g+=`<div class="cafe-g" style="left:${x/3.2}%;top:${y/2}%;animation-delay:${i*.35}s">${dumpling(c.col,c.face,c.acc)}</div>`}
+  if(has('chef')){const c=CHARS.find(x=>x.id==='shef');g+=`<div class="cafe-g chef" style="left:${52/3.2}%;top:${62/2}%">${dumpling(c.col,c.face,c.acc)}</div>`}
+  return {html:`<div class="cafe">${s}${g}</div>`,guests:n};
+}
+function cafe(back){
+  S.cafe=S.cafe||{own:{},t:0};const C=CTx(),tips=cafeTips(),sc=cafeScene();
+  const next=CAFE.filter(([id])=>!S.cafe.own[id]);
+  const items=next.slice(0,3).map(([id,p,r])=>`<button class="cafe-it" data-id="${id}"><b>${C.it[id]}</b><small>${C.rate(r)}</small><span class="pr"><span class="coin"></span>${p}</span></button>`).join('');
+  openOv(`<h2>${C.t}</h2><p>${C.p}</p>${sc.html}
+    <p style="margin-top:8px;font-size:13px">${Object.keys(S.cafe.own).length?C.guests(sc.guests)+' · '+C.rate(cafeRate()):C.empty}</p>
+    ${Object.keys(S.cafe.own).length?`<button class="big-btn" id="cafeTake"${tips?'':' disabled'}>${C.take} <span class="coin"></span>${tips}</button>`:''}
+    <div class="reward" style="margin:10px 0 4px"><span class="coin"></span>${S.coins}</div>
+    ${next.length?`<div class="cafe-list">${items}</div>`:`<p class="chip r2" style="margin-top:8px">${C.all}</p>`}
+    <button class="ghost-btn" id="cafeBack">${T('back')}</button>`);
+  $('cafeBack').onclick=()=>{closeOv();back&&back()};
+  if($('cafeTake'))$('cafeTake').onclick=()=>{const n=cafeTips();if(!n)return;S.coins+=n;S.cafe.t=Date.now();save();hud();sfx.chime(1);buzz([20,40,20]);toast(C.got(n));goal('cafe_tips',{n});qEvent&&qEvent('cafe');cafe(back)};
+  document.querySelectorAll('.cafe-it').forEach(el=>el.onclick=()=>{
+    const [id,p]=CAFE.find(x=>x[0]===el.dataset.id);
+    if(S.coins<p){sfx.bad();buzz(30);toast(T('noCoins')(p-S.coins));return}
+    const pend=cafeTips();S.coins-=p;S.cafe.own[id]=1;
+    if(!S.cafe.t)S.cafe.t=Date.now();else{S.coins+=pend;S.cafe.t=Date.now()} // при покупке отдаём накопленное по старой ставке
+    save();hud();sfx.chime(2);buzz([20,40,20]);toast(C.bought);goal('cafe_buy',{item:id,price:p});cafe(back);achCheck();
+  });
+}
+/* ---------- пригласи друга (только Telegram) ---------- */
+const RT={ru:{btn:'👋 Пригласить друга',t:'Пригласи друга',p:'Отправь другу ссылку на игру. Когда он зайдёт по ней впервые, вы оба получите редкого героя.',send:'Отправить приглашение',n:n=>`Друзей пришло по твоей ссылке: ${n}`,msg:'Залипаю в «Пельменную»: сортируй пельмени и собирай героев. Заходи по моей ссылке, и мы оба получим редкого героя!',
+  inT:'Подарок от друга!',inP:'Ты пришёл по приглашению, держи редкого героя.',okT:'Друг пришёл!',okP:n=>n>1?`По твоей ссылке пришли друзья: ${n}. Держи награду.`:'По твоей ссылке пришёл друг. Держи редкого героя.',coins:n=>`Все редкие герои уже есть, держи +${n} монет`,cool:'Ура!'},
+ en:{btn:'👋 Invite a friend',t:'Invite a friend',p:'Send a friend your game link. When they open it for the first time, you both get a rare hero.',send:'Send invite',n:n=>`Friends who joined: ${n}`,msg:'I\'m hooked on Dumpling Sort: sort dumplings and collect heroes. Join with my link and we both get a rare hero!',
+  inT:'A gift from your friend!',inP:'You came by invitation, here is a rare hero.',okT:'Your friend joined!',okP:n=>n>1?`${n} friends joined with your link. Here is your reward.`:'A friend joined with your link. Here is a rare hero.',coins:n=>`You already have every rare hero, take +${n} coins`,cool:'Yay!'}};
+const RTx=()=>RT[LANG]||RT.en;
+function giftRare(){const vis=visibleChars().filter(c=>!c.ny&&!S.coll[c.id]);const pool=vis.filter(c=>c.r===1);const src=pool.length?pool:vis.filter(c=>c.r===2);
+  if(!src.length){S.coins+=100;return null}const ch=src[Math.floor(Math.random()*src.length)];S.coll[ch.id]=1;return ch}
+function refGift(title,text,n){
+  const got=[];let coins=0;for(let i=0;i<Math.min(n,5);i++){const c=giftRare();if(c)got.push(c);else coins+=100}
+  save();hud();setTimeout(achCheck,1200);sfx.chime(2);buzz([20,40,20]);
+  const C=RTx();const show=()=>{openOv(`<h2>${title}</h2><p>${text}</p><div class="album" style="margin-top:10px">${got.map(c=>`<div class="card owned r${c.r}">${dumpling(c.col,c.face,c.acc)}<div class="n">${cname(c)}</div></div>`).join('')}</div>${coins?`<p>${C.coins(coins)}</p>`:''}<button class="big-btn" id="refOk">${C.cool}</button>`);$('refOk').onclick=closeOv};
+  if($('ov').hidden&&!G.busy)show();else{const t=setInterval(()=>{if($('ov').hidden&&!G.busy){clearInterval(t);show()}},1500)}
+}
+function refCheck(){
+  if(!P.ref)return;const m=/^r(\d+)$/.exec(P.startParam||'');
+  const inviter=m&&!S.refUsed&&S.level<=3&&String(m[1])!==String(P.uid)?m[1]:0;
+  P.ref(inviter).then(d=>{if(!d)return;if(inviter)S.refUsed=1;S.refN=d.total||0;save();const C=RTx();
+    if(d.joined)refGift(C.inT,C.inP,1);
+    if(d.claim)setTimeout(()=>refGift(C.okT,C.okP(d.claim),d.claim),d.joined?400:0);
+    goal(d.joined?'ref_joined':'ref_check',{claim:d.claim||0})}).catch(()=>{});
+}
+function invite(back){
+  const C=RTx();
+  openOv(`<h2>${C.t}</h2><p>${C.p}</p><div class="album" style="grid-template-columns:repeat(3,1fr);margin:10px 0">${CHARS.filter(c=>c.r===1&&!c.ny).slice(0,3).map(c=>`<div class="card owned r1">${dumpling(c.col,c.face,c.acc)}</div>`).join('')}</div>
+    ${S.refN?`<p class="chip r1">${C.n(S.refN)}</p>`:''}
+    <button class="big-btn" id="invSend">${C.send}</button><button class="ghost-btn" id="invBack">${T('back')}</button>`);
+  $('invSend').onclick=()=>{goal('invite');P.invite(C.msg)};
+  $('invBack').onclick=()=>{closeOv();back&&back()};
 }
 /* ---------- достижения ---------- */
 const ACH=[['first3',20],['stars25',100],['lvl20',50],['lvl30',80],['lvl50',150],['heroes10',50],['heroesAll',200],['daily7',100],['dp3',60],['combo3',40],['gold10',60],['hot5',60],['skin',20]];
@@ -984,7 +1087,7 @@ function startLevel(keepCols){
   G.par=shortest(G.cols,big?20000:60000,big?1.3:1)||shortest(G.cols,20000,2)||genLevel.par||0;
   G.boss=isBoss(curL())&&G.mode!=='dp'?Math.ceil(G.par*1.5)+3+(perk('angelok')?5:0):0;G.perkHint=G.perkShake=false;G.usedHint=false;
   G.hid=G.cols.map(c=>hiddenFor(curL())?Math.max(0,c.length-1):0);
-  G.hist=[];G.sel=null;G.extra=false;G.hint=null;G.just=-1;G.busy=false;
+  G.hist=[];G.sel=null;G.extra=0;G.hint=null;G.just=-1;G.busy=false;
   rollSpecial();
   render();layout();hud();
   try{P.gpStart&&P.gpStart()}catch(e){}
@@ -993,11 +1096,11 @@ function hud(){
   $('lvl').textContent=(G.mode==='dp'?T('dpHud'):T('level')+S.level)+' · '+T('movesHud')(G.hist.length,par3())+(S.replay===S.level?' · '+T('replayTag'):'')+(G.boss?' · '+T('bossHud')(G.boss-G.hist.length):'')+(G.hot>=0&&!G.hotPaid&&G.hist.length<G.hotN?' · '+T('hotHud')(G.hotN-G.hist.length):'');
   const pr=(id,v)=>{$(id).querySelector('.price').innerHTML=typeof v==='number'?'<span class="coin"></span>'+v:v};
   pr('btnHint',perk('shef')&&!G.perkHint?'⚡ 0':S.freeHint>0?T('freeHint')(S.freeHint):10);
-  pr('btnUndo',perk('ninja')?'⚡ 0':2);pr('btnShake',perk('mag')&&!G.perkShake?'⚡ 0':20);pr('btnExtra',perk('krutysh')?15:30);
+  pr('btnUndo',perk('ninja')?'⚡ 0':2);pr('btnShake',perk('mag')&&!G.perkShake?'⚡ 0':20);pr('btnExtra',extraCost());
   $('coins').textContent=S.coins;
   const got=visibleChars().filter(c=>S.coll[c.id]).length;$('albumCount').textContent=got+'/'+visibleChars().length;
   $('btnUndo').disabled=!G.hist.length;
-  $('btnExtra').disabled=G.extra;
+  $('btnExtra').disabled=G.extra>=extraMax();
   $('btnSound').innerHTML=S.muted
     ?'<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="m17 9 5 6M22 9l-5 6"/></svg>'
     :'<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12"/></svg>';
@@ -1018,6 +1121,9 @@ function hud(){
   if(wheelReady()&&!(S.level>=2&&dailyReady())){
     tip.innerHTML=`<button class="daily dp-chip" id="wheelBtn"><svg class="gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg>${T('wheelBtn')}</button>`;
     $('wheelBtn').onclick=wheel;
+  }
+  else if(S.level>=6&&cafeTips()>=30&&!(S.level>=2&&dailyReady())&&!dpReady()){
+    tip.innerHTML=`<button class="daily dp-chip" id="cafeChip"><span class="coin"></span>${CTx().chip(cafeTips())}</button>`;$('cafeChip').onclick=()=>{if(!G.busy)cafe()};
   }
   else if(dpReady()&&!(S.level>=2&&dailyReady())){
     tip.innerHTML=`<button class="daily dp-chip" id="dpBtn"><svg class="gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>${T('dpBtn')(dpStreak())}</button>`;
@@ -1133,12 +1239,15 @@ function hint(){
   if(!p||!p.length){toast(T('stuck'));sfx.bad();return}
   if(pf)G.perkHint=true;else if(free)S.freeHint--;else S.coins-=10;G.usedHint=true;save();goal('hint');G.hint=p[0];G.sel=null;sfx.pick();render();hud();
 }
+// лишние пароварки: до 30 уровня одна, дальше две, с 60 уровня три; каждая следующая дороже
+function extraMax(){return G.mode==='dp'?2:S.level>=60?3:S.level>=30?2:1}
+function extraCost(){return (perk('krutysh')?15:30)+(G.extra||0)*(perk('krutysh')?5:10)}
 function extra(){
   if(G.busy)return;ensureAC();
-  if(G.extra){toast(T('oneExtra'));return}
-  const ec=perk('krutysh')?15:30;
-  if(S.coins<ec){if(P.rewarded){adOffer();return}toast(T('need30'));sfx.bad();return}
-  S.coins-=ec;save();G.extra=true;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();
+  if(G.extra>=extraMax()){toast(T('oneExtra'));return}
+  const ec=extraCost();
+  if(S.coins<ec){if(P.rewarded){adOffer();return}toast(T('noCoins')(ec-S.coins));sfx.bad();return}
+  S.coins-=ec;save();G.extra=(G.extra||0)+1;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();
 }
 
 /* ---------- surprise / win ---------- */
@@ -1220,7 +1329,7 @@ function reveal(o){
   if($('replay'))$('replay').onclick=()=>{closeOv();playLevel(o.passed)};
   const r=document.querySelector('.mys');sparks(r,ch.r===2?26:ch.r===1?18:12,ch.r===2?'#f3c24b':ch.r===1?'#6fd6c8':'#f7ecd9');
   $('next').onclick=()=>{closeOv();if(!o.daily)nextLevel()};
-  $('share').onclick=()=>share(ch,!o.daily);
+  $('share').onclick=()=>share(ch,!o.daily);setTimeout(()=>(window.requestIdleCallback||setTimeout)(()=>{if($('share'))cardBlob(ch).catch(()=>{})}),900);
   $('toAlbum').onclick=()=>album(!o.daily);
   $('next').focus();
 }
@@ -1299,22 +1408,26 @@ function album(fromWin){
   }
   openOv(`<h2>${T('albumT')}</h2>${questsHtml()}${helperHtml()}<p style="margin-top:14px">${T('albumP')(got,vis.length)}</p><div class="album">${cards}</div>
     <button class="big-btn" id="closeAlbum">${fromWin?T('next'):T('back')}</button>
+    ${S.level>=6?`<button class="alt-btn" id="cafeBtn">${CTx().btn}${cafeTips()?` · <span class="coin"></span>${cafeTips()}`:''}</button>`:''}
     <button class="alt-btn" id="lvBtn2">${T('lvBtn')}</button>
     <button class="alt-btn" id="shopBtn">${T('shopBtn')}</button>
     ${P.lb?`<button class="alt-btn" id="lbBtn">${T('lbBtn')}</button>`:''}
+    ${P.invite?`<button class="alt-btn" id="invBtn">${RTx().btn}</button>`:''}
     ${P.remind?`<button class="ghost-btn" id="remBtn">${S.remind?T('remOff'):T('remOn')}</button>`:''}
     <button class="alt-btn" id="achBtn">${T('achBtn')(ACH.filter(([id])=>(S.ach||{})[id]).length,ACH.length)}</button>
     ${P.review?`<button class="ghost-btn" id="rateBtn">${T('rateBtn')}</button>`:''}
     ${(P.donateStars||P.donateLink)?`<button class="ghost-btn" id="supBtn">${T('supBtn')}</button>`:''}`);
   if(P.donateStars||P.donateLink)$('supBtn').onclick=()=>support(()=>album(fromWin));
   $('shopBtn').onclick=()=>shop(()=>album(fromWin));
+  if($('cafeBtn'))$('cafeBtn').onclick=()=>cafe(()=>album(fromWin));
   if(P.lb)$('lbBtn').onclick=()=>rating(()=>album(fromWin));
+  if(P.invite)$('invBtn').onclick=()=>invite(()=>album(fromWin));
   if(P.remind)$('remBtn').onclick=()=>setRemind(!S.remind,()=>album(fromWin));
   $('lvBtn2').onclick=()=>levels(()=>album(fromWin));
   $('achBtn').onclick=()=>achSheet(()=>album(fromWin));
   $('closeAlbum').onclick=()=>{closeOv();if(fromWin)nextLevel()};
   if(P.review)$('rateBtn').onclick=()=>rate(()=>album(fromWin));
-  document.querySelectorAll('.card.owned').forEach(el=>el.onclick=()=>share(CHARS.find(c=>c.id===el.dataset.id),fromWin,true));
+  document.querySelectorAll('.card.owned').forEach(el=>{el.onclick=()=>share(CHARS.find(c=>c.id===el.dataset.id),fromWin,true);el.onpointerdown=()=>cardBlob(CHARS.find(c=>c.id===el.dataset.id)).catch(()=>{})});
 }
 /* ---------- share card ---------- */
 function svgImg(svg){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)})}
@@ -1336,18 +1449,20 @@ async function makeCard(ch){
   x.fillStyle='#9fc0b8';x.font='700 32px Nunito, sans-serif';x.fillText(T('cardBottom'),W/2,H-48);
   return cv;
 }
+const cardCache={};
+function cardBlob(ch){const k=ch.id+LANG;if(!cardCache[k])cardCache[k]=makeCard(ch).then(cv=>new Promise(r=>cv.toBlob(r,'image/jpeg',.9))).then(b=>{if(!b)throw 0;return {blob:b,url:URL.createObjectURL(b)}}).catch(e=>{delete cardCache[k];throw e});return cardCache[k]}
 async function share(ch,fromWin,fromAlbum){
-  ensureAC();goal('share',{hero:ch.id});let cv;try{cv=await makeCard(ch)}catch(e){toast('Error');return}
-  const url=cv.toDataURL('image/png');
-  try{
-    const blob=await new Promise(r=>cv.toBlob(r,'image/png'));const file=new File([blob],'pelmennaya-'+ch.id+'.png',{type:'image/png'});
-    if(!(fromAlbum&&T('perk')[ch.id])&&!P.noNativeShare&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:T('shareText')(cname(ch))});return}
-  }catch(e){if(e&&e.name==='AbortError')return}
-  const touch=matchMedia('(pointer:coarse)').matches;
+  ensureAC();goal('share',{hero:ch.id});
+  const wantNative=!(fromAlbum&&T('perk')[ch.id])&&!P.noNativeShare&&navigator.canShare;
+  if(wantNative){try{const c=await cardBlob(ch);const file=new File([c.blob],'pelmennaya-'+ch.id+'.jpg',{type:'image/jpeg'});
+    if(navigator.canShare({files:[file]})){await navigator.share({files:[file],text:T('shareText')(cname(ch))});return}}catch(e){if(e&&e.name==='AbortError')return}}
+  const url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(dumpling(ch.col,ch.face,ch.acc));
+const touch=matchMedia('(pointer:coarse)').matches;
   openOv(`<h2>${T('shareT')}</h2><img class="share-img" src="${url}" alt="${cname(ch)}"><p style="margin-top:10px">${touch?T('shareHint'):T('shareHintDesk')}</p>
     ${P.shareLink?`<button class="big-btn" id="shTg">${T('shareTg')}</button>`:''}
     ${fromAlbum&&T('perk')[ch.id]&&S.coll[ch.id]?(S.helper===ch.id?`<p class="chip r2" style="margin-top:10px">${T('helperOn')}</p>`:`<button class="alt-btn" id="shHelp">⚡ ${T('helperTake')}</button><p style="font-size:13px;margin-top:6px">${T('perk')[ch.id]}</p>`):''}
     <button class="ghost-btn" id="shClose">${fromAlbum?T('albumT'):T('close')}</button>`);
+  {const im=document.querySelector('#ov .share-img');im.classList.add('pending');cardBlob(ch).then(c=>{if(im.isConnected){im.src=c.url;im.classList.remove('pending')}}).catch(()=>{})}
   if(P.shareLink)$('shTg').onclick=()=>P.shareLink(T('shareText')(cname(ch)));
   if($('shHelp'))$('shHelp').onclick=()=>{S.helper=ch.id;save();hud();goal('helper',{hero:ch.id});sfx.chime(2);buzz([20,40,20]);toast(T('helperGot')(cname(ch)));album(fromWin)};
   $('shClose').onclick=()=>{if(fromAlbum)album(fromWin);else{closeOv();if(fromWin)nextLevel()}};
@@ -1376,7 +1491,8 @@ function start(data){
   if(!S.mig1){S.best=S.best||{};const top=(S.replay?S.lastLevel:S.level)||1;for(let i=1;i<top;i++)if(!S.best[i])S.best[i]=2;S.mig1=1;save()}
   applySkin();
   if(data&&data.cols){G.cols=data.cols;startLevel(true)}else startLevel();
-  window.__pel={S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
+  setTimeout(refCheck,1500);
+  window.__pel={cafe,cafeTips,album,S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
   try{P.ready&&P.ready()}catch(e){}
   goal('game_start',{level:S.level});
   setTimeout(lbPush,1500);
