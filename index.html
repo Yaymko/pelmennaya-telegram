@@ -191,6 +191,7 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .map-head{position:absolute;left:50%;translate:-50% 0;white-space:nowrap;background:rgba(0,0,0,.35);color:var(--bamboo-hi);font-family:var(--font-display);font-weight:800;font-size:15px;padding:6px 14px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 .map-lv{position:absolute;width:54px;height:54px;translate:-50% -50%;border-radius:50%;background:linear-gradient(180deg,var(--st-hi),var(--st) 55%,var(--st-dk));box-shadow:inset 0 -4px 0 rgba(0,0,0,.25),0 3px 8px rgba(0,0,0,.35);color:#3a2408;font:inherit;font-weight:800;font-size:17px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .map-lv .ss{position:absolute;bottom:-12px;display:flex;gap:1px;color:rgba(0,0,0,.45)}.map-lv .ss svg{width:13px;height:13px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}.map-lv .ss .on{color:#f3c24b}
+.map-lv.boss:not(.cur){background:linear-gradient(180deg,#c9a7ff,#8a63e0 55%,#5b3aa8);color:#fff}.map-lv.boss::before{content:"";position:absolute;top:-13px;width:26px;height:16px;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24'%3E%3Cpath d='M4 22L2 4l10 8 8-11 8 11 10-8-2 18z' fill='%23ffd24a' stroke='%23b9861d' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E")}
 .map-lv.locked{background:rgba(255,255,255,.12);color:rgba(255,255,255,.45);box-shadow:none;pointer-events:none}
 .map-lv.cur{background:linear-gradient(180deg,#ff8a6a,var(--chili));color:#fff8ee;width:62px;height:62px;animation:mapPulse 1.6s ease-in-out infinite}
 .map-lv .me{position:absolute;top:-40px;width:40px;height:40px;animation:mapHop 1.2s ease-in-out infinite}.map-lv .me svg{width:100%;height:100%}
@@ -218,6 +219,14 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .board{display:grid;gap:18px 12px;justify-content:center;align-content:center}
 .col{position:relative;width:var(--cw);padding-top:calc(var(--cw)*.46);cursor:pointer;touch-action:manipulation}
 .col.shake{animation:shake .32s}
+.col.ice .stack{filter:saturate(.35) brightness(1.15) hue-rotate(160deg)}
+.col .frost{position:absolute;left:-4%;right:-4%;top:calc(var(--cw)*.36);bottom:-2%;z-index:4;border-radius:14px;pointer-events:none;background:linear-gradient(160deg,rgba(214,242,255,.55),rgba(150,210,240,.28) 45%,rgba(214,242,255,.5));box-shadow:inset 0 0 0 2px rgba(230,248,255,.7),inset 0 0 18px rgba(255,255,255,.6);backdrop-filter:blur(1px)}
+.col .frost::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 18px,rgba(255,255,255,.35) 18px 20px,transparent 20px 34px);border-radius:inherit}
+.col.lock .stack{filter:brightness(.6) saturate(.6)}
+.col .padlock{position:absolute;left:50%;top:calc(var(--cw)*.9);translate:-50% 0;width:calc(var(--cw)*.62);z-index:6;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45))}
+.col .padlock svg{width:100%;display:block}.col .padlock .pk{position:absolute;left:22%;right:22%;bottom:6%;height:52%}.col .padlock .pk svg{width:100%;height:100%}
+.dp.key::after{content:"";position:absolute;left:-4%;top:-2%;width:32%;height:32%;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='8' cy='8' r='5' fill='%23f3c24b' stroke='%238a6410' stroke-width='1.6'/%3E%3Cpath d='M11.5 11.5l8 8M16 16l2.5-2.5M18.5 18.5l2-2' stroke='%238a6410' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M11.5 11.5l8 8M16 16l2.5-2.5M18.5 18.5l2-2' stroke='%23f3c24b' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E");animation:hotwig 1.4s ease-in-out infinite}
+.boss-tag{color:#c9a7ff}
 @keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
 .stack{display:flex;flex-direction:column-reverse;gap:2px;position:relative}
 .tier{position:relative;height:calc(var(--cw)*.66)}
@@ -303,6 +312,8 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .dp.hot::after{content:"";position:absolute;right:-2%;top:-2%;width:30%;height:30%;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15 3c-1 2 0 3 1 3' stroke='%233a7a2a' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M16 6c4 1 5 6 2 11-3 4-9 5-13 4 6-2 8-6 8-10 0-3 1-5 3-5z' fill='%23e8402a' stroke='%237a1508' stroke-width='1.2'/%3E%3C/svg%3E");animation:hotwig 1s ease-in-out infinite}
 @keyframes hotwig{50%{rotate:14deg}}
 .board.shaking{animation:shake .45s ease-in-out 2}
+.qbar{display:block;height:5px;border-radius:3px;background:rgba(0,0,0,.3);margin-top:5px;overflow:hidden}.qbar i{display:block;height:100%;background:var(--coin);border-radius:3px}
+.card{position:relative}.perk-b{position:absolute;top:4px;right:6px;font-size:12px}.card.helper{box-shadow:inset 0 0 0 2px var(--coin)}
 .ach-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;text-align:left}
 .ach{display:flex;align-items:center;gap:10px;background:var(--panel);border-radius:14px;padding:9px 12px}
 .ach.lb .ic{font-weight:800;font-size:14px;color:var(--text)}.ach.lb.got .ic{color:#3a2606}
@@ -379,7 +390,11 @@ const FILL=[
   {n:'сыр',c:'#f7e06a',f:'surprised'},
   {n:'краб',c:'#7fd3e8',f:'smug'},
   {n:'грибы',c:'#c99a72',f:'laugh'},
-  {n:'свёкла',c:'#ec6fa6',f:'star'}
+  {n:'свёкла',c:'#ec6fa6',f:'star'},
+  {n:'вишня',c:'#d63a4f',f:'wink'},
+  {n:'шпинат',c:'#3f9a5a',f:'sleepy'},
+  {n:'сметана',c:'#fbf6ea',f:'smug'},
+  {n:'шоколад',c:'#8a5a3c',f:'surprised'}
 ];
 const CHARS=[
   {id:'puhlik',name:'Пухлик',r:0,col:'#f4a39b',face:'happy',acc:null},
@@ -450,6 +465,12 @@ const STR={
     heroes10:['Коллекционер','Собрать 10 героев'],heroesAll:['Полный альбом','Собрать всех героев'],daily7:['Завсегдатай','Подарок 7 дней подряд'],dp3:['Задачник','Пельмень дня 3 дня подряд'],
     combo3:['Скороварка','Комбо ×3'],gold10:['Золотоискатель','Собрать 10 золотых пароварок'],hot5:['Огнеборец','Остудить острые 5 раз'],skin:['Модник','Первая покупка в лавке']},
   wheelBtn:'Колесо удачи',wheelT:'Колесо удачи',wheelP:'Раз в день крути бесплатно.',spin:'Крутить',wheelCoins:n=>'+'+n+' монет!',wheelHints:n=>'+'+n+' бесплатн'+(n>1?'ые подсказки':'ая подсказка')+'!',freeHint:n=>'🎁 '+n,
+  qT:'Задания на сегодня',qBtn:(d,t)=>'Задания '+d+'/'+t,qDone:n=>'Задание выполнено! +'+n,qChest:n=>'Все задания дня! Сундук +'+n,qAll:'Все задания выполнены. Новые завтра!',
+  q:{level:n=>'Пройди '+n+' уровн'+(n>4?'ей':n>1?'я':'ь'),star3:n=>'Пройди '+n+' уровн'+(n>1?'я':'ь')+' на 3 звезды',gold:()=>'Закрой золотую пароварку',hot:()=>'Остуди острые пельмени',combo3:()=>'Сделай комбо ×3',surprise:n=>'Открой '+n+' сюрприза',dp:()=>'Реши «Пельмень дня»',nohint:n=>'Пройди '+n+' уровня без подсказок',ice:()=>'Растопи лёд',lock:()=>'Открой замок'},
+  helperT:'Помощник',helperNone:'Помощника нет. Возьми редкого или легендарного героя: у каждого своя способность.',helperIs:(n,p)=>'Помощник: '+n+'. '+p,helperTake:'Взять помощником',helperOn:'Твой помощник',helperGot:n=>n+' теперь помогает тебе!',
+  perk:{shef:'Одна бесплатная подсказка на каждом уровне',ninja:'Отмена хода бесплатно',dj:'Комбо дают вдвое больше монет',pirat:'Золотые пароварки попадаются вдвое чаще',krutysh:'Лишняя пароварка за 15 монет',mag:'Одна бесплатная встряска на каждом уровне',gold:'+50% монет за уровень',angelok:'+5 ходов на боссах',drakosha:'На острые даётся в полтора раза больше ходов'},
+  iceTap:'Пароварка во льду. Закрой любую другую, и лёд растает',lockTap:'Пароварка заперта. Собери пельмени с ключом, чтобы открыть',iceAria:'Во льду',lockAria:'Заперта',iceGone:'Лёд растаял!',lockGone:'Замок открыт!',iceTip:'Новое: пароварка во льду. Закрой любую другую, и она растает.',lockTip:'Новое: замок. Собери 4 пельменя с ключиком, и пароварка откроется.',
+  bossTip:n=>'Босс главы! Уложись в '+n+' ходов. Награда: редкий герой и +40 монет.',bossHud:n=>'осталось '+n,bossFailT:'Ходы кончились!',bossFailP:'Босс главы не сдаётся. Попробуй ещё раз, подсказки и лишняя пароварка помогут.',bossRetry:'Ещё раз',bossWinT:n=>'Босс главы побеждён! Уровень '+n,
   lbT:'Рейтинг',lbBtn:'Рейтинг игроков',lbP:(r,t)=>r?'Ты на '+r+' месте из '+t+'. Считаются звёзды со всех уровней.':'Считаются звёзды со всех уровней.',lbLoad:'Загружаю…',lbErr:'Рейтинг сейчас недоступен. Попробуй позже.',lbLv:'ур.',remOn:'🔔 Напоминать о Пельмене дня',remOff:'🔕 Не напоминать',remYes:'Готово! Бот напомнит утром.',remNo:'Не получилось включить напоминания',remOffOk:'Напоминания выключены',
   chestGot:n=>'Сундук главы открыт! +'+n,lvT:'Карта',lvP:(n,s)=>'Пройдено '+n+', звёзд '+s+'. Нажми на уровень, чтобы перепройти его и добрать звёзды.',lvBtn:'Карта',lvCur:'сейчас',toCur:n=>'К уровню '+n,
   shopT:'Лавка',shopP:'Трать монеты на пароварки и фоны. Всё остаётся навсегда.',shopSt:'Пароварки',shopBg:'Фоны',wear:'Надето',pick:'Надеть',noCoins:n=>'Не хватает '+n+' монет. Проходи уровни на 3 звезды!',bought:'Куплено!',shopBtn:'Лавка',
@@ -481,6 +502,12 @@ const STR={
     heroes10:['Collector','Collect 10 heroes'],heroesAll:['Full album','Collect every hero'],daily7:['Regular','Daily gift 7 days in a row'],dp3:['Puzzler','Puzzle of the day 3 days in a row'],
     combo3:['Pressure cooker','Combo ×3'],gold10:['Gold digger','Close 10 golden steamers'],hot5:['Firefighter','Cool the spicy ones 5 times'],skin:['Trendsetter','First purchase in the shop']},
   wheelBtn:'Lucky wheel',wheelT:'Lucky wheel',wheelP:'One free spin every day.',spin:'Spin',wheelCoins:n=>'+'+n+' coins!',wheelHints:n=>'+'+n+' free hint'+(n>1?'s':'')+'!',freeHint:n=>'🎁 '+n,
+  qT:"Today's quests",qBtn:(d,t)=>'Quests '+d+'/'+t,qDone:n=>'Quest complete! +'+n,qChest:n=>'All daily quests done! Chest +'+n,qAll:'All quests done. New ones tomorrow!',
+  q:{level:n=>'Beat '+n+' level'+(n>1?'s':''),star3:n=>'Beat '+n+' level'+(n>1?'s':'')+' with 3 stars',gold:()=>'Close a golden steamer',hot:()=>'Cool the spicy dumplings',combo3:()=>'Make a ×3 combo',surprise:n=>'Open '+n+' surprises',dp:()=>'Solve the Puzzle of the Day',nohint:n=>'Beat '+n+' levels without hints',ice:()=>'Melt the ice',lock:()=>'Open a lock'},
+  helperT:'Helper',helperNone:'No helper yet. Pick a rare or legendary hero: each has its own ability.',helperIs:(n,p)=>'Helper: '+n+'. '+p,helperTake:'Make my helper',helperOn:'Your helper',helperGot:n=>n+' is now helping you!',
+  perk:{shef:'One free hint every level',ninja:'Undo is free',dj:'Combos give double coins',pirat:'Golden steamers show up twice as often',krutysh:'Extra steamer costs 15 coins',mag:'One free shuffle every level',gold:'+50% coins per level',angelok:'+5 moves on boss levels',drakosha:'50% more moves for spicy dumplings'},
+  iceTap:'This steamer is frozen. Close any other steamer to melt the ice',lockTap:'This steamer is locked. Collect the dumplings with the key to open it',iceAria:'Frozen',lockAria:'Locked',iceGone:'The ice melted!',lockGone:'Unlocked!',iceTip:'New: a frozen steamer. Close any other one and the ice melts.',lockTip:'New: a lock. Collect the 4 dumplings with a key to open the steamer.',
+  bossTip:n=>'Chapter boss! Finish within '+n+' moves. Reward: a rare hero and +40 coins.',bossHud:n=>n+' left',bossFailT:'Out of moves!',bossFailP:'The chapter boss holds on. Try again, hints and an extra steamer help.',bossRetry:'Try again',bossWinT:n=>'Chapter boss beaten! Level '+n,
   lbT:'Leaderboard',lbBtn:'Leaderboard',lbP:(r,t)=>r?'You are #'+r+' of '+t+'. Stars from all levels count.':'Stars from all levels count.',lbLoad:'Loading…',lbErr:'The leaderboard is unavailable right now. Try again later.',lbLv:'lv',remOn:'🔔 Remind me about the daily puzzle',remOff:'🔕 Stop reminders',remYes:'Done! The bot will remind you in the morning.',remNo:'Could not turn reminders on',remOffOk:'Reminders are off',
   chestGot:n=>'Chapter chest opened! +'+n,lvT:'Map',lvP:(n,s)=>n+' beaten, '+s+' stars. Tap a level to replay it and earn more stars.',lvBtn:'Map',lvCur:'now',toCur:n=>'Back to level '+n,
   shopT:'Shop',shopP:'Spend coins on steamers and backgrounds. Yours forever.',shopSt:'Steamers',shopBg:'Backgrounds',wear:'Equipped',pick:'Equip',noCoins:n=>'You need '+n+' more coins. Go for 3 stars!',bought:'Bought!',shopBtn:'Shop',
@@ -490,7 +517,7 @@ const STR={
   dailyBtn:n=>'Daily surprise · day '+n,dailyT:'Daily surprise',dailyP:n=>'Day '+n+' in a row. '+(n%7===0?'A rare hero is guaranteed today!':'Come back tomorrow for a bigger reward. Day 7 gives a rare hero.'),
   play:'Play',nyTip:'Holiday season: festive heroes are hiding in the surprises!',movesHud:(m,p)=>'moves '+m+(p?'/'+p:''),movesWin:(m,p)=>'Moves: '+m+(p?'. For 3 stars: '+p+' or fewer':''),replayBtn:'Replay for 3 stars',replayTag:'replay',replayBetter:'New best! Coins for the improvement.',replaySame:'No new best this time. Give it another go.',hiddenTip:'Only the top dumpling is visible. The rest show up once you free them.',oneEmptyTip:'Only one empty steamer now. Think one move ahead!',supBtn:'Support the author',supT:'Support Dumpling Sort',supP:'The game is free with no pushy ads. If you enjoy it, you can support the author: it helps bring more heroes and levels.',supStars:n=>n+' ⭐',supBoosty:'Support on Boosty',supThx:'Thank you for your support! 💛',supFail:'Payment did not go through',rateT:'Enjoying Dumpling Sort?',rateP:'Rate the game and leave a few words. Reviews appear in our Telegram channel.',rateAria:n=>n+' of 5 stars',ratePh:'What did you like, or what should we improve? (optional)',rateSend:'Send',rateSending:'Sending…',rateLater:'Not now',rateBtn:'Rate the game',rateThx:'Thanks for your review!',rateFail:'Could not send. Please try again later.',rateNeed:'Pick a number of stars',nyAlbum:'Holiday collection',close:'Close'}
 };
-const FILL_EN=['meat','cabbage','pumpkin','blueberry','cheese','crab','mushroom','beetroot'];
+const FILL_EN=['meat','cabbage','pumpkin','blueberry','cheese','crab','mushroom','beetroot','cherry','spinach','sour cream','chocolate'];
 const NAME_EN={puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
 const P=window.PLATFORM||{};
 let LANG='ru';
@@ -588,8 +615,16 @@ function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a
 const isDone=c=>c.length===CAP&&c.every(x=>x===c[0]);
 const top=c=>c[c.length-1];
 function runLen(c){let n=0;for(let i=c.length-1;i>=0&&c[i]===top(c);i--)n++;return n}
+// лёд: пароварка недоступна, пока не закрыта любая другая; замок: пока не собраны пельмени с ключом
+const RULE={ice:-1,lock:-1,key:-1};
+function blockedCol(s,i){
+  if(i===RULE.ice&&!s.some(c=>isDone(c)))return 'ice';
+  if(i===RULE.lock&&!s.some(c=>isDone(c)&&c[0]===RULE.key))return 'lock';
+  return '';
+}
 function canMove(s,a,b){
   if(a===b)return false;const A=s[a],B=s[b];
+  if((RULE.ice>=0||RULE.lock>=0)&&(blockedCol(s,a)||blockedCol(s,b)))return false;
   if(!A.length||isDone(A)||B.length>=CAP)return false;
   return !B.length||top(B)===top(A);
 }
@@ -707,40 +742,87 @@ function wheel(){
       $('spin').outerHTML=`<div class="reward">${w[0]==='c'?'<span class="coin"></span>'+T('wheelCoins')(w[1]):T('wheelHints')(w[1])}</div><button class="big-btn" id="wOk">${T('play')}</button>`;$('wOk').onclick=closeOv},3700);
   };
 }
+/* ---------- ежедневные задания ---------- */
+const QPOOL=[['level',3,0],['star3',2,0],['gold',1,6],['hot',1,12],['combo3',1,3],['surprise',3,0],['dp',1,5],['nohint',2,0],['ice',1,12],['lock',1,15]];
+const Q_REW=15,Q_CHEST=50;
+function quests(){
+  const d=dayStr(new Date());
+  if(!S.q||S.q.day!==d){
+    const r=mulberry32(d.split('-').reduce((a,x)=>a*37+ +x,7));const lv=S.replay?S.lastLevel:S.level;
+    const pool=QPOOL.filter(q=>lv>=q[2]);for(let i=pool.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
+    S.q={day:d,list:pool.slice(0,3).map(([id,n])=>({id,n,p:0})),chest:0};save();
+  }
+  return S.q;
+}
+function qEvent(id,k){
+  const q=quests();let msg=[];
+  for(const x of q.list)if(x.id===id&&x.p<x.n){x.p=Math.min(x.n,x.p+(k||1));if(x.p>=x.n){S.coins+=Q_REW;msg.push(T('qDone')(Q_REW));goal('quest',{id})}}
+  if(!q.chest&&q.list.every(x=>x.p>=x.n)){q.chest=1;S.coins+=Q_CHEST;msg.push(T('qChest')(Q_CHEST));goal('quest_chest')}
+  if(msg.length){save();hud();setTimeout(()=>{toast('✅ '+msg.join(' · '));sfx.chime(1)},900)}
+}
+function questsHtml(){
+  const q=quests();const d=q.list.filter(x=>x.p>=x.n).length;
+  return `<div class="shop-h">${T('qT')} · ${d}/${q.list.length}</div><div class="ach-list" style="margin-top:4px">${q.list.map(x=>`<div class="ach${x.p>=x.n?' got':''}"><span class="ic">${x.p>=x.n?'✓':x.p+'/'+x.n}</span><span style="flex:1"><b>${T('q')[x.id](x.n)}</b><span class="qbar"><i style="width:${Math.round(100*x.p/x.n)}%"></i></span></span><span class="rw">+${Q_REW}</span></div>`).join('')}</div>`+(q.chest?`<p style="margin-top:6px">${T('qAll')}</p>`:'');
+}
+/* ---------- помощники ---------- */
+const perk=id=>S.helper===id&&!!S.coll[id];
+function helperHtml(){const c=CHARS.find(x=>x.id===S.helper&&S.coll[x.id]);return `<div class="shop-h">${T('helperT')}</div><p style="text-align:left;margin:2px 0 0">${c?T('helperIs')(cname(c),T('perk')[c.id]):T('helperNone')}</p>`}
+/* ---------- лёд, замок, боссы ---------- */
+const isBoss=L=>L>=10&&L%10===0;
+const iceFor=L=>L>=12&&[2,5,8].includes(L%10);
+const lockFor=L=>L>=15&&[3,6,9].includes(L%10);
+function rollRules(){
+  const L=curL(),seed=G.mode==='dp'?dpSeed():L*131+7,r=mulberry32(seed);
+  const order=G.cols.map((c,i)=>i).filter(i=>G.cols[i].length>=2);for(let i=order.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
+  if(iceFor(L)){for(const i of order){RULE.ice=i;if(shortest(G.cols,15000,2))break;RULE.ice=-1}}
+  if(lockFor(L)){const f=[...new Set(G.cols.flat())];
+    outer:for(const i of order){for(const k of f.sort(()=>r()-.5)){if(G.cols[i].filter(x=>x===k).length>=2)continue;RULE.lock=i;RULE.key=k;if(shortest(G.cols,15000,2))break outer;RULE.lock=RULE.key=-1}}}
+  G.ice=RULE.ice;G.lock=RULE.lock;G.key=RULE.key;
+}
+function syncRules(){RULE.ice=G.ice??-1;RULE.lock=G.lock??-1;RULE.key=G.key??-1}
+function bossFail(){
+  sfx.bad();buzz([40,60,40]);goal('boss_fail',{level:curL()});
+  openOv(`<h2>${T('bossFailT')}</h2><p>${T('bossFailP')}</p><button class="big-btn" id="bRetry">${T('bossRetry')}</button>`);
+  $('bRetry').onclick=()=>{closeOv();G.snap=null;startLevel()};
+}
 /* ---------- особые пельмени, комбо, встряска ---------- */
 function rollSpecial(){
   G.gold=-1;G.hot=-1;G.hotN=0;G.goldPaid=G.hotPaid=false;G.lastDone=-9;G.combo=0;G.shakeAt=0;
   const L=curL(),f=[...new Set(G.cols.flat())];
-  if(L>=6&&Math.random()<.35)G.gold=f[Math.floor(Math.random()*f.length)];
-  if(L>=12&&Math.random()<.3){const g=f.filter(x=>x!==G.gold);G.hot=g[Math.floor(Math.random()*g.length)];G.hotN=Math.max(8,Math.ceil(par3()*.7))}
+  if(L>=6&&Math.random()<(perk('pirat')?.7:.35))G.gold=f[Math.floor(Math.random()*f.length)];
+  if(L>=12&&Math.random()<.3){const g=f.filter(x=>x!==G.gold);G.hot=g[Math.floor(Math.random()*g.length)];G.hotN=Math.ceil(Math.max(8,Math.ceil(par3()*.7))*(perk('drakosha')?1.5:1))}
   if(G.hot>=0)setTimeout(()=>toast('🌶 '+T('hotTip')(G.hotN)),700);
 }
 function onDone(b){
   const msg=[];const x=G.cols[b][0],m=G.hist.length;
+  if(G.ice>=0&&G.cols.filter(c=>isDone(c)).length===1){msg.push(T('iceGone'));qEvent('ice');setTimeout(()=>{const el=board.children[G.ice];if(el)sparks(el,18,'#d6f2ff')},50);sfx.pop()}
+  if(G.lock>=0&&x===G.key){msg.push(T('lockGone'));qEvent('lock');setTimeout(()=>{const el=board.children[G.lock];if(el)sparks(el,18,'#f3c24b')},50);sfx.chime(1)}
   G.combo=(m-G.lastDone<=2)?G.combo+1:1;G.lastDone=m;
-  if(G.combo>=2){const bo=Math.min(G.combo-1,5);S.coins+=bo;stat('comboMax',0);S.stat.combo=Math.max(S.stat.combo||0,G.combo);msg.push(T('combo')(G.combo,bo));sparks(board.children[b],10+G.combo*4,'#ffffff')}
-  if(x===G.gold&&!G.goldPaid){G.goldPaid=true;S.coins+=15;stat('gold');msg.push(T('goldGot'));sparks(board.children[b],22,'#f3c24b');sfx.chime(2)}
-  if(x===G.hot&&!G.hotPaid&&m<=G.hotN){G.hotPaid=true;S.coins+=20;stat('hot');msg.push(T('hotGot'));sparks(board.children[b],18,'#e8402a');sfx.chime(1)}
+  if(G.combo>=2){const bo=Math.min(G.combo-1,5)*(perk('dj')?2:1);S.coins+=bo;stat('comboMax',0);S.stat.combo=Math.max(S.stat.combo||0,G.combo);if(G.combo===3)qEvent('combo3');msg.push(T('combo')(G.combo,bo));sparks(board.children[b],10+G.combo*4,'#ffffff')}
+  if(x===G.gold&&!G.goldPaid){G.goldPaid=true;S.coins+=15;stat('gold');qEvent('gold');msg.push(T('goldGot'));sparks(board.children[b],22,'#f3c24b');sfx.chime(2)}
+  if(x===G.hot&&!G.hotPaid&&m<=G.hotN){G.hotPaid=true;S.coins+=20;stat('hot');qEvent('hot');msg.push(T('hotGot'));sparks(board.children[b],18,'#e8402a');sfx.chime(1)}
   if(msg.length){save();hud();toast(msg.join(' · '));achCheck()}
+  if(G.ice>=0||G.lock>=0){G.just=b;render()}
 }
 function shuffleBoard(){
   if(G.busy)return;ensureAC();
   const idx=G.cols.map((c,i)=>i).filter(i=>G.cols[i].length&&!isDone(G.cols[i]));
   if(idx.length<2){toast(T('shakeNo'));sfx.bad();return}
-  if(S.coins<20){if(P.rewarded){adOffer();return}toast(T('need20'));sfx.bad();return}
+  const sf=perk('mag')&&!G.perkShake;
+  if(!sf&&S.coins<20){if(P.rewarded){adOffer();return}toast(T('need20'));sfx.bad();return}
   const pool=idx.flatMap(i=>G.cols[i]);let best=null;
   for(let t=0;t<40&&!best;t++){const q=pool.slice();for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}
     const c=G.cols.map(x=>x.slice());let k=0;idx.forEach(i=>{c[i]=q.slice(k,k+G.cols[i].length);k+=G.cols[i].length});
     if(c.some(x=>x.length===CAP&&isDone(x)))continue;if(shortest(c,40000,1.5))best=c}
   if(!best){toast(T('stuck'));sfx.bad();return}
-  S.coins-=20;save();goal('shake');G.busy=true;G.sel=null;G.hint=null;board.classList.add('shaking');sfx.squish(2);buzz([30,30,30]);
+  if(sf)G.perkShake=true;else S.coins-=20;save();goal('shake');G.busy=true;G.sel=null;G.hint=null;board.classList.add('shaking');sfx.squish(2);buzz([30,30,30]);
   setTimeout(()=>{board.classList.remove('shaking');G.cols=best;G.shakeAt=G.hist.length;G.busy=false;render();hud();toast(T('shakeDone'))},500);
 }
 /* ---------- прогресс основного уровня не теряется ---------- */
-const SNAP_KEYS=['cols','hist','hid','extra','shakeAt','gold','hot','hotN','goldPaid','hotPaid','lastDone','combo','par'];
+const SNAP_KEYS=['cols','hist','hid','extra','shakeAt','gold','hot','hotN','goldPaid','hotPaid','lastDone','combo','par','ice','lock','key','boss','perkHint','perkShake','usedHint'];
 function snapMain(){if(G.mode!=='dp'&&!S.replay&&G.hist.length&&!solved(G.cols)){G.snap={level:S.level};SNAP_KEYS.forEach(k=>G.snap[k]=JSON.parse(JSON.stringify(G[k]===undefined?null:G[k])))}}
 function restoreMain(){const sn=G.snap;if(!sn||G.mode==='dp'||S.replay||sn.level!==S.level)return false;G.snap=null;
-  SNAP_KEYS.forEach(k=>G[k]=sn[k]);G.sel=null;G.hint=null;G.just=-1;G.busy=false;render();layout();hud();try{P.gpStart&&P.gpStart()}catch(e){}return true}
+  SNAP_KEYS.forEach(k=>G[k]=sn[k]);syncRules();G.sel=null;G.hint=null;G.just=-1;G.busy=false;render();layout();hud();try{P.gpStart&&P.gpStart()}catch(e){}return true}
 /* ---------- рейтинг и напоминания (Telegram) ---------- */
 function lbStars(){return Object.values(S.best||{}).reduce((a,b)=>a+b,0)}
 function lbData(){return {stars:lbStars(),level:S.replay?S.lastLevel:S.level,streak:(S.dp&&S.dp.streak)||0}}
@@ -804,7 +886,7 @@ function levels(back){
     if(it.t==='chest'){const done=cur>it.k*10,got=S.chest[it.k];
       nodes+=`<button class="map-chest${done&&!got?' ready':''}${got?' open':''}" data-k="${it.k}" style="left:${it.x}px;top:${it.y}px"${done&&!got?'':' tabindex="-1"'}><svg viewBox="0 0 40 34"><rect x="3" y="12" width="34" height="20" rx="3" fill="#a8672c" stroke="#5a3410" stroke-width="2"/><path d="M3 14q0-12 17-12t17 12z" fill="${got?'#6b3f18':'#c47c35'}" stroke="#5a3410" stroke-width="2"/><rect x="17" y="10" width="6" height="9" rx="1.5" fill="#f3c24b" stroke="#8a6410" stroke-width="1.5"/></svg></button>`;continue}
     const n=it.n,st=best[n]||0,isCur=n===cur,lock=n>cur;
-    nodes+=`<button class="map-lv${isCur?' cur':''}${lock?' locked':''}" data-l="${n}" style="left:${it.x}px;top:${it.y}px"${lock?' tabindex="-1"':''}><b>${n}</b>${!lock&&!isCur?`<span class="ss">${[1,2,3].map(k=>`<span class="${k<=st?'on':''}">${STAR_SVG}</span>`).join('')}</span>`:''}${isCur?`<span class="me">${dumpling('#f4a39b','happy',null)}</span>`:''}</button>`;
+    nodes+=`<button class="map-lv${isCur?' cur':''}${lock?' locked':''}${isBoss(n)?' boss':''}" data-l="${n}" style="left:${it.x}px;top:${it.y}px"${lock?' tabindex="-1"':''}><b>${n}</b>${!lock&&!isCur?`<span class="ss">${[1,2,3].map(k=>`<span class="${k<=st?'on':''}">${STAR_SVG}</span>`).join('')}</span>`:''}${isCur?`<span class="me">${dumpling('#f4a39b','happy',null)}</span>`:''}</button>`;
   }
   openOv(`<div class="map-top"><h2>${T('lvT')}</h2><p>${T('lvP')(cur-1,tot)}</p>${P.lb?`<button class="alt-btn" id="mapLb" style="margin-top:6px;padding:8px">🏆 ${T('lbBtn')}</button>`:''}</div><div class="map-scroll" id="mapScroll"><div class="map" style="height:${H}px;width:${W}px">${bg}${path}${nodes}</div></div><button class="big-btn" id="lvBack">${T('back')}</button>`,'map-sheet');
   $('lvBack').onclick=()=>{closeOv();back&&back()};
@@ -822,21 +904,21 @@ function dpStreak(){const y=new Date();y.setDate(y.getDate()-1);return S.dp&&S.d
 function dpSeed(){const d=new Date();return (d.getFullYear()*372+d.getMonth()*31+d.getDate())*104729+7}
 function startDaily(){if(G.busy)return;ensureAC();snapMain();G.mode='dp';G.dpL=DP_L[new Date().getDay()];goal('dp_start',{streak:dpStreak()});startLevel()}
 function curL(){return G.mode==='dp'?G.dpL:S.level}
-function colorsFor(L){return Math.min(3+Math.floor((L-1)/2),8)}
-const emptiesFor=L=>L>=20?1:2;        // с 20-го уровня одна пустая пароварка
+function colorsFor(L){return L<41?Math.min(3+Math.floor((L-1)/2),8):Math.min(9+Math.floor((L-41)/20),FILL.length)}  // 41+: 9, 61+: 10, 81+: 11, 101+: 12 начинок
+const emptiesFor=L=>L>=20&&colorsFor(L)<=9?1:2;  // с 61 уровня начинок 10+, им снова нужны две пустые        // с 20-го уровня одна пустая пароварка
 const hiddenFor=L=>L>=30;             // с 30-го видно только верхний пельмень
 function genLevel(L,seed0){
   const k=colorsFor(L);let seed=seed0||L*7919+13;
   for(let tries=0;tries<400;tries++){
     const r=mulberry32(seed++);
-    const pal=[0,1,2,3,4,5,6,7];for(let i=pal.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[pal[i],pal[j]]=[pal[j],pal[i]]}
+    const pal=FILL.map((_,i)=>i);for(let i=pal.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[pal[i],pal[j]]=[pal[j],pal[i]]}
     const items=[];for(let i=0;i<k;i++)for(let j=0;j<CAP;j++)items.push(pal[i]);
     for(let i=items.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[items[i],items[j]]=[items[j],items[i]]}
     const cols=[];for(let i=0;i<k;i++)cols.push(items.slice(i*CAP,i*CAP+CAP));
     for(let e=0;e<emptiesFor(L);e++)cols.push([]);
     if(cols.some(c=>c.length&&isDone(c)))continue;
     if(cols.some(c=>c.length&&runLen(c)>=3))continue;
-    const path=solve(cols,40000);
+    const path=solve(cols,k>9?8000:40000)||(k>9?shortest(cols,25000,2,true):null);
     if(path){genLevel.par=path.length;return cols}
   }
   return null;
@@ -883,7 +965,7 @@ window.__game={pause:pauseAudio,resume:resumeAudio};
 
 /* ---------- state ---------- */
 let S={level:1,coins:20,coll:{},muted:false};
-let G={cols:[],hist:[],sel:null,busy:false,extra:false,hint:null,just:-1,hid:[],par:0};
+let G={cols:[],hist:[],sel:null,busy:false,extra:false,hint:null,just:-1,hid:[],par:0,ice:-1,lock:-1,key:-1,boss:0};
 const visRun=i=>runLen(G.cols[i]);  // скрытые того же цвета едут вместе с верхним
 function par3(){if(!G.par)return 0;const p=hiddenFor(curL())?G.par*1.2:G.par;return Math.ceil(p*1.15)+1}   // столько ходов или меньше = 3 звезды
 function par2(){return Math.ceil(par3()*1.35)}
@@ -896,9 +978,11 @@ const board=$('board'),wrap=$('boardWrap');
 
 function startLevel(keepCols){
   if(!keepCols&&restoreMain())return;
-  if(!keepCols){genLevel.par=0;G.cols=G.mode==='dp'?genLevel(G.dpL,dpSeed()):(genLevel(S.level)||genLevel(1));}
-  else genLevel.par=0;
-  G.par=shortest(G.cols,60000,1)||genLevel.par||0;
+  if(!keepCols){RULE.ice=RULE.lock=RULE.key=-1;genLevel.par=0;G.cols=G.mode==='dp'?genLevel(G.dpL,dpSeed()):(genLevel(S.level)||genLevel(1));rollRules();}
+  else{genLevel.par=0;syncRules()}
+  const big=G.cols.flat().length>36;  // 10+ начинок: точный поиск слишком долгий, берём почти точный
+  G.par=shortest(G.cols,big?20000:60000,big?1.3:1)||shortest(G.cols,20000,2)||genLevel.par||0;
+  G.boss=isBoss(curL())&&G.mode!=='dp'?Math.ceil(G.par*1.5)+3+(perk('angelok')?5:0):0;G.perkHint=G.perkShake=false;G.usedHint=false;
   G.hid=G.cols.map(c=>hiddenFor(curL())?Math.max(0,c.length-1):0);
   G.hist=[];G.sel=null;G.extra=false;G.hint=null;G.just=-1;G.busy=false;
   rollSpecial();
@@ -906,8 +990,10 @@ function startLevel(keepCols){
   try{P.gpStart&&P.gpStart()}catch(e){}
 }
 function hud(){
-  $('lvl').textContent=(G.mode==='dp'?T('dpHud'):T('level')+S.level)+' · '+T('movesHud')(G.hist.length,par3())+(S.replay===S.level?' · '+T('replayTag'):'')+(G.hot>=0&&!G.hotPaid&&G.hist.length<G.hotN?' · '+T('hotHud')(G.hotN-G.hist.length):'');
-  $('btnHint').querySelector('.price').innerHTML=S.freeHint>0?T('freeHint')(S.freeHint):'<span class="coin"></span>10';
+  $('lvl').textContent=(G.mode==='dp'?T('dpHud'):T('level')+S.level)+' · '+T('movesHud')(G.hist.length,par3())+(S.replay===S.level?' · '+T('replayTag'):'')+(G.boss?' · '+T('bossHud')(G.boss-G.hist.length):'')+(G.hot>=0&&!G.hotPaid&&G.hist.length<G.hotN?' · '+T('hotHud')(G.hotN-G.hist.length):'');
+  const pr=(id,v)=>{$(id).querySelector('.price').innerHTML=typeof v==='number'?'<span class="coin"></span>'+v:v};
+  pr('btnHint',perk('shef')&&!G.perkHint?'⚡ 0':S.freeHint>0?T('freeHint')(S.freeHint):10);
+  pr('btnUndo',perk('ninja')?'⚡ 0':2);pr('btnShake',perk('mag')&&!G.perkShake?'⚡ 0':20);pr('btnExtra',perk('krutysh')?15:30);
   $('coins').textContent=S.coins;
   const got=visibleChars().filter(c=>S.coll[c.id]).length;$('albumCount').textContent=got+'/'+visibleChars().length;
   $('btnUndo').disabled=!G.hist.length;
@@ -920,6 +1006,9 @@ function hud(){
   if(S.level===1&&!G.hist.length) tip.innerHTML='<span>'+T('tip1')+'</span>';
   else if(S.level===1||S.level===2) tip.innerHTML=T('tip2');
   else if(S.level===3&&!G.hist.length) tip.innerHTML=T('tip3');
+  else if(G.boss) tip.textContent=T('bossTip')(G.boss);
+  else if(G.ice>=0&&S.level<=14) tip.textContent=T('iceTip');
+  else if(G.lock>=0&&S.level<=19) tip.textContent=T('lockTip');
   else if(hiddenFor(S.level)&&S.level<=32) tip.textContent=T('hiddenTip');
   else if(emptiesFor(S.level)===1&&S.level<=22) tip.textContent=T('oneEmptyTip');
   else if(SEASON&&S.level%2===0) tip.textContent=T('nyTip');
@@ -953,13 +1042,14 @@ function render(){
   let h='';
   G.cols.forEach((c,i)=>{
     const done=isDone(c);
-    let cls='col'+(done?' done':'')+(i===G.just?' just':'');
+    const bl=blockedCol(G.cols,i);
+    let cls='col'+(done?' done':'')+(i===G.just?' just':'')+(bl?' '+bl:'');
     if(G.hint){if(G.hint[0]===i)cls+=' hint-from';if(G.hint[1]===i)cls+=' hint-to';}
     const rl=(G.sel===i)?visRun(i):0;if(done)G.hid[i]=0;const hd=G.hid[i]||0;  // закрытая пароварка раскрывается целиком
-    h+=`<div class="${cls}" data-i="${i}" role="button" tabindex="0" aria-label="${T('colAria')(i+1,c.map((x,t)=>t<hd?'?':fname(x)).join(', '))}"><div class="steam"><i></i><i></i><i></i></div><div class="lid"></div><div class="stack">`;
+    h+=`<div class="${cls}" data-i="${i}" role="button" tabindex="0" aria-label="${(bl?T(bl+'Aria')+'. ':'')+T('colAria')(i+1,c.map((x,t)=>t<hd?'?':fname(x)).join(', '))}"><div class="steam"><i></i><i></i><i></i></div><div class="lid"></div>${bl==='lock'?`<div class="padlock"><svg viewBox="0 0 40 44"><path d="M11 20v-7a9 9 0 0 1 18 0v7" stroke="#c9ced6" stroke-width="5" fill="none"/><rect x="5" y="19" width="30" height="23" rx="5" fill="#f3c24b" stroke="#8a6410" stroke-width="2"/></svg><span class="pk">${fillSVG(G.key)}</span></div>`:''}${bl==='ice'?'<div class="frost"></div>':''}<div class="stack">`;
     for(let t=0;t<CAP;t++){
       const x=c[t];let dp='';
-      if(x!==undefined){const lift=G.sel===i&&t>=c.length-rl;const sp=t<hd?'':x===G.gold?' gold':(x===G.hot&&!G.hotPaid&&G.hist.length<G.hotN)?' hot':'';dp=`<div class="dp${lift?' lift':''}${t<hd?' hid':''}${sp}">${t<hd?HIDDEN_SVG:fillSVG(x)}</div>`;}
+      if(x!==undefined){const lift=G.sel===i&&t>=c.length-rl;const sp=t<hd?'':(x===G.key&&G.lock>=0&&blockedCol(G.cols,G.lock))?' key':x===G.gold?' gold':(x===G.hot&&!G.hotPaid&&G.hist.length<G.hotN)?' hot':'';dp=`<div class="dp${lift?' lift':''}${t<hd?' hid':''}${sp}">${t<hd?HIDDEN_SVG:fillSVG(x)}</div>`;}
       h+=`<div class="tier">${dp}</div>`;
     }
     h+='</div></div>';
@@ -988,6 +1078,7 @@ function shake(i){const el=board.children[i];if(!el)return;el.classList.remove('
 function tap(i){
   if(G.busy)return;ensureAC();
   const c=G.cols[i];
+  const bl=blockedCol(G.cols,i);if(bl){sfx.bad();shake(i);buzz(30);toast(bl==='ice'?T('iceTap'):T('lockTap'));if(G.sel!==null){G.sel=null;render()}return}
   if(G.sel===null){
     if(!c.length){sfx.bad();shake(i);toast(T('emptyCol'));return}
     if(isDone(c)){sfx.bad();shake(i);toast(T('doneCol'));return}
@@ -1028,24 +1119,26 @@ function move(a,b){
     if(G.hot>=0&&!G.hotPaid&&G.hist.length===G.hotN&&!isDone(G.cols[b])){setTimeout(()=>toast(T('hotLost')),300);render()}
     G.busy=false;
     if(solved(G.cols)){G.busy=true;setTimeout(win,900)}
+    else if(G.boss&&G.hist.length>=G.boss){G.busy=true;setTimeout(bossFail,600)}
   });
 }
 function undo(){if(G.busy||!G.hist.length)return;if(G.hist.length<=G.shakeAt){toast(T('noUndoShake'));return}
-  if(S.coins<2){toast(T('need2'));sfx.bad();return}
-  S.coins-=2;save();goal('undo');ensureAC();G.cols=G.hist.pop();G.sel=null;G.hint=null;sfx.pick();render();layout();hud()}
+  const uc=perk('ninja')?0:2;if(S.coins<uc){toast(T('need2'));sfx.bad();return}
+  S.coins-=uc;save();goal('undo');ensureAC();G.cols=G.hist.pop();G.sel=null;G.hint=null;sfx.pick();render();layout();hud()}
 function hint(){
   if(G.busy)return;ensureAC();
-  const free=(S.freeHint||0)>0;
+  const pf=perk('shef')&&!G.perkHint,free=pf||(S.freeHint||0)>0;
   if(!free&&S.coins<10){if(P.rewarded){adOffer();return}toast(T('needHint'));sfx.bad();return}
   const p=shortest(G.cols,60000,1.5,true)||solve(G.cols,120000); // A*: подсказки не ходят по кругу
   if(!p||!p.length){toast(T('stuck'));sfx.bad();return}
-  if(free)S.freeHint--;else S.coins-=10;save();goal('hint');G.hint=p[0];G.sel=null;sfx.pick();render();hud();
+  if(pf)G.perkHint=true;else if(free)S.freeHint--;else S.coins-=10;G.usedHint=true;save();goal('hint');G.hint=p[0];G.sel=null;sfx.pick();render();hud();
 }
 function extra(){
   if(G.busy)return;ensureAC();
   if(G.extra){toast(T('oneExtra'));return}
-  if(S.coins<30){if(P.rewarded){adOffer();return}toast(T('need30'));sfx.bad();return}
-  S.coins-=30;save();G.extra=true;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();
+  const ec=perk('krutysh')?15:30;
+  if(S.coins<ec){if(P.rewarded){adOffer();return}toast(T('need30'));sfx.bad();return}
+  S.coins-=ec;save();G.extra=true;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();
 }
 
 /* ---------- surprise / win ---------- */
@@ -1067,7 +1160,7 @@ function win(){
   try{P.gpStop&&P.gpStop()}catch(e){}
   sfx.win();buzz([20,40,20]);
   if(G.mode==='dp'){
-    const moves=G.hist.length,st=starsFor(moves),n=dpStreak(),p3=par3();S.dp={last:dayStr(new Date()),streak:n};
+    const moves=G.hist.length,st=starsFor(moves),n=dpStreak(),p3=par3();qEvent('dp');S.dp={last:dayStr(new Date()),streak:n};
     const reward=25+5*st+Math.min(n,10)*3;S.coins+=reward;G.mode='';save();hud();achCheck();lbPush();goal('dp_done',{streak:n,stars:st,moves});
     openOv(`<h2>${T('dpWinT')}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,p3)}</p><p>${T('dpWinP')(n)}</p>
       <div class="reward"><span class="coin"></span>+${reward}</div>
@@ -1082,6 +1175,7 @@ function win(){
   const passed=S.level,moves=G.hist.length,st=starsFor(moves);
   S.best=S.best||{};const prev=S.best[passed]||0;if(st>prev)S.best[passed]=st;
   goal('level_done',{level:passed,stars:st,moves,par:G.par});
+  qEvent('level');if(st===3)qEvent('star3');if(!G.usedHint)qEvent('nohint');
   if(S.replay===passed){ // переигровка: без сюрприза, награда только за улучшение
     const reward=5*Math.max(0,st-prev);S.coins+=reward;S.replay=0;S.level=S.lastLevel||passed+1;save();hud();lbPush();
     openOv(`<h2>${T('winT')(passed)}</h2>${starsRow(st)}<p>${st>prev?T('replayBetter'):T('replaySame')}</p>
@@ -1089,8 +1183,8 @@ function win(){
       <button class="big-btn" id="next">${T('toCur')(S.level)}</button>`);
     $('next').onclick=()=>{closeOv();nextLevel()};return;
   }
-  const reward=10+5*st;S.coins+=reward;S.level++;save();hud();achCheck();lbPush();
-  surprise({title:T('winT')(passed),sub:T('winP'),reward,stars:st,moves,passed,par3:par3()});
+  const boss=!!G.boss;const reward=Math.round((10+5*st+(boss?40:0))*(perk('gold')?1.5:1));if(boss)goal('boss_win',{level:passed});S.coins+=reward;S.level++;save();hud();achCheck();lbPush();
+  surprise({title:boss?T('bossWinT')(passed):T('winT')(passed),sub:T('winP'),reward,stars:st,moves,passed,par3:par3(),minR:boss?1:0});
 }
 function surprise(o){
   openOv(`<h2>${o.title}</h2>${o.stars?starsRow(o.stars)+`<p class="mv">${T('movesWin')(o.moves,o.par3)}</p>`:''}<p>${o.sub}</p>
@@ -1111,7 +1205,7 @@ function surprise(o){
 }
 function reveal(o){
   o=o||{};const ch=roll(o.minR);
-  goal('surprise',{hero:ch.id,rarity:ch.r,isNew:!S.coll[ch.id]});const isNew=!S.coll[ch.id];
+  qEvent('surprise');goal('surprise',{hero:ch.id,rarity:ch.r,isNew:!S.coll[ch.id]});const isNew=!S.coll[ch.id];
   if(isNew)S.coll[ch.id]=1;else S.coins+=10;save();hud();setTimeout(achCheck,1200);
   sfx.chime(ch.r);
   const ray=ch.r===2?'rgba(243,194,75,.35)':ch.r===1?'rgba(111,214,200,.3)':'rgba(247,236,217,.16)';
@@ -1201,9 +1295,9 @@ function album(fromWin){
   for(const c of vis){
     const has=!!S.coll[c.id];
     if(c.ny&&!vis.some(x=>x.ny&&CHARS.indexOf(x)<CHARS.indexOf(c)))cards+=`<div class="album-h">${T('nyAlbum')}</div>`;
-    cards+=`<div class="card${has?' owned r'+c.r:' locked'}"${has?` data-id="${c.id}" role="button" tabindex="0"`:''}>${has?dumpling(c.col,c.face,c.acc):dumpling(c.col,c.face,null,{silhouette:true})}<div class="n">${has?cname(c):'???'}</div>${has?`<span class="chip r${c.r}" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`:`<span class="chip" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`}</div>`;
+    cards+=`<div class="card${has?' owned r'+c.r:' locked'}${S.helper===c.id&&has?' helper':''}"${has?` data-id="${c.id}" role="button" tabindex="0"`:''}>${T('perk')[c.id]?'<span class="perk-b">⚡</span>':''}${has?dumpling(c.col,c.face,c.acc):dumpling(c.col,c.face,null,{silhouette:true})}<div class="n">${has?cname(c):'???'}</div>${has?`<span class="chip r${c.r}" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`:`<span class="chip" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`}</div>`;
   }
-  openOv(`<h2>${T('albumT')}</h2><p>${T('albumP')(got,vis.length)}</p><div class="album">${cards}</div>
+  openOv(`<h2>${T('albumT')}</h2>${questsHtml()}${helperHtml()}<p style="margin-top:14px">${T('albumP')(got,vis.length)}</p><div class="album">${cards}</div>
     <button class="big-btn" id="closeAlbum">${fromWin?T('next'):T('back')}</button>
     <button class="alt-btn" id="lvBtn2">${T('lvBtn')}</button>
     <button class="alt-btn" id="shopBtn">${T('shopBtn')}</button>
@@ -1247,13 +1341,15 @@ async function share(ch,fromWin,fromAlbum){
   const url=cv.toDataURL('image/png');
   try{
     const blob=await new Promise(r=>cv.toBlob(r,'image/png'));const file=new File([blob],'pelmennaya-'+ch.id+'.png',{type:'image/png'});
-    if(!P.noNativeShare&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:T('shareText')(cname(ch))});return}
+    if(!(fromAlbum&&T('perk')[ch.id])&&!P.noNativeShare&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:T('shareText')(cname(ch))});return}
   }catch(e){if(e&&e.name==='AbortError')return}
   const touch=matchMedia('(pointer:coarse)').matches;
   openOv(`<h2>${T('shareT')}</h2><img class="share-img" src="${url}" alt="${cname(ch)}"><p style="margin-top:10px">${touch?T('shareHint'):T('shareHintDesk')}</p>
     ${P.shareLink?`<button class="big-btn" id="shTg">${T('shareTg')}</button>`:''}
+    ${fromAlbum&&T('perk')[ch.id]&&S.coll[ch.id]?(S.helper===ch.id?`<p class="chip r2" style="margin-top:10px">${T('helperOn')}</p>`:`<button class="alt-btn" id="shHelp">⚡ ${T('helperTake')}</button><p style="font-size:13px;margin-top:6px">${T('perk')[ch.id]}</p>`):''}
     <button class="ghost-btn" id="shClose">${fromAlbum?T('albumT'):T('close')}</button>`);
   if(P.shareLink)$('shTg').onclick=()=>P.shareLink(T('shareText')(cname(ch)));
+  if($('shHelp'))$('shHelp').onclick=()=>{S.helper=ch.id;save();hud();goal('helper',{hero:ch.id});sfx.chime(2);buzz([20,40,20]);toast(T('helperGot')(cname(ch)));album(fromWin)};
   $('shClose').onclick=()=>{if(fromAlbum)album(fromWin);else{closeOv();if(fromWin)nextLevel()}};
 }
 
