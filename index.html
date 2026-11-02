@@ -90,6 +90,7 @@ html,body{margin:0}
 [hidden]{display:none!important}
 </style>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 <script>
 (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');
 ym(114007164,'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true});
@@ -142,6 +143,13 @@ window.PLATFORM={
         .then(r=>r.ok?r.json():r.text().then(t=>Promise.reject(r.status+' '+t.slice(0,60))))
         .then(d=>new Promise(res=>{try{tg.openInvoice(d.url,st=>res(st))}catch(e){res('openInvoice')}}))
         .catch(e=>String(e))}};
+    if(tg.openInvoice&&[['c100', 100, 25], ['c300', 300, 60], ['c1000', 1000, 150]].length)self.buyCoins={packs:[['c100', 100, 25], ['c300', 300, 60], ['c1000', 1000, 150]],buy(id){
+      return fetch('/api/buy',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({pack:id})})
+        .then(r=>r.ok?r.json():r.text().then(t=>Promise.reject(r.status+' '+t.slice(0,60))))
+        .then(d=>new Promise(res=>{try{tg.openInvoice(d.url,st=>res(st))}catch(e){res('openInvoice')}}))
+        .catch(e=>String(e))}};
+    if('57651'&&window.Adsgram){try{const ad=window.Adsgram.init({blockId:'57651'});
+      self.rewarded=cb=>{ad.show().then(r=>cb(!!(r&&r.done))).catch(()=>cb(false))}}catch(e){}}
     if(true){
       self.lb=d=>fetch('/api/lb',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({initData:tg.initData},d))})
         .then(r=>r.ok?r.json():Promise.reject(r.status));
@@ -219,7 +227,7 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .tip{min-height:40px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px;line-height:1.35;color:var(--muted);padding-block:2px;text-wrap:balance}
 .tip b{color:var(--text)}
 .board-wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative}
-.board{display:grid;gap:18px 12px;justify-content:center;align-content:center}
+.board{display:flex;flex-wrap:wrap;gap:18px 12px;justify-content:center;align-content:center;margin:0 auto}
 .col{position:relative;width:var(--cw);padding-top:calc(var(--cw)*.46);cursor:pointer;touch-action:manipulation}
 .col.shake{animation:shake .32s}
 .col.ice .stack{filter:saturate(.35) brightness(1.15) hue-rotate(160deg)}
@@ -331,6 +339,10 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .stars{display:flex;justify-content:center;gap:6px;margin-top:14px}.stars button{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;color:var(--bamboo-dk);transition:transform .12s}.stars button svg{width:34px;height:34px}.stars button.on{color:#f3c24b}.stars button:active{transform:scale(.9)}
 .rate-txt{margin-top:12px;width:100%;box-sizing:border-box;min-height:84px;resize:none;border:0;border-radius:14px;padding:10px 12px;background:var(--panel);color:var(--text);font:inherit;font-size:15px;user-select:text;-webkit-user-select:text}.rate-txt::placeholder{color:var(--muted)}
 .shop-h{margin:16px 0 6px;font-weight:800;font-size:14px;color:var(--muted);text-align:left}
+.ev-card{display:flex;gap:12px;align-items:center;text-align:left;background:linear-gradient(135deg,rgba(243,194,75,.18),rgba(232,90,60,.14));border:1.5px solid rgba(243,194,75,.5);border-radius:16px;padding:10px 12px;margin-top:10px}
+.ev-card b{display:block;font-size:15px}.ev-card small{display:block;font-size:12px;opacity:.85;margin-top:2px}
+.ev-h{flex:0 0 56px}.ev-h svg{width:56px;height:auto;display:block}
+.ev-bar{height:8px;border-radius:5px;background:rgba(0,0,0,.25);margin-top:6px;overflow:hidden}.ev-bar i{display:block;height:100%;background:var(--coin);border-radius:5px}
 .cafe{position:relative;width:100%;aspect-ratio:8/5;border-radius:16px;overflow:hidden;margin-top:10px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .cafe-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .cafe-g{position:absolute;width:15%;transform:translate(-50%,-50%);animation:cafeBob 2.4s ease-in-out infinite}
@@ -449,10 +461,13 @@ const CHARS=[
   {id:'super',name:'Супер-пельмень',r:2,col:'#f26a4f',face:'dot',acc:'mask+scarf'},
   {id:'moroz',name:'Пельмень Мороз',r:1,col:'#d6f2ff',face:'happy',acc:'beard+santa',ny:1},
   {id:'snegurka',name:'Пельмешка-Снегурка',r:1,col:'#f7ecd9',face:'wink',acc:'kokoshnik',ny:1},
-  {id:'elka',name:'Ёлочный пельмень',r:2,col:'#5fae5a',face:'star',acc:'tree',ny:1}
+  {id:'elka',name:'Ёлочный пельмень',r:2,col:'#5fae5a',face:'star',acc:'tree',ny:1},
+  {id:'ogonyok',name:'Огонёк',r:2,col:'#e8452c',face:'smug',acc:'mask+scarf',ev:'hot'},
+  {id:'zolotko',name:'Золотко',r:2,col:'#f3c24b',face:'star',acc:'tophat+mustache',ev:'gold'},
+  {id:'zvezdochet',name:'Звездочёт',r:2,col:'#6b6fd6',face:'wink',acc:'wizard',ev:'star'}
 ];
 const SEASON=(()=>{if(window.__season!=null)return !!window.__season;const d=new Date(),m=d.getMonth();return m===10||m===11||(m===0&&d.getDate()<=15)})();
-const visibleChars=()=>CHARS.filter(c=>!c.ny||SEASON||S.coll[c.id]);
+const visibleChars=()=>CHARS.filter(c=>c.ev?(S.coll[c.id]||(S.level>=8&&evNow().id===c.ev)):(!c.ny||SEASON||S.coll[c.id]));
 const STR={
  ru:{brand:'Пельменная',restart:'Начать уровень заново',undo:'Отменить',hint:'Подсказка',steamer:'Пароварка',album:'Альбом',
   level:'Уровень ',soundOn:'Включить звук',soundOff:'Выключить звук',
@@ -532,7 +547,7 @@ const STR={
   play:'Play',nyTip:'Holiday season: festive heroes are hiding in the surprises!',movesHud:(m,p)=>'moves '+m+(p?'/'+p:''),movesWin:(m,p)=>'Moves: '+m+(p?'. For 3 stars: '+p+' or fewer':''),replayBtn:'Replay for 3 stars',replayTag:'replay',replayBetter:'New best! Coins for the improvement.',replaySame:'No new best this time. Give it another go.',hiddenTip:'Only the top dumpling is visible. The rest show up once you free them.',oneEmptyTip:'Only one empty steamer now. Think one move ahead!',supBtn:'Support the author',supT:'Support Dumpling Sort',supP:'The game is free with no pushy ads. If you enjoy it, you can support the author: it helps bring more heroes and levels.',supStars:n=>n+' ⭐',supBoosty:'Support on Boosty',supThx:'Thank you for your support! 💛',supFail:'Payment did not go through',rateT:'Enjoying Dumpling Sort?',rateP:'Rate the game and leave a few words. Reviews appear in our Telegram channel.',rateAria:n=>n+' of 5 stars',ratePh:'What did you like, or what should we improve? (optional)',rateSend:'Send',rateSending:'Sending…',rateLater:'Not now',rateBtn:'Rate the game',rateThx:'Thanks for your review!',rateFail:'Could not send. Please try again later.',rateNeed:'Pick a number of stars',nyAlbum:'Holiday collection',close:'Close'}
 };
 const FILL_EN=['meat','cabbage','pumpkin','blueberry','cheese','crab','mushroom','beetroot','cherry','spinach','sour cream','chocolate'];
-const NAME_EN={puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
+const NAME_EN={ogonyok:'Little Flame',zolotko:'Goldie',zvezdochet:'Stargazer',puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
 const P=window.PLATFORM||{};
 let LANG='ru';
 function setLang(l){LANG=(l&&String(l).slice(0,2)==='ru')||['be','uk','kk','uz'].includes(String(l).slice(0,2))?'ru':(l?'en':'ru');document.documentElement.lang=LANG}
@@ -697,6 +712,8 @@ function applySkin(){const r=document.documentElement.style,sk=S.skin||{};
   ['--bg','--bg-hi','--panel'].forEach((k,i)=>r.setProperty(k,bg.v[i]));
   const m=document.querySelector('meta[name=theme-color]');if(m)m.content=bg.v[0];
 }
+const AD_COINS=20,AD_MAX=5;
+function adLeft(){const d=dayStr(new Date());return AD_MAX-((S.adDay&&S.adDay[0]===d)?S.adDay[1]:0)}
 function shop(back){
   S.own=S.own||{};S.skin=S.skin||{};
   const cell=(kind,x)=>{const own=!x.p||S.own[kind+':'+x.id],on=(S.skin[kind]||SKINS[kind][0].id)===x.id;
@@ -704,10 +721,17 @@ function shop(back){
     return `<button class="sk${on?' on':''}" data-k="${kind}" data-id="${x.id}">${pv}<span>${T('sk')[x.id]}</span><span class="pr${own?' own':''}">${on?T('wear'):own?T('pick'):`<span class="coin"></span>${x.p}`}</span></button>`};
   openOv(`<h2>${T('shopT')}</h2><p>${T('shopP')}</p>
     <div class="reward" style="margin:8px 0 0"><span class="coin"></span>${S.coins}</div>
+    ${P.buyCoins?`<div class="shop-h">${LANG==='ru'?'Монеты за звёзды':'Coins for Stars'}</div><div class="cafe-list">${P.buyCoins.packs.map(([id,c,st],i)=>`<button class="cafe-it buy-it" data-id="${id}" data-c="${c}"><span class="pr" style="font-size:16px"><span class="coin"></span>${c}</span><small>${i===2?(LANG==='ru'?'выгодно':'best value'):''}&nbsp;</small><b>⭐ ${st}</b></button>`).join('')}</div>`:''}
+    ${P.rewarded&&adLeft()?`<button class="alt-btn" id="adCoins" style="margin-top:8px">📺 ${LANG==='ru'?`+${AD_COINS} монет за рекламу · осталось ${adLeft()}`:`+${AD_COINS} coins for an ad · ${adLeft()} left`}</button>`:''}
     <div class="shop-h">${T('shopSt')}</div><div class="shop">${SKINS.st.map(x=>cell('st',x)).join('')}</div>
     <div class="shop-h">${T('shopBg')}</div><div class="shop">${SKINS.bg.map(x=>cell('bg',x)).join('')}</div>
     <button class="big-btn" id="shopBack">${T('back')}</button>`);
   $('shopBack').onclick=()=>{closeOv();back&&back()};
+  document.querySelectorAll('.buy-it').forEach(el=>el.onclick=()=>{if(el.disabled)return;el.disabled=true;const c=+el.dataset.c;goal('buy_start',{pack:el.dataset.id});
+    P.buyCoins.buy(el.dataset.id).then(st=>{el.disabled=false;
+      if(st==='paid'){S.coins+=c;S.paid=(S.paid||0)+1;save();hud();sfx.chime(2);buzz([20,40,20]);toast(LANG==='ru'?`+${c} монет. Спасибо!`:`+${c} coins. Thank you!`);goal('buy_coins',{pack:el.dataset.id,coins:c});shop(back)}
+      else if(st!=='cancelled')toast(LANG==='ru'?'Оплата не прошла, попробуй ещё раз':'Payment failed, try again')})});
+  if($('adCoins'))$('adCoins').onclick=()=>{const b=$('adCoins');b.disabled=true;P.rewarded(ok=>{b.disabled=false;if(ok){S.adDay=[dayStr(new Date()),((S.adDay&&S.adDay[0]===dayStr(new Date()))?S.adDay[1]:0)+1];S.coins+=AD_COINS;save();hud();sfx.chime(1);toast(T('adGot'));goal('ad_coins');shop(back)}else toast(T('adFail'))})};
   document.querySelectorAll('.sk').forEach(el=>el.onclick=()=>{
     const kind=el.dataset.k,x=SKINS[kind].find(y=>y.id===el.dataset.id),key=kind+':'+x.id;
     if(x.p&&!S.own[key]){
@@ -782,7 +806,7 @@ const RT={ru:{btn:'👋 Пригласить друга',t:'Пригласи д�
  en:{btn:'👋 Invite a friend',t:'Invite a friend',p:'Send a friend your game link. When they open it for the first time, you both get a rare hero.',send:'Send invite',n:n=>`Friends who joined: ${n}`,msg:'I\'m hooked on Dumpling Sort: sort dumplings and collect heroes. Join with my link and we both get a rare hero!',
   inT:'A gift from your friend!',inP:'You came by invitation, here is a rare hero.',okT:'Your friend joined!',okP:n=>n>1?`${n} friends joined with your link. Here is your reward.`:'A friend joined with your link. Here is a rare hero.',coins:n=>`You already have every rare hero, take +${n} coins`,cool:'Yay!'}};
 const RTx=()=>RT[LANG]||RT.en;
-function giftRare(){const vis=visibleChars().filter(c=>!c.ny&&!S.coll[c.id]);const pool=vis.filter(c=>c.r===1);const src=pool.length?pool:vis.filter(c=>c.r===2);
+function giftRare(){const vis=visibleChars().filter(c=>!c.ny&&!c.ev&&!S.coll[c.id]);const pool=vis.filter(c=>c.r===1);const src=pool.length?pool:vis.filter(c=>c.r===2);
   if(!src.length){S.coins+=100;return null}const ch=src[Math.floor(Math.random()*src.length)];S.coll[ch.id]=1;return ch}
 function refGift(title,text,n){
   const got=[];let coins=0;for(let i=0;i<Math.min(n,5);i++){const c=giftRare();if(c)got.push(c);else coins+=100}
@@ -806,6 +830,22 @@ function invite(back){
   $('invSend').onclick=()=>{goal('invite');P.invite(C.msg)};
   $('invBack').onclick=()=>{closeOv();back&&back()};
 }
+/* ---------- событие недели ---------- */
+const EVENTS={hot:{goal:'hot',n:5,hero:'ogonyok',ru:['🌶 Неделя острых','Острые пельмени попадаются чаще. Остуди 5 острых за неделю и получи легендарного Огонька.'],en:['🌶 Spicy Week','Spicy dumplings show up more often. Cool down 5 of them this week to get the legendary Little Flame.']},
+  gold:{goal:'gold',n:7,hero:'zolotko',ru:['✨ Золотая неделя','Золотые пельмени попадаются чаще. Собери 7 золотых за неделю и получи легендарного Золотко.'],en:['✨ Golden Week','Golden dumplings show up more often. Collect 7 of them this week to get the legendary Goldie.']},
+  star:{goal:'star3',n:7,hero:'zvezdochet',ru:['⭐ Звёздная неделя','Пройди 7 уровней на три звезды за неделю и получи легендарного Звездочёта.'],en:['⭐ Star Week','Beat 7 levels with three stars this week to get the legendary Stargazer.']}};
+const EV_ORDER=['hot','gold','star'];
+function evNow(){const d=new Date();const day=Math.floor((d.getTime()-d.getTimezoneOffset()*6e4)/864e5);const w=Math.floor((day+3)/7);const id=EV_ORDER[w%3];const left=7-((day+3)%7);return Object.assign({id,w,left},EVENTS[id])}
+function evState(){const e=evNow();if(!S.ev||S.ev.w!==e.w)S.ev={w:e.w,p:0,done:0,seen:0};return S.ev}
+function evOn(id){return S.level>=8&&evNow().id===id}
+function evTick(id,k){if(S.level<8)return;const e=evNow();if(e.goal!==id)return;const st=evState();if(st.done)return;st.p=Math.min(e.n,st.p+(k||1));
+  if(st.p>=e.n){st.done=1;const ch=CHARS.find(c=>c.id===e.hero);const had=S.coll[ch.id];S.coll[ch.id]=1;S.coins+=100;save();hud();goal('event_done',{ev:e.id});
+    setTimeout(()=>{const show=()=>{sfx.chime(2);buzz([20,40,20]);openOv(`<h2>${LANG==='ru'?'Событие пройдено!':'Event complete!'}</h2><div class="mys-wrap" style="--ray:rgba(243,194,75,.35)"><div class="rays"></div><div class="mys char-in">${dumpling(ch.col,ch.face,ch.acc)}</div></div><span class="chip r2">${T('rarity')[2]}</span><div class="cname">${cname(ch)}</div><p>${had?'':(LANG==='ru'?'Новый герой в альбоме. ':'New hero in your album. ')}+100 <span class="coin"></span></p><button class="big-btn" id="evOk">${LANG==='ru'?'Ура!':'Yay!'}</button>`);$('evOk').onclick=closeOv};
+      if($('ov').hidden&&!G.busy)show();else{const t=setInterval(()=>{if($('ov').hidden&&!G.busy){clearInterval(t);show()}},1500)}},1800)}}
+function evHtml(){if(S.level<8)return '';const e=evNow(),st=evState(),ch=CHARS.find(c=>c.id===e.hero),L=LANG==='ru'?e.ru:e.en;
+  return `<div class="ev-card"><div class="ev-h">${dumpling(ch.col,ch.face,ch.acc)}</div><div><b>${L[0]}</b><small>${L[1]}</small><div class="ev-bar"><i style="width:${Math.round(st.p/e.n*100)}%"></i></div><small>${st.done?(LANG==='ru'?'Готово! Герой твой.':'Done! The hero is yours.'):`${st.p}/${e.n} · ${LANG==='ru'?`осталось дней: ${e.left}`:`${e.left} days left`}`}</small></div></div>`}
+function evIntro(){if(S.level<8)return false;const st=evState();if(st.seen)return false;st.seen=1;save();
+  openOv(`<h2>${LANG==='ru'?'Событие недели':'Weekly event'}</h2>${evHtml()}<button class="big-btn" id="evGo">${T('play')}</button>`);$('evGo').onclick=closeOv;goal('event_intro',{ev:evNow().id});return true}
 /* ---------- достижения ---------- */
 const ACH=[['first3',20],['stars25',100],['lvl20',50],['lvl30',80],['lvl50',150],['heroes10',50],['heroesAll',200],['daily7',100],['dp3',60],['combo3',40],['gold10',60],['hot5',60],['skin',20]];
 function achCheck(){
@@ -858,6 +898,7 @@ function quests(){
   return S.q;
 }
 function qEvent(id,k){
+  evTick(id,k);
   const q=quests();let msg=[];
   for(const x of q.list)if(x.id===id&&x.p<x.n){x.p=Math.min(x.n,x.p+(k||1));if(x.p>=x.n){S.coins+=Q_REW;msg.push(T('qDone')(Q_REW));goal('quest',{id})}}
   if(!q.chest&&q.list.every(x=>x.p>=x.n)){q.chest=1;S.coins+=Q_CHEST;msg.push(T('qChest')(Q_CHEST));goal('quest_chest')}
@@ -892,9 +933,9 @@ function bossFail(){
 function rollSpecial(){
   G.gold=-1;G.hot=-1;G.hotN=0;G.goldPaid=G.hotPaid=false;G.lastDone=-9;G.combo=0;G.shakeAt=0;
   const L=curL(),f=[...new Set(G.cols.flat())];
-  if(L>=6&&Math.random()<(perk('pirat')?.7:.35))G.gold=f[Math.floor(Math.random()*f.length)];
-  if(L>=12&&Math.random()<.3){const g=f.filter(x=>x!==G.gold);G.hot=g[Math.floor(Math.random()*g.length)];G.hotN=Math.ceil(Math.max(8,Math.ceil(par3()*.7))*(perk('drakosha')?1.5:1))}
-  if(G.hot>=0)setTimeout(()=>toast('🌶 '+T('hotTip')(G.hotN)),700);
+  if(L>=6&&Math.random()<(perk('pirat')||evOn('gold')?.7:.35))G.gold=f[Math.floor(Math.random()*f.length)];
+  if((L>=12||(evOn('hot')&&L>=8))&&Math.random()<(evOn('hot')?.65:.3)){const g=f.filter(x=>x!==G.gold);G.hot=g[Math.floor(Math.random()*g.length)];G.hotN=Math.ceil(Math.max(8,Math.ceil(par3()*.7))*(perk('drakosha')?1.5:1))}
+  if(G.hot>=0){const hn=G.hotN,hc=G.hot;setTimeout(()=>{if(G.hot===hc&&G.hotN===hn)toast('🌶 '+T('hotTip')(hn))},700)}
 }
 function onDone(b){
   const msg=[];const x=G.cols[b][0],m=G.hist.length;
@@ -912,7 +953,7 @@ function shuffleBoard(){
   const idx=G.cols.map((c,i)=>i).filter(i=>G.cols[i].length&&!isDone(G.cols[i]));
   if(idx.length<2){toast(T('shakeNo'));sfx.bad();return}
   const sf=perk('mag')&&!G.perkShake;
-  if(!sf&&S.coins<20){if(P.rewarded){adOffer();return}toast(T('need20'));sfx.bad();return}
+  if(!sf&&S.coins<20){if(P.rewarded||P.buyCoins){adOffer();return}toast(T('need20'));sfx.bad();return}
   const pool=idx.flatMap(i=>G.cols[i]);let best=null;
   for(let t=0;t<40&&!best;t++){const q=pool.slice();for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}
     const c=G.cols.map(x=>x.slice());let k=0;idx.forEach(i=>{c[i]=q.slice(k,k+G.cols[i].length);k+=G.cols[i].length});
@@ -970,7 +1011,8 @@ function decor(d,w,h,seed){
   }
   return o;
 }
-function levels(back){
+function chestReady(){const cur=S.replay?S.lastLevel:S.level;S.chest=S.chest||{};for(let k=1;k*10<cur;k++)if(!S.chest[k])return k;return 0}
+function levels(back,focusK){
   ensureAC();const cur=S.replay?S.lastLevel:S.level,best=S.best||{};S.chest=S.chest||{};
   const tot=Object.values(best).reduce((a,b)=>a+b,0);
   const curCh=Math.ceil(cur/10),maxCh=curCh+1,W=300,STEP=78,HEAD=64;
@@ -998,7 +1040,7 @@ function levels(back){
   document.querySelectorAll('.map-chest.ready').forEach(el=>el.onclick=()=>{
     const k=+el.dataset.k;if(S.chest[k])return;S.chest[k]=1;const c=Math.min(30+20*k,150);S.coins+=c;save();hud();goal('chest',{chapter:k});
     sfx.pop();sfx.chime(2);buzz([20,40,20]);sparks(el,24,'#f3c24b');el.classList.remove('ready');el.classList.add('open');toast(T('chestGot')(c));achCheck();});
-  const c=document.querySelector('.map-lv.cur'),sc=$('mapScroll');if(c&&sc)sc.scrollTop=c.offsetTop-sc.clientHeight/2;
+  const c=(focusK&&document.querySelector('.map-chest[data-k="'+focusK+'"]'))||document.querySelector('.map-lv.cur'),sc=$('mapScroll');if(c&&sc)sc.scrollTop=c.offsetTop-sc.clientHeight/2;
 }
 /* ---------- пельмень дня ---------- */
 const DP_L=[32,13,14,15,16,22,23];   // вс: скрытые, пн–чт: 8 начинок, пт–сб: одна пустая
@@ -1118,7 +1160,11 @@ function hud(){
   else tip.textContent=T('tipN')(colorsFor(S.level));
   if(G.mode==='dp'){tip.innerHTML=`<span>${T('dpTip')}</span> <button class="daily" id="dpBack" style="animation:none">${T('dpBack')}</button>`;$('dpBack').onclick=()=>{if(G.busy)return;G.mode='';startLevel()};return}
   if(S.replay===S.level&&S.lastLevel){tip.innerHTML=`<button class="daily" id="toCur" style="animation:none">${T('toCur')(S.lastLevel)}</button>`;$('toCur').onclick=()=>{if(!G.busy)playLevel(S.lastLevel)};return}
-  if(wheelReady()&&!(S.level>=2&&dailyReady())){
+  if(chestReady()&&!(S.level>=2&&dailyReady())&&!G.mode){const k=chestReady();
+    tip.innerHTML=`<button class="daily dp-chip" id="chestChip"><svg class="gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="11" rx="2"/><path d="M3 12q0-8 9-8t9 8M10 14h4"/></svg>${LANG==='ru'?`Сундук главы ${k} ждёт!`:`Chapter ${k} chest is ready!`}</button>`;
+    $('chestChip').onclick=()=>{if(!G.busy)levels(null,k)};
+  }
+  else if(wheelReady()&&!(S.level>=2&&dailyReady())){
     tip.innerHTML=`<button class="daily dp-chip" id="wheelBtn"><svg class="gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg>${T('wheelBtn')}</button>`;
     $('wheelBtn').onclick=wheel;
   }
@@ -1164,18 +1210,17 @@ function render(){
 }
 function layout(){
   const n=G.cols.length;const W=wrap.clientWidth,H=wrap.clientHeight;
-  const gx=12,gy=18;let best={cw:0,per:n};
-  for(let per=n;per>=1;per--){
-    const rows=Math.ceil(n/per);
-    const byW=(W-(per-1)*gx)/per;
-    const byH=(H-(rows-1)*gy-rows*8)/(rows*(4*.66+.46)+0.01);
-    const cw=Math.min(byW,byH,96);
-    if(cw>best.cw+0.5)best={cw,per};
-    if(rows>=3)break;
-  }
+  const gx=12,gy=18;
+  // для каждого числа рядов ставим пароварки поровну, затем берём наименьшее число рядов,
+  // при котором пароварки не становятся заметно мельче: так новая пароварка встаёт рядом, а не одна внизу
+  const cand=[];
+  for(let rows=1;rows<=4;rows++){const per=Math.ceil(n/rows);if(rows>1&&Math.ceil(n/(rows-1))===per)continue;
+    const r=Math.ceil(n/per);const byW=(W-(per-1)*gx)/per;const byH=(H-(r-1)*gy-r*8)/(r*(4*.66+.46)+0.01);
+    cand.push({per,rows:r,cw:Math.min(byW,byH,96)});if(per===1)break}
+  const mx=Math.max(...cand.map(c=>c.cw));const best=cand.find(c=>c.cw>=mx*.84)||cand[0];
   const cw=Math.max(36,Math.floor(best.cw));
   document.documentElement.style.setProperty('--cw',cw+'px');
-  board.style.gridTemplateColumns=`repeat(${best.per},${cw}px)`;
+  board.style.width=(best.per*cw+(best.per-1)*gx)+"px";
 }
 let toastT;
 function toast(msg){const t=$('toast');if(t.parentNode!==document.body)document.body.appendChild(t);t.textContent=msg;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),Math.max(1900,msg.length*70))}
@@ -1234,7 +1279,7 @@ function undo(){if(G.busy||!G.hist.length)return;if(G.hist.length<=G.shakeAt){to
 function hint(){
   if(G.busy)return;ensureAC();
   const pf=perk('shef')&&!G.perkHint,free=pf||(S.freeHint||0)>0;
-  if(!free&&S.coins<10){if(P.rewarded){adOffer();return}toast(T('needHint'));sfx.bad();return}
+  if(!free&&S.coins<10){if(P.rewarded||P.buyCoins){adOffer();return}toast(T('needHint'));sfx.bad();return}
   const p=shortest(G.cols,60000,1.5,true)||solve(G.cols,120000); // A*: подсказки не ходят по кругу
   if(!p||!p.length){toast(T('stuck'));sfx.bad();return}
   if(pf)G.perkHint=true;else if(free)S.freeHint--;else S.coins-=10;G.usedHint=true;save();goal('hint');G.hint=p[0];G.sel=null;sfx.pick();render();hud();
@@ -1246,7 +1291,7 @@ function extra(){
   if(G.busy)return;ensureAC();
   if(G.extra>=extraMax()){toast(T('oneExtra'));return}
   const ec=extraCost();
-  if(S.coins<ec){if(P.rewarded){adOffer();return}toast(T('noCoins')(ec-S.coins));sfx.bad();return}
+  if(S.coins<ec){if(P.rewarded||P.buyCoins){adOffer();return}toast(T('noCoins')(ec-S.coins));sfx.bad();return}
   S.coins-=ec;save();G.extra=(G.extra||0)+1;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();
 }
 
@@ -1257,7 +1302,7 @@ function roll(minR){
   if(owned===0)rar=0;
   rar=Math.max(rar,minR||0);
   if(SEASON&&owned>0&&Math.random()<.3){const ny=CHARS.filter(c=>c.ny&&c.r>=(minR||0));const f=ny.filter(c=>!S.coll[c.id]);const src=f.length?f:ny;return src[Math.floor(Math.random()*src.length)]}
-  const pool=CHARS.filter(c=>c.r===rar&&!c.ny);
+  const pool=CHARS.filter(c=>c.r===rar&&!c.ny&&!c.ev);
   // first-time players get something new more often
   const fresh=pool.filter(c=>!S.coll[c.id]);
   if(fresh.length&&Math.random()<.6)return fresh[Math.floor(Math.random()*fresh.length)];
@@ -1346,9 +1391,10 @@ function nextLevel(){
   if(P.interstitial&&S.level>=4&&S.level%3===1){P.interstitial(()=>startLevel());}else startLevel();
 }
 function adOffer(){
-  openOv(`<h2>${T('adT')}</h2><p>${T('adP')}</p><button class="big-btn" id="adYes">${T('adBtn')}</button><button class="ghost-btn" id="adNo">${T('adNo')}</button>`);
+  openOv(`<h2>${T('adT')}</h2><p>${P.rewarded?T('adP'):(LANG==='ru'?'Монеты можно купить за звёзды Telegram.':'You can buy coins with Telegram Stars.')}</p>${P.rewarded?`<button class="big-btn" id="adYes">${T('adBtn')}</button>`:''}${P.buyCoins?`<button class="${P.rewarded?'alt-btn':'big-btn'}" id="adBuy">⭐ ${LANG==='ru'?'Купить монеты':'Buy coins'}</button>`:''}<button class="ghost-btn" id="adNo">${T('adNo')}</button>`);
   $('adNo').onclick=closeOv;
-  $('adYes').onclick=()=>{closeOv();P.rewarded(ok=>{if(ok){S.coins+=20;save();hud();sfx.chime(1);toast(T('adGot'))}else toast(T('adFail'))})};
+  if($('adBuy'))$('adBuy').onclick=()=>shop();
+  if($('adYes'))$('adYes').onclick=()=>{closeOv();P.rewarded(ok=>{if(ok){S.coins+=20;save();hud();sfx.chime(1);toast(T('adGot'))}else toast(T('adFail'))})};
 }
 function sparks(el,n,color){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -1404,9 +1450,10 @@ function album(fromWin){
   for(const c of vis){
     const has=!!S.coll[c.id];
     if(c.ny&&!vis.some(x=>x.ny&&CHARS.indexOf(x)<CHARS.indexOf(c)))cards+=`<div class="album-h">${T('nyAlbum')}</div>`;
+    if(c.ev&&!vis.some(x=>x.ev&&CHARS.indexOf(x)<CHARS.indexOf(c)))cards+=`<div class="album-h">${LANG==='ru'?'Герои событий недели':'Weekly event heroes'}</div>`;
     cards+=`<div class="card${has?' owned r'+c.r:' locked'}${S.helper===c.id&&has?' helper':''}"${has?` data-id="${c.id}" role="button" tabindex="0"`:''}>${T('perk')[c.id]?'<span class="perk-b">⚡</span>':''}${has?dumpling(c.col,c.face,c.acc):dumpling(c.col,c.face,null,{silhouette:true})}<div class="n">${has?cname(c):'???'}</div>${has?`<span class="chip r${c.r}" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`:`<span class="chip" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`}</div>`;
   }
-  openOv(`<h2>${T('albumT')}</h2>${questsHtml()}${helperHtml()}<p style="margin-top:14px">${T('albumP')(got,vis.length)}</p><div class="album">${cards}</div>
+  openOv(`<h2>${T('albumT')}</h2>${evHtml()}${questsHtml()}${helperHtml()}<p style="margin-top:14px">${T('albumP')(got,vis.length)}</p><div class="album">${cards}</div>
     <button class="big-btn" id="closeAlbum">${fromWin?T('next'):T('back')}</button>
     ${S.level>=6?`<button class="alt-btn" id="cafeBtn">${CTx().btn}${cafeTips()?` · <span class="coin"></span>${cafeTips()}`:''}</button>`:''}
     <button class="alt-btn" id="lvBtn2">${T('lvBtn')}</button>
@@ -1492,7 +1539,8 @@ function start(data){
   applySkin();
   if(data&&data.cols){G.cols=data.cols;startLevel(true)}else startLevel();
   setTimeout(refCheck,1500);
-  window.__pel={cafe,cafeTips,album,S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
+  setTimeout(()=>{if($('ov').hidden&&!G.busy)evIntro()},1200);
+  window.__pel={evNow,evState,evTick,evIntro,qEvent,cafe,cafeTips,album,S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
   try{P.ready&&P.ready()}catch(e){}
   goal('game_start',{level:S.level});
   setTimeout(lbPush,1500);
