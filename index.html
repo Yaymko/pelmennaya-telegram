@@ -331,7 +331,7 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
     <div class="toast" id="toast"></div>
   </div>
   <nav class="bar">
-    <button class="tool" id="btnUndo"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg><span data-t="undo">Отменить</span></button>
+    <button class="tool" id="btnUndo"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg><span data-t="undo">Отменить</span><span class="price"><span class="coin"></span>2</span></button>
     <button class="tool" id="btnHint"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><span data-t="hint">Подсказка</span><span class="price"><span class="coin"></span>10</span></button>
     <button class="tool" id="btnShake"><svg viewBox="0 0 24 24"><path d="M4 7h11l-3-3M20 17H9l3 3"/><path d="M19 7c1 1 1 3 0 4M5 17c-1-1-1-3 0-4"/></svg><span data-t="shake">Встряхнуть</span><span class="price"><span class="coin"></span>20</span></button>
     <button class="tool" id="btnExtra"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span data-t="steamer">Пароварка</span><span class="price"><span class="coin"></span>30</span></button>
@@ -392,7 +392,7 @@ const STR={
   colAria:(i,list)=>'Пароварка '+i+': '+(list||'пусто'),
   emptyCol:'Пароварка пустая. Сначала выбери, откуда брать.',doneCol:'Эта пароварка уже готова.',nope:'Сюда нельзя.',
   needHint:'Нужно 10 монет. Их дают за уровни и повторных героев.',stuck:'Отсюда не решить. Отмени пару ходов или возьми пароварку.',
-  oneExtra:'Одна дополнительная пароварка на уровень.',need30:'Нужно 30 монет.',restarted:'Уровень начат заново.',
+  oneExtra:'Одна дополнительная пароварка на уровень.',need2:'Для отмены нужно 2 монеты',extraCap:'С лишней пароваркой за уровень максимум 2 звезды',need30:'Нужно 30 монет.',restarted:'Уровень начат заново.',
   winT:n=>'Уровень '+n+' готов!',winP:'Пароварки пыхтят. Внутри сюрприз-пельмень.',squeeze:'Сжать сюрприз',squeezeTip:'Сожми его 4 раза',
   newHero:'Новый герой в альбоме!',dupe:'Уже есть в альбоме. Держи <b style="color:var(--coin)">+10</b> монет.',
   next:'Следующий уровень',openAlbum:'Открыть альбом',albumT:'Альбом',albumP:(g,t)=>'Собрано '+g+' из '+t+'. Каждый пройденный уровень дарит сюрприз-пельмень.',
@@ -423,7 +423,7 @@ const STR={
   colAria:(i,list)=>'Steamer '+i+': '+(list||'empty'),
   emptyCol:'This steamer is empty. Pick one to take from first.',doneCol:'This steamer is already done.',nope:"Can't go there.",
   needHint:'You need 10 coins. Levels and duplicate heroes give coins.',stuck:"Can't be solved from here. Undo a few moves or add a steamer.",
-  oneExtra:'One extra steamer per level.',need30:'You need 30 coins.',restarted:'Level restarted.',
+  oneExtra:'One extra steamer per level.',need2:'Undo costs 2 coins',extraCap:'With an extra steamer this level gives 2 stars max',need30:'You need 30 coins.',restarted:'Level restarted.',
   winT:n=>'Level '+n+' done!',winP:'The steamers are puffing. A surprise dumpling is inside.',squeeze:'Squeeze the surprise',squeezeTip:'Squeeze it 4 times',
   newHero:'New hero in your album!',dupe:'Already in your album. Here are <b style="color:var(--coin)">+10</b> coins.',
   next:'Next level',openAlbum:'Open album',albumT:'Album',albumP:(g,t)=>g+' of '+t+' collected. Every level you finish gives a surprise dumpling.',
@@ -676,11 +676,16 @@ function shuffleBoard(){
     if(c.some(x=>x.length===CAP&&isDone(x)))continue;if(shortest(c,40000,1.5))best=c}
   if(!best){toast(T('stuck'));sfx.bad();return}
   S.coins-=20;save();goal('shake');G.busy=true;G.sel=null;G.hint=null;board.classList.add('shaking');sfx.squish(2);buzz([30,30,30]);
-  setTimeout(()=>{board.classList.remove('shaking');G.cols=best;G.extra=true;G.shakeAt=G.hist.length;G.busy=false;render();hud();toast(T('shakeDone'))},500);
+  setTimeout(()=>{board.classList.remove('shaking');G.cols=best;G.shakeAt=G.hist.length;G.busy=false;render();hud();toast(T('shakeDone'))},500);
 }
+/* ---------- прогресс основного уровня не теряется ---------- */
+const SNAP_KEYS=['cols','hist','hid','extra','shakeAt','gold','hot','hotN','goldPaid','hotPaid','lastDone','combo','par'];
+function snapMain(){if(G.mode!=='dp'&&!S.replay&&G.hist.length&&!solved(G.cols)){G.snap={level:S.level};SNAP_KEYS.forEach(k=>G.snap[k]=JSON.parse(JSON.stringify(G[k]===undefined?null:G[k])))}}
+function restoreMain(){const sn=G.snap;if(!sn||G.mode==='dp'||S.replay||sn.level!==S.level)return false;G.snap=null;
+  SNAP_KEYS.forEach(k=>G[k]=sn[k]);G.sel=null;G.hint=null;G.just=-1;G.busy=false;render();layout();hud();try{P.gpStart&&P.gpStart()}catch(e){}return true}
 /* ---------- экран уровней ---------- */
 function playLevel(n){
-  G.mode='';
+  snapMain();G.mode='';
   const cur=S.replay?S.lastLevel:S.level;
   if(n>=cur){S.level=cur;S.replay=0}else{S.lastLevel=cur;S.level=n;S.replay=n}
   save();goal('level_pick',{level:n});startLevel();
@@ -703,7 +708,7 @@ const DP_L=[32,13,14,15,16,22,23];   // вс: скрытые, пн–чт: 8 н�
 function dpReady(){return S.level>=5&&(!S.dp||S.dp.last!==dayStr(new Date()))}
 function dpStreak(){const y=new Date();y.setDate(y.getDate()-1);return S.dp&&S.dp.last===dayStr(y)?S.dp.streak+1:1}
 function dpSeed(){const d=new Date();return (d.getFullYear()*372+d.getMonth()*31+d.getDate())*104729+7}
-function startDaily(){if(G.busy)return;ensureAC();G.mode='dp';G.dpL=DP_L[new Date().getDay()];goal('dp_start',{streak:dpStreak()});startLevel()}
+function startDaily(){if(G.busy)return;ensureAC();snapMain();G.mode='dp';G.dpL=DP_L[new Date().getDay()];goal('dp_start',{streak:dpStreak()});startLevel()}
 function curL(){return G.mode==='dp'?G.dpL:S.level}
 function colorsFor(L){return Math.min(3+Math.floor((L-1)/2),8)}
 const emptiesFor=L=>L>=20?1:2;        // с 20-го уровня одна пустая пароварка
@@ -767,7 +772,7 @@ window.__game={pause:pauseAudio,resume:resumeAudio};
 /* ---------- state ---------- */
 let S={level:1,coins:20,coll:{},muted:false};
 let G={cols:[],hist:[],sel:null,busy:false,extra:false,hint:null,just:-1,hid:[],par:0};
-const visRun=i=>Math.max(1,Math.min(runLen(G.cols[i]),G.cols[i].length-(G.hid[i]||0)));
+const visRun=i=>runLen(G.cols[i]);  // скрытые того же цвета едут вместе с верхним
 function par3(){if(!G.par)return 0;const p=hiddenFor(curL())?G.par*1.2:G.par;return Math.ceil(p*1.15)+1}   // столько ходов или меньше = 3 звезды
 function par2(){return Math.ceil(par3()*1.35)}
 function starsFor(m){if(!G.par)return 3;let st=m<=par3()?3:m<=par2()?2:1;if(G.extra)st=Math.min(st,2);return st}
@@ -778,6 +783,7 @@ const $=id=>document.getElementById(id);
 const board=$('board'),wrap=$('boardWrap');
 
 function startLevel(keepCols){
+  if(!keepCols&&restoreMain())return;
   if(!keepCols){genLevel.par=0;G.cols=G.mode==='dp'?genLevel(G.dpL,dpSeed()):(genLevel(S.level)||genLevel(1));}
   else genLevel.par=0;
   G.par=shortest(G.cols,60000,1)||genLevel.par||0;
@@ -912,7 +918,9 @@ function move(a,b){
     if(solved(G.cols)){G.busy=true;setTimeout(win,900)}
   });
 }
-function undo(){if(G.busy||!G.hist.length)return;if(G.hist.length<=G.shakeAt){toast(T('noUndoShake'));return}ensureAC();G.cols=G.hist.pop();G.sel=null;G.hint=null;sfx.pick();render();layout();hud()}
+function undo(){if(G.busy||!G.hist.length)return;if(G.hist.length<=G.shakeAt){toast(T('noUndoShake'));return}
+  if(S.coins<2){toast(T('need2'));sfx.bad();return}
+  S.coins-=2;save();goal('undo');ensureAC();G.cols=G.hist.pop();G.sel=null;G.hint=null;sfx.pick();render();layout();hud()}
 function hint(){
   if(G.busy)return;ensureAC();
   const free=(S.freeHint||0)>0;
@@ -925,7 +933,7 @@ function extra(){
   if(G.busy)return;ensureAC();
   if(G.extra){toast(T('oneExtra'));return}
   if(S.coins<30){if(P.rewarded){adOffer();return}toast(T('need30'));sfx.bad();return}
-  S.coins-=30;save();G.extra=true;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();
+  S.coins-=30;save();G.extra=true;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();if(G.par)toast(T('extraCap'));
 }
 
 /* ---------- surprise / win ---------- */
@@ -947,9 +955,9 @@ function win(){
   try{P.gpStop&&P.gpStop()}catch(e){}
   sfx.win();buzz([20,40,20]);
   if(G.mode==='dp'){
-    const moves=G.hist.length,st=starsFor(moves),n=dpStreak();S.dp={last:dayStr(new Date()),streak:n};
+    const moves=G.hist.length,st=starsFor(moves),n=dpStreak(),p3=par3();S.dp={last:dayStr(new Date()),streak:n};
     const reward=25+5*st+Math.min(n,10)*3;S.coins+=reward;G.mode='';save();hud();achCheck();goal('dp_done',{streak:n,stars:st,moves});
-    openOv(`<h2>${T('dpWinT')}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,par3())}</p><p>${T('dpWinP')(n)}</p>
+    openOv(`<h2>${T('dpWinT')}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,p3)}${G.extra&&st<3&&moves<=p3?'<br>'+T('extraCap'):''}</p><p>${T('dpWinP')(n)}</p>
       <div class="reward"><span class="coin"></span>+${reward}</div>
       <button class="big-btn" id="next">${T('dpBack')}</button>
       <button class="alt-btn" id="dpShare">${T('shareBtn')}</button>`);
@@ -968,10 +976,10 @@ function win(){
     $('next').onclick=()=>{closeOv();nextLevel()};return;
   }
   const reward=10+5*st;S.coins+=reward;S.level++;save();hud();achCheck();
-  surprise({title:T('winT')(passed),sub:T('winP'),reward,stars:st,moves,passed,par3:par3()});
+  surprise({title:T('winT')(passed),sub:T('winP'),reward,stars:st,moves,passed,par3:par3(),capped:G.extra&&st<3&&moves<=par3()});
 }
 function surprise(o){
-  openOv(`<h2>${o.title}</h2>${o.stars?starsRow(o.stars)+`<p class="mv">${T('movesWin')(o.moves,o.par3)}</p>`:''}<p>${o.sub}</p>
+  openOv(`<h2>${o.title}</h2>${o.stars?starsRow(o.stars)+`<p class="mv">${T('movesWin')(o.moves,o.par3)}${o.capped?'<br>'+T('extraCap'):''}</p>`:''}<p>${o.sub}</p>
     <div class="reward"><span class="coin"></span>+${o.reward}</div>
     <div class="mys-wrap"><div class="rays"></div><button class="mys" id="mys" aria-label="${T('squeeze')}">${dumpling('#f7ecd9',null,null,{mystery:true})}</button></div>
     <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
