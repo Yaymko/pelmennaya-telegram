@@ -753,7 +753,7 @@ function rating(back){
     let h=r.top.map((x,i)=>`<div class="ach lb${x.me?' got':''}"><span class="ic">${i+1}</span><span><b>${String(x.name).replace(/[<>&]/g,'')}</b><small>${T('lbLv')} ${x.level}</small></span><span class="rw">★ ${x.stars}</span></div>`).join('');
     if(r.me&&r.me.rank>r.top.length)h+=`<div class="ach lb got"><span class="ic">${r.me.rank}</span><span><b>${LANG==='ru'?'Ты':'You'}</b><small>${T('lbLv')} ${r.me.level}</small></span><span class="rw">★ ${r.me.stars}</span></div>`;
     $('lbList').innerHTML=h;
-  }).catch(()=>{if($('lbP'))$('lbP').textContent=T('lbErr')});
+  }).catch(e=>{if($('lbP'))$('lbP').textContent=T('lbErr')+' ['+e+']'});
 }
 function setRemind(on,after){P.remind(on).then(ok=>{if(ok){S.remind=on;save();toast(on?T('remYes'):T('remOffOk'));sfx.chime(1)}else toast(T('remNo'));after&&after()})}
 /* ---------- экран уровней ---------- */
