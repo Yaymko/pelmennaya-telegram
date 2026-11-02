@@ -843,7 +843,7 @@ function render(){
     const done=isDone(c);
     let cls='col'+(done?' done':'')+(i===G.just?' just':'');
     if(G.hint){if(G.hint[0]===i)cls+=' hint-from';if(G.hint[1]===i)cls+=' hint-to';}
-    const rl=(G.sel===i)?visRun(i):0;const hd=G.hid[i]||0;
+    const rl=(G.sel===i)?visRun(i):0;if(done)G.hid[i]=0;const hd=G.hid[i]||0;  // закрытая пароварка раскрывается целиком
     h+=`<div class="${cls}" data-i="${i}" role="button" tabindex="0" aria-label="${T('colAria')(i+1,c.map((x,t)=>t<hd?'?':fname(x)).join(', '))}"><div class="steam"><i></i><i></i><i></i></div><div class="lid"></div><div class="stack">`;
     for(let t=0;t<CAP;t++){
       const x=c[t];let dp='';
