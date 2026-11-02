@@ -376,6 +376,24 @@ const CHARS=[
   {id:'gold',name:'Золотой пельмень',r:2,col:'gold',face:'happy',acc:'crown'},
   {id:'rainbow',name:'Радужный',r:2,col:'rainbow',face:'laugh',acc:'halo'},
   {id:'cosmo',name:'Космо-пельмень',r:2,col:'cosmic',face:'dot',acc:'antenna'},
+  {id:'morkovka',name:'Морковка',r:0,col:'#f39a52',face:'wink',acc:'sprout'},
+  {id:'kartoshkin',name:'Картошкин',r:0,col:'#d9b27a',face:'dot',acc:'cap'},
+  {id:'vishenka',name:'Вишенка',r:0,col:'#e0566e',face:'star',acc:'leaf'},
+  {id:'romashka',name:'Ромашка',r:0,col:'#b9e07a',face:'happy',acc:'flower'},
+  {id:'usach',name:'Усач',r:0,col:'#e3b46e',face:'smug',acc:'mustache'},
+  {id:'myatka',name:'Мятка',r:0,col:'#9fe0c8',face:'sleepy',acc:null},
+  {id:'krevetka',name:'Креветка',r:0,col:'#ff9b85',face:'laugh',acc:'bowtie'},
+  {id:'lukovka',name:'Луковка',r:0,col:'#efe0f2',face:'surprised',acc:'sprout'},
+  {id:'pirat',name:'Пират Манты',r:1,col:'#c99a72',face:'smug',acc:'pirate'},
+  {id:'kovboy',name:'Ковбой Чебурек',r:1,col:'#e3b46e',face:'wink',acc:'cowboy'},
+  {id:'hudozhnik',name:'Художник Хинкали',r:1,col:'#f7ecd9',face:'happy',acc:'beret'},
+  {id:'krutysh',name:'Крутыш',r:1,col:'#7fd3e8',face:'smug',acc:'sunglasses'},
+  {id:'dzhentlmen',name:'Джентльмен',r:1,col:'#f4a39b',face:'dot',acc:'tophat+mustache'},
+  {id:'viking',name:'Викинг Вареник',r:1,col:'#f6b04a',face:'laugh',acc:'viking'},
+  {id:'mag',name:'Маг Фарш',r:2,col:'#8a7ef0',face:'star',acc:'wizard'},
+  {id:'drakosha',name:'Дракоша',r:2,col:'#6cbf5e',face:'smug',acc:'dragon'},
+  {id:'angelok',name:'Ангелок',r:2,col:'#fff6e6',face:'happy',acc:'halo+wings'},
+  {id:'super',name:'Супер-пельмень',r:2,col:'#f26a4f',face:'dot',acc:'mask+scarf'},
   {id:'moroz',name:'Пельмень Мороз',r:1,col:'#d6f2ff',face:'happy',acc:'beard+santa',ny:1},
   {id:'snegurka',name:'Пельмешка-Снегурка',r:1,col:'#f7ecd9',face:'wink',acc:'kokoshnik',ny:1},
   {id:'elka',name:'Ёлочный пельмень',r:2,col:'#5fae5a',face:'star',acc:'tree',ny:1}
@@ -387,7 +405,7 @@ const STR={
   level:'Уровень ',soundOn:'Включить звук',soundOff:'Выключить звук',
   tip1:'Тапни пароварку, затем другую. Пельмень перепрыгнет, если там <b>пусто</b> или сверху <b>та же начинка</b>.',
   tip2:'Собери <b>4 одинаковых</b> в одну пароварку, и она закроется крышкой.',
-  tip3:'Застрял? <b>Отменить</b> бесплатно, а подсказка покажет верный ход.',
+  tip3:'Застрял? <b>Отменить</b> вернёт ход за 2 монеты, а подсказка покажет верный ход.',
   tipN:n=>'Начинок на уровне: '+n+'. Сюрприз ждёт в конце.',
   colAria:(i,list)=>'Пароварка '+i+': '+(list||'пусто'),
   emptyCol:'Пароварка пустая. Сначала выбери, откуда брать.',doneCol:'Эта пароварка уже готова.',nope:'Сюда нельзя.',
@@ -418,7 +436,7 @@ const STR={
   level:'Level ',soundOn:'Sound on',soundOff:'Sound off',
   tip1:'Tap a steamer, then another one. A dumpling hops over if the spot is <b>empty</b> or the top has <b>the same filling</b>.',
   tip2:'Put <b>4 matching</b> dumplings in one steamer and the lid closes.',
-  tip3:'Stuck? <b>Undo</b> is free, and a hint shows the right move.',
+  tip3:'Stuck? <b>Undo</b> takes back a move for 2 coins, and a hint shows the best one.',
   tipN:n=>'Fillings on this level: '+n+'. A surprise waits at the end.',
   colAria:(i,list)=>'Steamer '+i+': '+(list||'empty'),
   emptyCol:'This steamer is empty. Pick one to take from first.',doneCol:'This steamer is already done.',nope:"Can't go there.",
@@ -447,7 +465,7 @@ const STR={
   play:'Play',nyTip:'Holiday season: festive heroes are hiding in the surprises!',movesHud:(m,p)=>'moves '+m+(p?'/'+p:''),movesWin:(m,p)=>'Moves: '+m+(p?'. For 3 stars: '+p+' or fewer':''),replayBtn:'Replay for 3 stars',replayTag:'replay',replayBetter:'New best! Coins for the improvement.',replaySame:'No new best this time. Give it another go.',hiddenTip:'Only the top dumpling is visible. The rest show up once you free them.',oneEmptyTip:'Only one empty steamer now. Think one move ahead!',supBtn:'Support the author',supT:'Support Dumpling Sort',supP:'The game is free with no pushy ads. If you enjoy it, you can support the author: it helps bring more heroes and levels.',supStars:n=>n+' ⭐',supBoosty:'Support on Boosty',supThx:'Thank you for your support! 💛',supFail:'Payment did not go through',rateT:'Enjoying Dumpling Sort?',rateP:'Rate the game and leave a few words. Reviews appear in our Telegram channel.',rateAria:n=>n+' of 5 stars',ratePh:'What did you like, or what should we improve? (optional)',rateSend:'Send',rateSending:'Sending…',rateLater:'Not now',rateBtn:'Rate the game',rateThx:'Thanks for your review!',rateFail:'Could not send. Please try again later.',rateNeed:'Pick a number of stars',nyAlbum:'Holiday collection',close:'Close'}
 };
 const FILL_EN=['meat','cabbage','pumpkin','blueberry','cheese','crab','mushroom','beetroot'];
-const NAME_EN={puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
+const NAME_EN={puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
 const P=window.PLATFORM||{};
 let LANG='ru';
 function setLang(l){LANG=(l&&String(l).slice(0,2)==='ru')||['be','uk','kk','uz'].includes(String(l).slice(0,2))?'ru':(l?'en':'ru');document.documentElement.lang=LANG}
@@ -491,6 +509,20 @@ function acc(a){
     case 'scarf': return `<path d="M14 60 q36 10 72 0 v7 q-36 10 -72 0z" fill="#e85a3c"/><path d="M68 66 l4 14 l8 -2 l-4 -14z" fill="#c4442a"/>`;
     case 'crown': return `<path d="M32 16 l-2 -20 l10 9 l10 -14 l10 14 l10 -9 l-2 20z" fill="#ffd24a" stroke="#b9861d" stroke-width="2" stroke-linejoin="round"/><circle cx="50" cy="8" r="3" fill="#e85a3c"/>`;
     case 'halo': return `<ellipse cx="50" cy="-2" rx="20" ry="5" fill="none" stroke="#ffd24a" stroke-width="4"/>`;
+    case 'cap': return `<path d="M26 22 Q50 -2 74 22 Z" fill="#3b7bd4"/><path d="M60 21 q20 -2 26 4 q-14 3 -26 1z" fill="#2c5aa0"/><circle cx="50" cy="7" r="2.5" fill="#2c5aa0"/>`;
+    case 'flower': return `<g transform="translate(66 12)">${[0,72,144,216,288].map(a=>`<ellipse cx="0" cy="-6" rx="3.6" ry="6" fill="#fff" stroke="#e6dccc" stroke-width="1" transform="rotate(${a})"/>`).join('')}<circle r="3.6" fill="#ffd24a"/></g>`;
+    case 'mustache': return `<path d="M50 50 q-6 -5 -12 -1 q-4 3 -8 0 q4 7 12 4 q6 -2 8 -3 q2 1 8 3 q8 3 12 -4 q-4 3 -8 0 q-6 -4 -12 1z" fill="#5a3a1a"/>`;
+    case 'bowtie': return `<path d="M50 64 l-12 -7 v14z M50 64 l12 -7 v14z" fill="#e85a3c" stroke="#a83a22" stroke-width="1.5" stroke-linejoin="round"/><circle cx="50" cy="64" r="3" fill="#c4442a"/>`;
+    case 'sunglasses': return `<rect x="30" y="38" width="18" height="11" rx="4" fill="#1e1e28"/><rect x="52" y="38" width="18" height="11" rx="4" fill="#1e1e28"/><path d="M48 42 h4" stroke="#1e1e28" stroke-width="2.5"/><path d="M33 41 h6 M55 41 h6" stroke="#fff" stroke-width="1.6" opacity=".55" stroke-linecap="round"/>`;
+    case 'pirate': return `<path d="M22 24 Q50 0 78 24 Q50 17 22 24z" fill="#d93a2b"/><circle cx="36" cy="15" r="2" fill="#fff"/><circle cx="50" cy="11" r="2" fill="#fff"/><circle cx="64" cy="15" r="2" fill="#fff"/><path d="M77 22 l11 3 l-8 6z" fill="#d93a2b"/><path d="M30 33 L70 47" stroke="#2c2c3a" stroke-width="2"/><ellipse cx="60" cy="44" rx="7" ry="6" fill="#2c2c3a"/>`;
+    case 'cowboy': return `<path d="M34 19 q0 -24 16 -19 q16 -5 16 19z" fill="#a46c35"/><ellipse cx="50" cy="20" rx="36" ry="6" fill="#8a5a2b"/><path d="M34 14 h32" stroke="#5a3a1a" stroke-width="3"/>`;
+    case 'beret': return `<ellipse cx="46" cy="15" rx="25" ry="9" fill="#e85a3c" transform="rotate(-10 46 15)"/><path d="M47 6 l2 -6" stroke="#c4442a" stroke-width="3" stroke-linecap="round"/>`;
+    case 'tophat': return `<rect x="36" y="-14" width="28" height="28" rx="2" fill="#2c2c3a"/><ellipse cx="50" cy="15" rx="22" ry="5" fill="#2c2c3a"/><rect x="36" y="5" width="28" height="5" fill="#e85a3c"/>`;
+    case 'viking': return `<path d="M27 21 q-15 -6 -13 -23 q6 12 17 14z M73 21 q15 -6 13 -23 q-6 12 -17 14z" fill="#f3ead8" stroke="#c9bfa8" stroke-width="1.5"/><path d="M24 24 Q50 -6 76 24z" fill="#9aa7b4" stroke="#6b7783" stroke-width="2"/><path d="M50 3 v20" stroke="#6b7783" stroke-width="3"/>`;
+    case 'wizard': return `<path d="M28 21 L56 -28 L74 21z" fill="#3b3a8f"/><ellipse cx="50" cy="21" rx="29" ry="5" fill="#3b3a8f"/><path d="M53 -6 l2 4 4 0 -3 3 1 4 -4 -2 -4 2 1 -4 -3 -3 4 0z" fill="#ffd24a"/><circle cx="42" cy="8" r="1.8" fill="#ffd24a"/><circle cx="63" cy="12" r="1.5" fill="#ffd24a"/>`;
+    case 'dragon': return `<path d="M6 44 q-8 -16 6 -24 q0 10 9 15z M94 44 q8 -16 -6 -24 q0 10 -9 15z" fill="#3f8a3c"/><path d="M35 20 l-5 -17 l11 12z M65 20 l5 -17 l-11 12z" fill="#f3d36a" stroke="#b9861d" stroke-width="1.5" stroke-linejoin="round"/><path d="M44 18 l6 -9 l6 9z" fill="#3f8a3c"/>`;
+    case 'wings': return `<path d="M14 46 q-17 -6 -11 -26 q6 10 17 11 q-8 6 -6 15z M86 46 q17 -6 11 -26 q-6 10 -17 11 q8 6 6 15z" fill="#fff" stroke="#dbe7ee" stroke-width="1.5"/>`;
+    case 'mask': return `<path d="M29 40 q21 -7 42 0 q2 9 -7 10 q-8 0 -14 -4 q-6 4 -14 4 q-9 -1 -7 -10z" fill="#2c2c3a"/><ellipse cx="40.5" cy="44" rx="3.4" ry="2.6" fill="#fff"/><ellipse cx="59.5" cy="44" rx="3.4" ry="2.6" fill="#fff"/><circle cx="41" cy="44.3" r="1.6" fill="#2c2c3a"/><circle cx="60" cy="44.3" r="1.6" fill="#2c2c3a"/>`;
     case 'antenna': return `<path d="M42 17 l-6 -16 M58 17 l6 -16" stroke="#2c2c3a" stroke-width="2.5" stroke-linecap="round"/><circle cx="36" cy="0" r="4" fill="#7fd3e8"/><circle cx="64" cy="0" r="4" fill="#ec6fa6"/>`;
   }
   return '';
