@@ -240,6 +240,10 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .col.sticky::before{content:'🍯';position:absolute;top:calc(var(--cw)*.02);left:50%;transform:translateX(-50%);font-size:calc(var(--cw)*.32);z-index:2;pointer-events:none}
 .col.sticky::after{content:'';position:absolute;inset:calc(var(--cw)*.42) 4% 0;border-radius:10px;background:linear-gradient(rgba(243,176,40,.38),rgba(217,140,20,.22));box-shadow:inset 0 0 0 2px rgba(243,194,75,.6);pointer-events:none}
 .col.big{filter:drop-shadow(0 0 6px rgba(111,214,200,.55))}
+.col.huge{filter:drop-shadow(0 0 8px rgba(255,214,90,.6))}
+.col.small{filter:drop-shadow(0 0 6px rgba(255,140,120,.5))}
+.capb,.col .tmr{position:absolute;bottom:-4%;z-index:6;pointer-events:none;font:900 calc(var(--cw)*.2)/1 system-ui;padding:3px 6px;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,.35)}
+.capb{right:-10%}.capb.s{background:#e8664a;color:#fff}.capb.h{background:#f3c24b;color:#3a2a00}
 .col.lock .stack{filter:brightness(.6) saturate(.6)}
 .col .padlock{position:absolute;left:50%;top:calc(var(--cw)*.9);translate:-50% 0;width:calc(var(--cw)*.62);z-index:6;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45))}
 .col .padlock svg{width:100%;display:block}.col .padlock .pk{position:absolute;left:22%;right:22%;bottom:6%;height:52%}.col .padlock .pk svg{width:100%;height:100%}
@@ -334,13 +338,22 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 @keyframes boompulse{50%{transform:scale(1.12)}}
 .boost-pop{position:absolute;right:6px;bottom:66px;z-index:5;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
 .bp-it{display:flex;align-items:center;gap:6px;background:var(--panel);border-radius:22px;padding:7px 10px 7px 8px;font-weight:800;font-size:14px;box-shadow:0 3px 10px rgba(0,0,0,.35);color:inherit}
-.bp-it span{font-size:20px}.bp-it b{min-width:22px;height:22px;border-radius:11px;background:#e8402a;color:#fff;font-size:12px;line-height:22px;text-align:center}
+.bp-it span{font-size:20px}.bp-it i{font-style:normal;display:flex;flex-direction:column;text-align:left;line-height:1.15}.bp-it small{font-weight:600;font-size:11px;opacity:.75;max-width:190px}
+.guide{text-align:left;font-size:14px;line-height:1.35;max-height:62vh;overflow:auto;margin:6px -4px 0;padding:0 4px}
+.guide h3{font-size:15px;margin:12px 0 4px;color:var(--coin)}.guide p{margin:0 0 6px;text-align:left}
+.guide .g-it{display:flex;gap:8px;margin:5px 0}.guide .g-it>span:first-child{flex:0 0 26px;font-size:19px;text-align:center}
+.guide .g-lv{font-size:11px;font-weight:800;opacity:.6;white-space:nowrap}
+.tipbox{position:fixed;z-index:60;max-width:220px;padding:8px 11px;border-radius:12px;background:#10261f;color:#fff;font:600 13px/1.3 system-ui,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.45);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
+.tipbox.on{opacity:1;transform:none}.tipbox b{display:block;color:#ffd54a;margin-bottom:2px}.bp-it b{min-width:22px;height:22px;border-radius:11px;background:#e8402a;color:#fff;font-size:12px;line-height:22px;text-align:center}
 .bp-it.zero b{background:var(--coin);color:#3a2a00}
 .col .kitty{position:absolute;left:50%;top:calc(var(--cw)*-.1);transform:translateX(-50%);font-size:calc(var(--cw)*.6);z-index:5;pointer-events:none;animation:kitty 2.4s ease-in-out infinite}
 @keyframes kitty{50%{transform:translateX(-50%) rotate(-6deg) translateY(-3px)}}
 .col.cat .stack{filter:brightness(.8)}
+.col .tmr{left:-10%;background:#2a4a8a;color:#fff}
+.col .tmr.hot{background:#e8402a;animation:boompulse .6s ease-in-out infinite}
+.board.conv-go .col{transition:transform .25s ease-in;transform:translateX(calc(var(--cw)*.5));opacity:.6}
 .col.flour .stack{filter:grayscale(.5) brightness(1.15)}
-.col.flour::after{content:'';position:absolute;inset:calc(var(--cw)*.3) -3% 0;border-radius:12px;pointer-events:none;z-index:3;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.55),transparent 40%),radial-gradient(circle at 70% 60%,rgba(255,255,255,.45),transparent 45%),rgba(245,240,230,.28)}
+.col.flour .stack::after{content:'';position:absolute;inset:-4% -3% 0;border-radius:12px;pointer-events:none;z-index:3;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.55),transparent 40%),radial-gradient(circle at 70% 60%,rgba(255,255,255,.45),transparent 45%),rgba(245,240,230,.28)}
 .board.aim .col:not(.done){outline:2px dashed #ffb648;outline-offset:3px;border-radius:12px;cursor:crosshair}
 .board.blast{animation:blast .45s ease-out}@keyframes blast{20%{transform:translate(-4px,3px) scale(1.02)}45%{transform:translate(4px,-3px)}70%{transform:translate(-2px,1px)}}
 .dp.bomb::after{content:"💣";position:absolute;right:-6%;top:-10%;font-size:calc(var(--cw)*.3);animation:hotwig .8s ease-in-out infinite}
@@ -524,7 +537,12 @@ const CHARS=[
   {id:'chempion',name:'Чемпион недели',r:2,col:'#ffd76a',face:'star',acc:'crown+scarf',ev:'tour'},
   {id:'bashnya',name:'Хозяин башни',r:2,col:'#8fb3d9',face:'smug',acc:'chef+mustache',ev:'tower'},
   {id:'kuranty',name:'Пельмень-Куранты',r:2,col:'#f3d27a',face:'star',acc:'santa+scarf',ev:'advent'},
-  {id:'duelyant',name:'Дуэлянт',r:2,col:'#d9534f',face:'wink',acc:'mask+tophat',ev:'duel'}
+  {id:'duelyant',name:'Дуэлянт',r:2,col:'#d9534f',face:'wink',acc:'mask+tophat',ev:'duel'},
+  {id:'kochevnik',name:'Кочевник пустыни',r:2,col:'#e8c27a',face:'smug',acc:'bandana+sunglasses',ev:'zone'},
+  {id:'polyarnik',name:'Полярник',r:2,col:'#e6f3fb',face:'happy',acc:'earmuffs+scarf',ev:'zone'},
+  {id:'morskoy',name:'Морской царь',r:2,col:'#7fd0d8',face:'star',acc:'crown+beard',ev:'zone'},
+  {id:'vulkanchik',name:'Вулканчик',r:2,col:'#ff6a3a',face:'smug',acc:'dragon',ev:'zone'},
+  {id:'nebesny',name:'Небесный страж',r:2,col:'#f1edff',face:'happy',acc:'halo+wings',ev:'zone'}
 ];
 const SEASON=(()=>{if(window.__season!=null)return !!window.__season;const d=new Date(),m=d.getMonth();return m===10||m===11||(m===0&&d.getDate()<=15)})();
 const visibleChars=()=>CHARS.filter(c=>c.ev?(S.coll[c.id]||(S.level>=8&&evNow().id===c.ev)):(!c.ny||SEASON||S.coll[c.id]));
@@ -607,7 +625,7 @@ const STR={
   play:'Play',nyTip:'Holiday season: festive heroes are hiding in the surprises!',movesHud:(m,p)=>'moves '+m+(p?'/'+p:''),movesWin:(m,p)=>'Moves: '+m+(p?'. For 3 stars: '+p+' or fewer':''),replayBtn:'Replay for 3 stars',replayTag:'replay',replayBetter:'New best! Coins for the improvement.',replaySame:'No new best this time. Give it another go.',hiddenTip:'Only the top dumpling is visible. The rest show up once you free them.',oneEmptyTip:'Only one empty steamer now. Think one move ahead!',supBtn:'Support the author',supT:'Support Dumpling Sort',supP:'The game is free with no pushy ads. If you enjoy it, you can support the author: it helps bring more heroes and levels.',supStars:n=>n+' ⭐',supBoosty:'Support on Boosty',supThx:'Thank you for your support! 💛',supFail:'Payment did not go through',rateT:'Enjoying Dumpling Sort?',rateP:'Rate the game and leave a few words. Reviews appear in our Telegram channel.',rateAria:n=>n+' of 5 stars',ratePh:'What did you like, or what should we improve? (optional)',rateSend:'Send',rateSending:'Sending…',rateLater:'Not now',rateBtn:'Rate the game',rateThx:'Thanks for your review!',rateFail:'Could not send. Please try again later.',rateNeed:'Pick a number of stars',nyAlbum:'Holiday collection',close:'Close'}
 };
 const FILL_EN=['meat','cabbage','pumpkin','blueberry','cheese','crab','mushroom','beetroot','cherry','spinach','sour cream','chocolate'];
-const NAME_EN={kuranty:'Midnight Chime Dumpling',chempion:'Weekly Champion',bashnya:'Tower Master',duelyant:'Duelist',tvorozhok:'Curdy',shpinatik:'Spinach Kid',kukuruzka:'Corny',baklazhan:'Eggplant',perchik:'Pepper',medovik:'Honey Cake',princessa:'Princess Dumpling',baron:'Baron von Dumpling',rocker:'Rocker Bun',zimushka:'Snowy Muffs',imperator:'Dumpling Emperor',feya:'Dough Fairy',ogonyok:'Little Flame',zolotko:'Goldie',zvezdochet:'Stargazer',puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
+const NAME_EN={kochevnik:'Desert Nomad',polyarnik:'Polar Explorer',morskoy:'Sea King',vulkanchik:'Little Volcano',nebesny:'Sky Guardian',kuranty:'Midnight Chime Dumpling',chempion:'Weekly Champion',bashnya:'Tower Master',duelyant:'Duelist',tvorozhok:'Curdy',shpinatik:'Spinach Kid',kukuruzka:'Corny',baklazhan:'Eggplant',perchik:'Pepper',medovik:'Honey Cake',princessa:'Princess Dumpling',baron:'Baron von Dumpling',rocker:'Rocker Bun',zimushka:'Snowy Muffs',imperator:'Dumpling Emperor',feya:'Dough Fairy',ogonyok:'Little Flame',zolotko:'Goldie',zvezdochet:'Stargazer',puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
 const P=window.PLATFORM||{};
 let LANG='ru';
 function setLang(l){LANG=(l&&String(l).slice(0,2)==='ru')||['be','uk','kk','uz'].includes(String(l).slice(0,2))?'ru':(l?'en':'ru');document.documentElement.lang=LANG}
@@ -710,8 +728,9 @@ const isDone=c=>c.length===CAP&&c.every(x=>x===c[0]);
 const top=c=>c[c.length-1];
 function runLen(c){let n=0;for(let i=c.length-1;i>=0&&c[i]===top(c);i--)n++;return n}
 // лёд: пароварка недоступна, пока не закрыта любая другая; замок: пока не собраны пельмени с ключом
-const RULE={ice:-1,lock:-1,key:-1,sticky:-1,big:-1,cat:-1};
-const capOf=i=>i===RULE.big?5:CAP;
+const RULE={ice:-1,lock:-1,key:-1,sticky:-1,big:-1,cat:-1,small:-1,bigCap:5};
+const capOf=i=>i===RULE.big?(RULE.bigCap||5):i===RULE.small?3:CAP;
+const HARD=161,hardL=L=>L>=HARD;  // шеф-режим: строже звёзды, пароварки разного размера
 function blockedCol(s,i){
   if(i===RULE.ice&&!s.some(c=>isDone(c)))return 'ice';
   if(i===RULE.lock&&!s.some(c=>isDone(c)&&c[0]===RULE.key))return 'lock';
@@ -1131,7 +1150,7 @@ const helperBonus=()=>S.helper&&S.coll[S.helper]?(hLv(S.helper)-1)*2:0;
 function helperHtml(){const c=CHARS.find(x=>x.id===S.helper&&S.coll[x.id]);return `<div class="shop-h">${T('helperT')}</div><p style="text-align:left;margin:2px 0 0">${c?T('helperIs')(cname(c),T('perk')[c.id]):T('helperNone')}</p>`}
 /* ---------- лёд, замок, боссы ---------- */
 const isBoss=L=>L>=10&&L%10===0;
-const iceFor=L=>L>=12&&[2,5,8].includes(L%10);
+const iceFor=L=>L>=12&&([2,5,8].includes(L%10)||(hardL(L)&&[4,7].includes(L%10)));
 const lockFor=L=>L>=15&&[3,6,9].includes(L%10);
 const stickyFor=L=>L>=110&&[1,4,7].includes(L%10),bigFor=L=>L>=130&&[0,3,6,9].includes(L%10)&&!isBoss(L);
 function rollRules(){
@@ -1144,10 +1163,12 @@ function rollRules(){
   if(G.mode!=='tower'||true){
     if(bigFor(L)&&empt.length){RULE.big=empt[empt.length-1];}
     if(stickyFor(L)&&empt.length>=2){for(const i of empt){if(i===RULE.big)continue;RULE.sticky=i;if(shortest(G.cols,15000,2))break;RULE.sticky=-1}}
+    if(hardL(L)&&L%10===5&&!isBoss(L)&&empt.length&&RULE.big<0){RULE.big=empt[0];RULE.bigCap=6}
+    if(hardL(L)&&![0,5].includes(L%10)&&empt.length){for(const i of empt.slice().reverse()){if(i===RULE.big||i===RULE.sticky)continue;RULE.small=i;if(shortest(G.cols,15000,2))break;RULE.small=-1}}
   }
-  G.ice=RULE.ice;G.lock=RULE.lock;G.key=RULE.key;G.sticky=RULE.sticky;G.big=RULE.big;
+  G.ice=RULE.ice;G.lock=RULE.lock;G.key=RULE.key;G.sticky=RULE.sticky;G.big=RULE.big;G.small=RULE.small;G.bigCap=RULE.bigCap;
 }
-function syncRules(){RULE.ice=G.ice??-1;RULE.lock=G.lock??-1;RULE.key=G.key??-1;RULE.sticky=G.sticky??-1;RULE.big=G.big??-1;RULE.cat=G.cat??-1}
+function syncRules(){RULE.ice=G.ice??-1;RULE.lock=G.lock??-1;RULE.key=G.key??-1;RULE.sticky=G.sticky??-1;RULE.big=G.big??-1;RULE.cat=G.cat??-1;RULE.small=G.small??-1;RULE.bigCap=G.bigCap||5}
 function bossFail(){
   sfx.bad();buzz([40,60,40]);goal('boss_fail',{level:curL()});
   const RU=LANG==='ru',cc=pm(30),adC=adOk()&&!G.bossAd;
@@ -1162,7 +1183,7 @@ function bossFail(){
 }
 /* ---------- особые пельмени, комбо, встряска ---------- */
 function rollSpecial(){
-  G.bomb=-1;G.bombN=0;G.bombPaid=G.bombOut=false;G.fireSet=[];G.aim=false;board.classList.remove("aim");G.cat=RULE.cat=-1;G.catLeft=0;G.catNext=3;G.flour=-1;G.flourN=0;
+  G.bomb=-1;G.bombN=0;G.bombPaid=G.bombOut=false;G.fireSet=[];G.aim=false;board.classList.remove("aim");G.cat=RULE.cat=-1;G.catLeft=0;G.catNext=3;G.flour=-1;G.flourN=0;G.conv=null;G.tmr=null;
   G.gold=-1;G.hot=-1;G.hotN=0;G.goldPaid=G.hotPaid=false;G.lastDone=-9;G.combo=0;G.shakeAt=0;
   const L=curL(),f=[...new Set(G.cols.flat())];
   if(G.mode==='du')return;  // в дуэли у обоих одинаковые условия
@@ -1171,6 +1192,9 @@ function rollSpecial(){
   if(L>=BOMB_FROM&&G.hot<0&&!isBoss(L)&&Math.random()<.3){const g=f.filter(x=>x!==G.gold);G.bomb=g[Math.floor(Math.random()*g.length)];G.bombN=Math.max(10,Math.ceil(par3()*.8));
     const bn=G.bombN;setTimeout(()=>{if(G.bomb>=0&&G.bombN===bn&&!G.hist.length)toast(LANG==='ru'?`💣 Бомбочка! Закрой эту начинку за ${bn} ходов, и будет бабах с наградой`:`💣 A bomb! Close that filling within ${bn} moves for a big bang`)},700)}
   if(catFor(L))G.catLeft=2;
+  if(convFor(L)){G.conv={next:CONV_N};setTimeout(()=>{if(G.conv&&!G.hist.length)toast(LANG==='ru'?`🔁 Конвейер: каждые ${CONV_N} ходов верхняя полка сдвигается`:`🔁 Conveyor: every ${CONV_N} moves the top shelf shifts`)},900)}
+  if(tmrFor(L)){const tc=G.cols.map((c,i)=>i).filter(i=>G.cols[i].length>=3&&!isDone(G.cols[i])&&i!==RULE.sticky&&i!==G.flour&&!blockedCol(G.cols,i));
+    if(tc.length){G.tmr={i:tc[Math.floor(Math.random()*tc.length)],left:TMR_N};setTimeout(()=>{if(G.tmr&&!G.hist.length)toast(LANG==='ru'?`⏳ Таймер-пароварка: закрой её за ${TMR_N} ходов, иначе пельмени в ней перемешаются`:`⏳ Timer steamer: close it within ${TMR_N} moves or it gets shuffled`)},1000)}}
   if(L>=40&&[1,5,9].includes(L%10)){const fc=G.cols.map((c,i)=>i).filter(i=>G.cols[i].length>=3&&!isDone(G.cols[i])&&i!==RULE.sticky&&!blockedCol(G.cols,i));
     if(fc.length){G.flour=fc[Math.floor(Math.random()*fc.length)];setTimeout(()=>{if(G.flour>=0&&!G.hist.length)toast(LANG==='ru'?'🌫 Одну пароварку засыпало мукой: начинок не видно. Закрой пароварку рядом, и мука сдуется':'🌫 One steamer is covered in flour. Close a steamer next to it to blow it off')},900)}}
   if(G.hot>=0){const hn=G.hotN,hc=G.hot;setTimeout(()=>{if(G.hot===hc&&G.hotN===hn)toast('🌶 '+T('hotTip')(hn))},700)}
@@ -1199,6 +1223,51 @@ function onDone(b){
 const FIRE_MAX=10,BOOM_FROM=15,BOMB_FROM=25;
 const bombLive=()=>G.bomb>=0&&!G.bombPaid&&!G.bombOut&&G.hist.length<G.bombN;
 const boomOk=()=>G.mode!=='du'&&(S.level>=BOOM_FROM||(S.boom||0)>0);
+const TIPS={
+  btnUndo:()=>LANG==='ru'?'Отменить последний ход':'Take back your last move',
+  btnHint:()=>LANG==='ru'?'Подсветит лучший следующий ход':'Highlights the best next move',
+  btnShake:()=>LANG==='ru'?'Перемешает пельмени так, чтобы уровень решался':'Reshuffles dumplings into a solvable layout',
+  btnExtra:()=>LANG==='ru'?'Добавит пустую пароварку на этот уровень':'Adds an empty steamer for this level',
+  btnAlbum:()=>LANG==='ru'?'Твои герои, коллекции и достижения':'Your heroes, collections and achievements',
+  btnRestart:()=>LANG==='ru'?'Начать уровень заново':'Restart the level',
+  boomBtn:()=>LANG==='ru'?'Бустеры. Кольцо огня заполняется, когда закрываешь пароварки: полное даёт бустер':'Boosters. The fire ring fills as you close steamers; a full ring gives a booster',
+  boom:()=>LANG==='ru'?'Пельмени разлетятся к своим':'Dumplings fly to their matches',
+  ladle:()=>LANG==='ru'?'Достанет пельмень из середины наверх':'Pulls a middle dumpling to the top',
+  pin:()=>LANG==='ru'?'Уберёт одну начинку со всего поля':'Clears one filling from the board'};
+const TIPN={btnUndo:'undo',btnHint:'hint',btnShake:'shake',btnExtra:'steamer',btnAlbum:'album'};
+function tipShow(el,id){let t=$('tipbox');if(!t){t=document.createElement('div');t.id='tipbox';t.className='tipbox';document.body.appendChild(t)}
+  const nm=TIPN[id]?T(TIPN[id]):id==='boomBtn'?(LANG==='ru'?'🧨 Бустеры':'🧨 Boosters'):id==='btnRestart'?(LANG==='ru'?'Заново':'Restart'):'';
+  t.innerHTML=(nm?`<b>${nm}</b>`:'')+TIPS[id]();const r=el.getBoundingClientRect();t.classList.add('on');
+  const w=t.offsetWidth,h=t.offsetHeight;let x=r.left+r.width/2-w/2;x=Math.max(8,Math.min(innerWidth-w-8,x));let y=r.top-h-8;if(y<8)y=r.bottom+8;
+  t.style.left=x+'px';t.style.top=y+'px';clearTimeout(tipShow.h);tipShow.h=setTimeout(tipHide,2600)}
+function tipHide(){const t=$('tipbox');if(t)t.classList.remove('on')}
+function tipWire(){Object.keys(TIPS).forEach(id=>{const el=$(id);if(!el)return;let tm,lp=false;
+  el.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){tm=setTimeout(()=>tipShow(el,id),350)}});
+  el.addEventListener('pointerleave',()=>{clearTimeout(tm);if(!lp)tipHide()});
+  el.addEventListener('pointerdown',e=>{lp=false;if(e.pointerType!=='mouse'){clearTimeout(tm);tm=setTimeout(()=>{lp=true;tipShow(el,id);buzz(10)},450)}});
+  el.addEventListener('pointerup',()=>clearTimeout(tm));el.addEventListener('pointercancel',()=>clearTimeout(tm));
+  el.addEventListener('contextmenu',e=>e.preventDefault());
+  el.addEventListener('click',e=>{if(lp){lp=false;e.stopImmediatePropagation();e.preventDefault()}},true)})}
+function guide(back){const RU=LANG==='ru';
+  const it=(e,t,d,lv)=>`<div class="g-it"><span>${e}</span><span><b>${t}</b>${lv?` <span class="g-lv">${RU?'с '+lv+' ур.':'from L'+lv}</span>`:''}<br>${d}</span></div>`;
+  const G_=RU?[
+   ['Основы',`<p>Нажми на пароварку, потом на другую: верхние пельмени перелетят, если сверху там такая же начинка или пароварка пустая. Собери 4 одинаковых в одной пароварке, и она закроется. Закрой все, и уровень пройден.</p>`
+     +it('⭐','Звёзды','Чем меньше ходов, тем больше звёзд. Счётчик «ходы X/Y» в шапке: уложись в Y, получишь 3 звезды.')+it('👑','Корона','Пройди уровень за минимальное число ходов.','5')],
+   ['Кнопки внизу',it('↩️','Отменить','Вернуть последний ход.')+it('💡','Подсказка','Подсветит лучший следующий ход.')+it('🔀','Встряхнуть','Перемешает пельмени, уровень останется решаемым.')+it('➕','Пароварка','Добавит пустую пароварку на этот уровень.')+it('🔄','Заново','Кнопка в шапке: начать уровень сначала.')],
+   ['Бустеры 🧨',it('🔥','Кольцо огня','Закрывай пароварки, и кольцо вокруг кнопки 🧨 заполняется. Полное кольцо даёт бустер.','15')+it('🧨','Петарда','Пельмени из выбранной пароварки разлетаются к своим.')+it('🥄','Половник','Достаёт пельмень из середины стопки наверх.')+it('🪵','Скалка','Убирает одну начинку со всего поля.')+it('🎆','Цепная реакция','Закрывай пароварки подряд: на комбо ×3 и ×5 будет подарок.')],
+   ['Особые пельмени',it('✨','Золотые','Закрой их и получи +15 монет.','6')+it('🌶','Острые','Закрой за указанное число ходов: +20.','12')+it('💣','Бомбочка','Закрой, пока горит фитиль: бабах, +25 и сорванный замок.','25')],
+   ['Препятствия',it('🧊','Лёд','Пароварка оттает, когда закроешь любую другую.','12')+it('🔒','Замок','Откроется, когда соберёшь пельмени с ключом.','15')+it('👹','Босс','Каждый 10-й уровень: ограничено число ходов.','10')+it('🫙','Одна пустая','Свободная пароварка только одна, думай наперёд.','20')+it('❔','Скрытые','Видно только верхний пельмень.','30')+it('🌫','Мука','Начинок не видно, пока не закроешь пароварку рядом.','40')+it('🐱','Котёнок','Из его пароварки нельзя брать. Закрой любую другую, и он уйдёт.','50')+it('🍯','Липкая','Класть можно, доставать нельзя.','110')+it('🫕','Большая','Вмещает 5 пельменей.','130')+it('👨‍🍳','Шеф-режим','Звёзды даются строже, больше льда, боссы жёстче.','161')+it('🔸','Маленькая','Вмещает только 3 пельменя, закрыть её нельзя.','161')+it('🔶','Огромная','Вмещает 6 пельменей.','165')+it('🚪','Звёздные ворота','В начале каждой главы нужно 22 ⭐ из 30 за прошлую главу. Перепройди уровни, докупи звёзды или подожди 12 часов.','201')+it('⏳','Таймер-пароварка','Закрой её, пока идёт отсчёт, иначе пельмени в ней перемешаются.','171')+it('🔁','Конвейер','Каждые 5 ходов верхняя полка сдвигается на одну пароварку.','172')],
+   ['Награды',it('🥟','Сюрприз','После уровня сожми пельмень, внутри будет герой для альбома.')+it('🎁','Каждый день','Подарок за вход, колесо удачи и «Пельмень дня».')+it('☕','Кафе','Покупай мебель за монеты, и кафе будет приносить чаевые.')+it('🗺','Новые области','С 171: Пустыня, Северный полюс, Подводное царство, Вулкан, Небесный замок. Собери все 30 звёзд области и получи её героя.','171')+it('🗼','Башня шефа','Этажи с растущей сложностью.','50')+it('🏆','Турнир','Звёзды за неделю. Топ-3 получают особого героя.')]
+  ]:[
+   ['Basics',`<p>Tap a steamer, then another: the top dumplings fly over if the top filling matches or the steamer is empty. Gather 4 of a kind in one steamer to close it. Close them all to win.</p>`
+     +it('⭐','Stars','Fewer moves, more stars. Stay within Y in “moves X/Y” for 3 stars.')+it('👑','Crown','Beat a level in the minimum moves.','5')],
+   ['Bottom buttons',it('↩️','Undo','Take back your last move.')+it('💡','Hint','Highlights the best next move.')+it('🔀','Shake','Reshuffles into a solvable layout.')+it('➕','Steamer','Adds an empty steamer for this level.')+it('🔄','Restart','Header button: start the level over.')],
+   ['Boosters 🧨',it('🔥','Fire ring','Close steamers to fill the ring around 🧨. A full ring gives a booster.','15')+it('🧨','Firecracker','Dumplings from a steamer fly to their matches.')+it('🥄','Ladle','Pulls a middle dumpling to the top.')+it('🪵','Rolling pin','Clears one filling from the board.')+it('🎆','Chain reaction','Close steamers in a row: combo ×3 and ×5 give a gift.')],
+   ['Special dumplings',it('✨','Golden','Close them for +15 coins.','6')+it('🌶','Spicy','Close within the move limit for +20.','12')+it('💣','Bomb','Close before the fuse burns out: boom, +25, lock blown.','25')],
+   ['Obstacles',it('🧊','Ice','Melts when you close any other steamer.','12')+it('🔒','Lock','Opens when you gather the key dumplings.','15')+it('👹','Boss','Every 10th level has a move limit.','10')+it('🫙','One empty','Only one free steamer, plan ahead.','20')+it('❔','Hidden','Only the top dumpling is visible.','30')+it('🌫','Flour','Fillings are hidden until you close a steamer next to it.','40')+it('🐱','Kitten','You can\'t take from its steamer. Close another one and it leaves.','50')+it('🍯','Sticky','Put in, never take out.','110')+it('🫕','Big','Holds 5 dumplings.','130')+it('👨‍🍳','Chef mode','Stricter stars, more ice, tougher bosses.','161')+it('🔸','Small','Holds only 3 and can\'t be closed.','161')+it('🔶','Huge','Holds 6 dumplings.','165')+it('🚪','Star gates','Each new chapter needs 22 ⭐ of 30 from the previous one. Replay levels, buy stars or wait 12 hours.','201')+it('⏳','Timer steamer','Close it before the countdown ends or it gets shuffled.','171')+it('🔁','Conveyor','Every 5 moves the top shelf shifts by one.','172')],
+   ['Rewards',it('🥟','Surprise','After a level squeeze the dumpling to get a hero for the album.')+it('🎁','Daily','Login gift, lucky wheel and Puzzle of the day.')+it('☕','Café','Buy furniture with coins and it pays tips.')+it('🗺','New regions','From 171: Desert, North Pole, Undersea, Volcano, Sky Castle. Get all 30 stars in a region for its hero.','171')+it('🗼','Chef tower','Floors of growing difficulty.','50')+it('🏆','Tournament','Weekly stars. Top 3 get a special hero.')]];
+  openOv(`<h2>📖 ${RU?'Как играть':'How to play'}</h2><div class="guide">${G_.map(([h,b])=>`<h3>${h}</h3>${b}`).join('')}</div><button class="big-btn" id="gBack">${back?T('back'):T('close')}</button>`);
+  $('gBack').onclick=()=>back?back():closeOv();goal('guide_open')}
 const ITEMS={boom:['🧨','Петарда','Firecracker',3,45,'Выбивает пельмени из пароварки, и они сами разлетаются к своим.','Blasts dumplings out of a steamer and they fly to matching ones.'],
   ladle:['🥄','Половник','Ladle',3,45,'Достаёт любой пельмень из середины стопки и кладёт его наверх.','Pulls any dumpling from the middle of a stack up to the top.'],
   pin:['🪵','Скалка','Rolling pin',2,70,'Убирает с поля все пельмени одной начинки: их сразу подают гостям.','Clears every dumpling of one filling from the board.']};
@@ -1218,7 +1287,7 @@ function blastFx(b){const el=board.children[b];board.classList.remove('blast');v
 function boomIntro(){if(G.mode||S.level<BOOM_FROM||S.boomIntro)return;S.boomIntro=1;S.boom=(S.boom||0)+1;S.boomNew=1;save();boomHud();
   setTimeout(()=>toast(LANG==='ru'?'🧨 Новинка: петарда! Закрывай пароварки, копи огонь на кнопке. Первая в подарок':'🧨 New: firecrackers! Close steamers to fill the fire ring. Your first one is free'),1200)}
 function boomAim(k){G.aim=k||false;board.classList.toggle('aim',!!k);$('boostPop').hidden=true;boomHud()}
-function boostPop(){const pp=$('boostPop');pp.innerHTML=Object.keys(ITEMS).map(k=>`<button class="bp-it${inv(k)?'':' zero'}" data-k="${k}"><span>${ITEMS[k][0]}</span>${itName(k)}<b>${inv(k)||'+'}</b></button>`).join('');
+function boostPop(){const pp=$('boostPop');pp.innerHTML=Object.keys(ITEMS).map(k=>`<button class="bp-it${inv(k)?'':' zero'}" data-k="${k}"><span>${ITEMS[k][0]}</span><i>${itName(k)}<small>${TIPS[k]()}</small></i><b>${inv(k)||'+'}</b></button>`).join('');
   pp.hidden=false;pp.querySelectorAll('.bp-it').forEach(el=>el.onclick=e=>{e.stopPropagation();const k=el.dataset.k;pp.hidden=true;
     if(!inv(k))return boomShop(k);boomAim(k);sfx.pick();
     toast(LANG==='ru'?{boom:'Выбери пароварку: пельмени из неё разлетятся по своим',ladle:'Тапни по пельменю в середине стопки',pin:'Выбери пароварку: её верхняя начинка уйдёт со всего поля'}[k]:{boom:'Pick a steamer: its dumplings fly to their matches',ladle:'Tap a dumpling in the middle of a stack',pin:'Pick a steamer: its top filling leaves the whole board'}[k])})}
@@ -1237,7 +1306,7 @@ function boomShop(kind,back){const RU=LANG==='ru',ad=adOk(),it=ITEMS[kind],pr=pm
   const got=n=>{S[kind]=inv(kind)+n;save();hud();back?back():closeOv();sfx.chime(1);toast(`+${n} ${it[0]}`)};
   $('bmBuy').onclick=()=>{if(S.coins<pr){sfx.bad();toast(T('noCoins')(pr-S.coins));return}S.coins-=pr;goal('boom_buy',{by:'coins',item:kind});got(it[3])};
   if($('bmAd'))$('bmAd').onclick=()=>{$('bmAd').disabled=true;P.rewarded(ok=>{if(ok){goal('boom_buy',{by:'ad',item:kind});got(1)}else{adFailAt=Date.now();$('bmAd').remove();toast(T('adFail'))}})}}
-function afterTool(){bombTick();catTick();G.busy=false;
+function afterTool(){bombTick();catTick();tmrTick();convTick();G.busy=!!G.convAnim;
   if(solved(G.cols)){G.busy=true;setTimeout(win,900)}
   else if(G.boss&&G.hist.length>=G.boss){G.busy=true;setTimeout(bossFail,600)}}
 function pinAt(a){const c=G.cols[a],RU=LANG==='ru';
@@ -1257,6 +1326,52 @@ function ladleAt(a,t){const c=G.cols[a],RU=LANG==='ru';
   c.splice(t,1);c.push(x);if(t<(G.hid[a]||0))G.hid[a]--;G.hid[a]=Math.min(G.hid[a]||0,Math.max(0,c.length-1));
   G.just=a;sfx.plop(0);render();hud();const el=board.children[a];if(el)sparks(el,10,'#fff');
   if(isDone(c)){sfx.lid();buzz(30);onDone(a)}G.busy=true;afterTool()}
+/* звёздные ворота: с 201 уровня в начале каждой главы нужно 22 звезды из 30 за прошлую главу */
+const GATE_FROM=201,GATE_NEED=22;
+const gateAt=L=>L>=GATE_FROM&&(L-1)%10===0;
+function gateHave(L){const b=S.best||{};let n=0;for(let i=L-10;i<L;i++)n+=b[i]||0;return n+((S.gateBuy||{})[L]||0)}
+const GATE_WAIT=12*36e5;  // или подождать 12 часов
+const gateT=L=>(S.gateT||{})[L]||0,gateLeft=L=>gateT(L)?Math.max(0,gateT(L)+GATE_WAIT-Date.now()):GATE_WAIT;
+const gateLocked=L=>gateAt(L)&&!G.mode&&!S.replay&&gateHave(L)<GATE_NEED&&gateLeft(L)>0;
+const hm=ms=>{const m=Math.ceil(ms/6e4),h=Math.floor(m/60);return LANG==='ru'?(h?h+' ч ':'')+(m%60)+' мин':(h?h+'h ':'')+(m%60)+'m'};
+function gateSheet(){const L=S.level,RU=LANG==='ru';S.gateT=S.gateT||{};if(!S.gateT[L]){S.gateT[L]=Date.now();save()}
+  const have=gateHave(L),miss=GATE_NEED-have,pr=pm(15)*miss,ad=adOk()&&!((S.gateAd||{})[L]),left=gateLeft(L),tpr=Math.max(pm(10),Math.ceil(left/36e5)*pm(8));
+  goal('gate_show',{level:L,miss});
+  openOv(`<h2>🚪 ${RU?'Звёздные ворота':'Star gate'}</h2><p>${RU?`Чтобы открыть главу ${Math.ceil(L/10)}, нужно ${GATE_NEED} ⭐ из 30 за уровни ${L-10}–${L-1}.`:`To open chapter ${Math.ceil(L/10)} you need ${GATE_NEED} ⭐ of 30 on levels ${L-10}–${L-1}.`}</p>
+    <div class="reward" style="margin:8px 0">⭐ ${have} / ${GATE_NEED}</div>
+    <button class="big-btn" id="gtReplay">🔁 ${RU?'Перепройти уровни на 3 звезды':'Replay levels for 3 stars'}</button>
+    ${ad?`<button class="alt-btn" id="gtAd">📺 ${RU?'+2 ⭐ за рекламу':'+2 ⭐ for an ad'}</button>`:''}
+    <button class="alt-btn" id="gtBuy">${RU?`Докупить ${miss} ⭐ за`:`Buy ${miss} ⭐ for`} <span class="coin"></span>${pr}</button>
+    <div class="shop-h">⏳ ${RU?`Или подожди: ворота откроются сами через ${hm(left)}`:`Or wait: the gate opens by itself in ${hm(left)}`}</div>
+    <button class="alt-btn" id="gtTime">${RU?'Открыть сразу за':'Open now for'} <span class="coin"></span>${tpr}</button>
+    <button class="ghost-btn" id="gtClose">${T('close')}</button>`);
+  const open=()=>{if(!gateLocked(L)){closeOv();sfx.chime(2);buzz([20,40,20]);toast(RU?'🚪 Ворота открыты!':'🚪 Gate open!');goal('gate_open',{level:L});G.busy=false;render();hud()}else gateSheet()};
+  const add=n=>{S.gateBuy=S.gateBuy||{};S.gateBuy[L]=(S.gateBuy[L]||0)+n;save();open()};
+  $('gtReplay').onclick=()=>{closeOv();levels(null,Math.ceil(L/10)-1)};
+  $('gtClose').onclick=closeOv;
+  $('gtTime').onclick=()=>{if(S.coins<tpr){if(adOk()||P.buyCoins){adOffer();return}sfx.bad();toast(T('noCoins')(tpr-S.coins));return}S.coins-=tpr;S.gateT[L]=1;save();hud();goal('gate_time',{level:L,coins:tpr});open()};
+  $('gtBuy').onclick=()=>{if(S.coins<pr){if(adOk()||P.buyCoins){adOffer();return}sfx.bad();toast(T('noCoins')(pr-S.coins));return}S.coins-=pr;hud();goal('gate_buy',{level:L,stars:miss,coins:pr});add(miss)};
+  if($('gtAd'))$('gtAd').onclick=()=>{$('gtAd').disabled=true;P.rewarded(ok=>{if(ok){S.gateAd=S.gateAd||{};S.gateAd[L]=1;goal('gate_ad',{level:L});add(2)}else{adFailAt=Date.now();$('gtAd').remove();toast(T('adFail'))}})}}
+/* конвейер и таймер-пароварка (с 171) */
+const convFor=L=>L>=171&&[2,8].includes(L%10)&&!isBoss(L),tmrFor=L=>L>=171&&[1,6].includes(L%10)&&!isBoss(L);
+const CONV_N=5,TMR_N=14;
+function remapIdx(mp){['ice','lock','sticky','big','small','cat'].forEach(k=>{if(RULE[k]>=0)RULE[k]=mp(RULE[k])});
+  ['ice','lock','sticky','big','small','cat','flour'].forEach(k=>{if(G[k]>=0)G[k]=mp(G[k])});if(G.tmr)G.tmr.i=mp(G.tmr.i)}
+function convTick(){if(!G.conv||G.hist.length<G.conv.next||solved(G.cols))return;
+  const per=Math.max(2,Math.min(G.perRow||G.cols.length,G.cols.length)),a=0,len=per;
+  const mp=i=>i>=a&&i<a+len?a+((i-a+1)%len):i,nc=[],nh=[];G.cols.forEach((c,i)=>{nc[mp(i)]=c;nh[mp(i)]=G.hid[i]});
+  G.conv.next=G.hist.length+CONV_N;board.classList.add('conv-go');sfx.squish(1);G.convAnim=true;G.busy=true;
+  setTimeout(()=>{board.classList.remove('conv-go');G.cols=nc;G.hid=nh;remapIdx(mp);G.shakeAt=G.hist.length;G.sel=null;G.hint=null;render();hud();G.convAnim=false;G.busy=false},260)}
+function tmrTick(){const t=G.tmr;if(!t||t.off)return;const c=G.cols[t.i];
+  const bd=()=>board.querySelector('.tmr');
+  if(!c||!c.length){t.off=1;bd()&&bd().remove();return}
+  if(isDone(c)){t.off=1;bd()&&bd().remove();S.coins+=10;save();hud();toast(LANG==='ru'?'⏳ Успел! Пароварка не переварилась: +10':'⏳ Just in time! +10');return}
+  t.left--;if(t.left>0){const b=bd();if(b){b.textContent='⏳'+t.left;b.classList.toggle('hot',t.left<=3)}return}
+  t.left=TMR_N;const orig=c.slice();let ok=false;
+  for(let k=0;k<8&&!ok;k++){const q=orig.slice();for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}
+    if(q.join()===orig.join()||isDone(q))continue;G.cols[t.i]=q;if(shortest(G.cols,15000,2))ok=true;else G.cols[t.i]=orig}
+  G.shakeAt=G.hist.length;render();const el=board.children[t.i];if(el){el.classList.add('shake');sparks(el,14,'#ffb648')}sfx.squish(2);
+  toast(LANG==='ru'?'⏳ Пароварка переварилась, и пельмени в ней перемешались!':'⏳ Overcooked! The dumplings in it got shuffled')}
 /* котёнок-воришка: садится на пароварку, уходит, когда закроешь любую другую */
 const catFor=L=>L>=50&&[4,7].includes(L%10)&&!isBoss(L);
 function catTick(){if(!(G.catLeft>0)||G.cat>=0||G.hist.length<G.catNext||solved(G.cols))return;
@@ -1292,7 +1407,7 @@ function shuffleBoard(){
   setTimeout(()=>{board.classList.remove('shaking');G.cols=best;G.shakeAt=G.hist.length;G.busy=false;render();hud();toast(T('shakeDone'))},500);
 }
 /* ---------- прогресс основного уровня не теряется ---------- */
-const SNAP_KEYS=['cols','hist','hid','extra','shakeAt','gold','hot','hotN','goldPaid','hotPaid','lastDone','combo','par','ice','lock','key','boss','perkHint','perkShake','usedHint','bomb','bombN','bombPaid','bombOut','fireSet','cat','catLeft','catNext','flour','flourN'];
+const SNAP_KEYS=['cols','hist','hid','extra','shakeAt','gold','hot','hotN','goldPaid','hotPaid','lastDone','combo','par','ice','lock','key','boss','perkHint','perkShake','usedHint','bomb','bombN','bombPaid','bombOut','fireSet','cat','catLeft','catNext','flour','flourN','conv','tmr'];
 function snapMain(){if(!G.mode&&!S.replay&&G.hist.length&&!solved(G.cols)){G.snap={level:S.level};SNAP_KEYS.forEach(k=>G.snap[k]=JSON.parse(JSON.stringify(G[k]===undefined?null:G[k])))}}
 function restoreMain(){const sn=G.snap;if(!sn||G.mode||S.replay||sn.level!==S.level)return false;G.snap=null;
   SNAP_KEYS.forEach(k=>G[k]=sn[k]);syncRules();G.sel=null;G.hint=null;G.just=-1;G.busy=false;render();layout();hud();try{P.gpStart&&P.gpStart()}catch(e){}return true}
@@ -1385,7 +1500,20 @@ const CHAPTERS=[
   {ru:'Сад',en:'Garden',c:['#1f3a1c','#3c6a2c'],d:'trees'},
   {ru:'Море',en:'Seaside',c:['#14304a','#1f5478'],d:'waves'},
   {ru:'Космос',en:'Space',c:['#120f2c','#2a2160'],d:'stars'}];
-function chapterOf(k){const ch=CHAPTERS[(k-1)%CHAPTERS.length],lap=Math.floor((k-1)/CHAPTERS.length);return {...ch,name:(LANG==='ru'?ch.ru:ch.en)+(lap?' '+['','II','III','IV','V','VI'][Math.min(lap,5)]:'')}}
+const ZONES=[
+  {ru:'Пустыня',en:'Desert',c:['#4a3214','#8a6326'],d:'dunes',hero:'kochevnik'},
+  {ru:'Северный полюс',en:'North Pole',c:['#0f2a3a','#2a5c78'],d:'aurora',hero:'polyarnik'},
+  {ru:'Подводное царство',en:'Undersea Kingdom',c:['#062a3a','#0d5466'],d:'bubbles',hero:'morskoy'},
+  {ru:'Вулкан',en:'Volcano',c:['#2a0e0a','#6a1c10'],d:'lava',hero:'vulkanchik'},
+  {ru:'Небесный замок',en:'Sky Castle',c:['#2c3a6a','#6a86c8'],d:'clouds',hero:'nebesny'}];
+const ZONE_K=18,ROMAN=['','II','III','IV','V','VI','VII','VIII'];
+function chapterOf(k){const RU=LANG==='ru';
+  if(k<ZONE_K){const ch=CHAPTERS[(k-1)%CHAPTERS.length],lap=Math.floor((k-1)/CHAPTERS.length);return {...ch,name:(RU?ch.ru:ch.en)+(lap?' '+ROMAN[Math.min(lap,7)]:'')}}
+  if(k<ZONE_K+ZONES.length){const z=ZONES[k-ZONE_K];return {...z,zone:true,name:RU?z.ru:z.en}}
+  const all=[...CHAPTERS,...ZONES],i=(k-ZONE_K-ZONES.length)%all.length,lap=Math.floor((k-ZONE_K-ZONES.length)/all.length),ch=all[i];
+  return {...ch,hero:null,gold:true,name:'✨ '+(RU?ch.ru:ch.en)+(lap?' '+ROMAN[Math.min(lap+1,7)]:'')}}
+function zoneStars(k){const b=S.best||{};let n=0;for(let i=1;i<=10;i++)n+=b[(k-1)*10+i]||0;return n}
+function zoneCheck(){for(let j=0;j<ZONES.length;j++){const k=ZONE_K+j,z=ZONES[j];if(!S.coll[z.hero]&&zoneStars(k)>=30){goal('zone_hero',{zone:k});heroPrize(z.hero,LANG==='ru'?`${z.ru}: все 30 звёзд!`:`${z.en}: all 30 stars!`,250);return}}}
 function decor(d,w,h,seed){
   const r=mulberry32(seed);let o='';
   for(let i=0;i<9;i++){const x=(r()*w)|0,y=(40+r()*(h-80))|0,z=.6+r()*.8;
@@ -1395,6 +1523,11 @@ function decor(d,w,h,seed){
     if(d==='peaks')o+=`<g transform="translate(${x} ${y}) scale(${z*1.4})" opacity=".2"><path d="M-22 12l22-30 22 30z" fill="#9fb8d0"/><path d="M-6 -10l6-8 6 8-6 3z" fill="#fff"/></g>`;
     if(d==='trees')o+=`<g transform="translate(${x} ${y}) scale(${z})" opacity=".22"><rect x="-2" y="4" width="4" height="10" fill="#8a5a2b"/><circle cx="0" cy="0" r="10" fill="#7cc04a"/><circle cx="4" cy="-3" r="2" fill="#e85a3c"/></g>`;
     if(d==='waves')o+=`<path transform="translate(${x-30} ${y}) scale(${z})" d="M0 0q8-8 16 0t16 0 16 0 16 0" stroke="#9fd4ff" stroke-width="3" fill="none" opacity=".25"/>`;
+    if(d==='dunes')o+=`<path transform="translate(${x-30} ${y}) scale(${z*1.3})" d="M0 10q15-14 30-4t30 4z" fill="#e8c27a" opacity=".2"/>`+(i%4===0?`<g transform="translate(${x} ${y-14}) scale(${z})" opacity=".25"><path d="M0 0v-14M0-14l-5 4M0-14l5 4M0-9l-6 2M0-9l6 2" stroke="#7cc04a" stroke-width="2"/></g>`:'');
+    if(d==='aurora')o+=(i<3?`<path d="M0 ${y}q${w/4} -40 ${w/2} 0t${w/2} 0" stroke="${['#7cffc4','#9fd4ff','#d59cff'][i]}" stroke-width="10" fill="none" opacity=".18"/>`:`<g transform="translate(${x} ${y}) scale(${z})" opacity=".3"><ellipse cx="0" cy="0" rx="7" ry="10" fill="#111"/><ellipse cx="0" cy="2" rx="4.5" ry="7" fill="#fff"/><path d="M-2 -6l2 2 2-2" fill="#f3a63b"/></g>`);
+    if(d==='bubbles')o+=`<circle cx="${x}" cy="${y}" r="${(3+r()*7).toFixed(1)}" fill="none" stroke="#bff2ff" stroke-width="1.5" opacity=".3"/>`+(i%3===0?`<g transform="translate(${(r()*w)|0} ${y}) scale(${z})" opacity=".22"><circle cx="0" cy="0" r="8" fill="#e86a9a"/>${[-6,-2,2,6].map(t=>`<path d="M${t} 6q${t/2} 8 ${t} 12" stroke="#e86a9a" stroke-width="2" fill="none"/>`).join('')}</g>`:'');
+    if(d==='lava')o+=(i%3===0?`<g transform="translate(${x} ${y}) scale(${z*1.4})" opacity=".25"><path d="M-22 14l12-24h20l12 24z" fill="#3a1a12"/><path d="M-6 -10q6 8 12 0" stroke="#ff7a1a" stroke-width="3" fill="none"/></g>`:`<circle cx="${x}" cy="${y}" r="${(1.5+r()*2.5).toFixed(1)}" fill="#ff8a3a" opacity="${(.25+r()*.4).toFixed(2)}"/>`);
+    if(d==='clouds')o+=`<g transform="translate(${x} ${y}) scale(${z})" opacity=".22"><circle cx="-9" cy="2" r="7" fill="#fff"/><circle cx="0" cy="-3" r="9" fill="#fff"/><circle cx="10" cy="2" r="7" fill="#fff"/><rect x="-16" y="2" width="33" height="7" rx="3.5" fill="#fff"/></g>`+(i===4?`<g transform="translate(${x} ${y-30})" opacity=".25"><rect x="-12" y="-10" width="24" height="18" fill="#e8ecff"/><path d="M-14 -10l4-6 4 6M-4 -10l4-8 4 8M6 -10l4-6 4 6" fill="#f3c24b"/></g>`:'');
     if(d==='stars')o+=`<circle cx="${x}" cy="${y}" r="${(1+r()*2).toFixed(1)}" fill="#fff" opacity="${(.3+r()*.5).toFixed(2)}"/>`+(i%3===0?`<circle cx="${(r()*w)|0}" cy="${(r()*h)|0}" r="9" fill="#f3c24b" opacity=".18"/>`:'');
   }
   return o;
@@ -1412,10 +1545,10 @@ function levels(back,focusK){
   // фоны глав
   let bg='',path='',nodes='';
   for(let k=1;k<=maxCh;k++){const ch=chapterOf(k);const its=pos.filter(i=>i.k===k);const top=Math.min(...its.map(i=>i.y-i.h/2)),bot=Math.max(...its.map(i=>i.y+i.h/2))+(k===1?40:0);
-    bg+=`<svg class="map-bg" style="top:${top}px;height:${bot-top}px" viewBox="0 0 ${W} ${bot-top}" preserveAspectRatio="none"><defs><linearGradient id="mg${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${ch.c[1]}"/><stop offset="1" stop-color="${ch.c[0]}"/></linearGradient></defs><rect width="${W}" height="${bot-top}" fill="url(#mg${k})"/>${decor(ch.d,W,bot-top,k*31)}</svg>`}
+    bg+=`<svg class="map-bg" style="top:${top}px;height:${bot-top}px" viewBox="0 0 ${W} ${bot-top}" preserveAspectRatio="none"><defs><linearGradient id="mg${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${ch.c[1]}"/><stop offset="1" stop-color="${ch.c[0]}"/></linearGradient></defs><rect width="${W}" height="${bot-top}" fill="url(#mg${k})"/>${decor(ch.d,W,bot-top,k*31)}${ch.gold?decor('stars',W,bot-top,k*17):''}</svg>`}
   const pts=pos.filter(i=>i.t!=='head');path=`<svg class="map-path" viewBox="0 0 ${W} ${H}" style="height:${H}px"><path d="${pts.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join('')}" stroke="rgba(255,240,210,.35)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 13"/></svg>`;
   for(const it of pos){
-    if(it.t==='head'){const ch=chapterOf(it.k);nodes+=`<div class="map-head" style="top:${it.y-16}px">${LANG==='ru'?'Глава':'Chapter'} ${it.k} · ${ch.name}</div>`;continue}
+    if(it.t==='head'){const ch=chapterOf(it.k);nodes+=`<div class="map-head" style="top:${it.y-16}px">${LANG==='ru'?'Глава':'Chapter'} ${it.k} · ${ch.name}${ch.hero?` · ${S.coll[ch.hero]?'🏅':'⭐ '+zoneStars(it.k)+'/30'}`:''}</div>`;continue}
     if(it.t==='chest'){const done=cur>it.k*10,got=S.chest[it.k];
       nodes+=`<button class="map-chest${done&&!got?' ready':''}${got?' open':''}" data-k="${it.k}" style="left:${it.x}px;top:${it.y}px"${done&&!got?'':' tabindex="-1"'}><svg viewBox="0 0 40 34"><rect x="3" y="12" width="34" height="20" rx="3" fill="#a8672c" stroke="#5a3410" stroke-width="2"/><path d="M3 14q0-12 17-12t17 12z" fill="${got?'#6b3f18':'#c47c35'}" stroke="#5a3410" stroke-width="2"/><rect x="17" y="10" width="6" height="9" rx="1.5" fill="#f3c24b" stroke="#8a6410" stroke-width="1.5"/></svg></button>`;continue}
     const n=it.n,st=best[n]||0,isCur=n===cur,lock=n>cur;
@@ -1504,8 +1637,8 @@ window.__game={pause:pauseAudio,resume:resumeAudio};
 let S={level:1,coins:20,coll:{},muted:false};
 let G={cols:[],hist:[],sel:null,busy:false,extra:false,hint:null,just:-1,hid:[],par:0,ice:-1,lock:-1,key:-1,boss:0};
 const visRun=i=>runLen(G.cols[i]);  // скрытые того же цвета едут вместе с верхним
-function par3(){if(!G.par)return 0;const p=hiddenFor(curL())?G.par*1.2:G.par;return Math.ceil(p*1.15)+1}   // столько ходов или меньше = 3 звезды
-function par2(){return Math.ceil(par3()*1.35)}
+function par3(){if(!G.par)return 0;const L=curL(),p=hiddenFor(L)?G.par*1.2:G.par;return L>=221?Math.ceil(p):hardL(L)?Math.ceil(p*1.06):Math.ceil(p*1.15)+1}   // столько ходов или меньше = 3 звезды
+function par2(){return Math.ceil(par3()*(hardL(curL())?1.2:1.35))}
 function starsFor(m){if(!G.par)return 3;let st=m<=par3()?3:m<=par2()?2:1;return st}
 function load(){try{const v=JSON.parse(localStorage.getItem(KEY));if(v&&typeof v==='object')S=Object.assign(S,v)}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}try{P.saveCloud&&P.saveCloud(S)}catch(e){}}
@@ -1518,8 +1651,8 @@ const LV_CACHE=new Map();
 const lvKey=()=>G.mode?G.mode+':'+G.dpL+':'+sideSeed():'L'+S.level;
 function lvPar(){const big=G.cols.flat().length>36;  // 10+ начинок: точный поиск слишком долгий, берём почти точный
   G.par=shortest(G.cols,big?20000:60000,big?1.3:1)||shortest(G.cols,20000,2)||genLevel.par||0}
-function lvBuild(){RULE.ice=RULE.lock=RULE.key=RULE.sticky=RULE.big=-1;genLevel.par=0;G.cols=G.mode?genLevel(G.dpL,sideSeed()):(genLevel(S.level)||genLevel(1));rollRules();lvPar()}
-function lvStore(k){LV_CACHE.set(k,{cols:JSON.parse(JSON.stringify(G.cols)),par:G.par,ice:G.ice,lock:G.lock,key:G.key,sticky:G.sticky,big:G.big});if(LV_CACHE.size>8)LV_CACHE.delete(LV_CACHE.keys().next().value)}
+function lvBuild(){RULE.ice=RULE.lock=RULE.key=RULE.sticky=RULE.big=RULE.small=-1;RULE.bigCap=5;genLevel.par=0;G.cols=G.mode?genLevel(G.dpL,sideSeed()):(genLevel(S.level)||genLevel(1));rollRules();lvPar()}
+function lvStore(k){LV_CACHE.set(k,{cols:JSON.parse(JSON.stringify(G.cols)),par:G.par,ice:G.ice,lock:G.lock,key:G.key,sticky:G.sticky,big:G.big,small:G.small,bigCap:G.bigCap});if(LV_CACHE.size>8)LV_CACHE.delete(LV_CACHE.keys().next().value)}
 function lvPrefetch(L){if(G.mode||G.busy||LV_CACHE.has('L'+L))return;
   const sv={};['cols','par','ice','lock','key','sticky','big'].forEach(x=>sv[x]=G[x]);const rs={...RULE},lv=S.level;
   try{S.level=L;lvBuild();lvStore('L'+L)}catch(e){}finally{S.level=lv;Object.assign(G,sv);Object.assign(RULE,rs)}}
@@ -1528,19 +1661,21 @@ function startLevel(keepCols){
   if(!keepCols&&restoreMain())return;
   G.cat=RULE.cat=-1;
   if(!keepCols){const k=lvKey(),c=LV_CACHE.get(k);
-    if(c){G.cols=JSON.parse(JSON.stringify(c.cols));['ice','lock','key','sticky','big'].forEach(x=>G[x]=c[x]);syncRules();G.par=c.par}
+    if(c){G.cols=JSON.parse(JSON.stringify(c.cols));['ice','lock','key','sticky','big','small','bigCap'].forEach(x=>G[x]=c[x]);syncRules();G.par=c.par}
     else{lvBuild();lvStore(k)}}
   else{genLevel.par=0;syncRules();lvPar()}
-  G.boss=isBoss(curL())&&!G.mode?Math.ceil(G.par*1.5)+3+(perk('angelok')?4+hLv('angelok'):0):0;G.perkHint=G.perkShake=false;G.usedHint=false;
+  G.boss=isBoss(curL())&&!G.mode?(hardL(curL())?Math.ceil(G.par*1.3)+2:Math.ceil(G.par*1.5)+3)+(perk('angelok')?4+hLv('angelok'):0):0;G.perkHint=G.perkShake=false;G.usedHint=false;
   G.hid=G.cols.map(c=>hiddenFor(curL())?Math.max(0,c.length-1):0);
   G.hist=[];G.sel=null;G.extra=0;G.freeUndo=0;G.bossAd=0;G.leaving=false;G.hint=null;G.just=-1;G.busy=false;
   rollSpecial();
   if(!G.mode&&!S.replay&&S.level>(S.lvSeen||0)){S.lvSeen=S.level;goal('level_start',{level:S.level,first:true})}
   render();layout();hud();lvPrefetchSoon();boomIntro();
+  if(gateLocked(S.level))setTimeout(()=>{if($('ov').hidden&&gateLocked(S.level))gateSheet()},700);
+  if(!G.mode&&hardL(S.level)&&!S.hardSeen){S.hardSeen=1;save();setTimeout(()=>toast(LANG==='ru'?'👨‍🍳 Шеф-режим! Звёзды теперь даются строже, а пароварки бывают разного размера':'👨‍🍳 Chef mode! Stars are stricter now and steamers come in different sizes'),1500)}
   try{P.gpStart&&P.gpStart()}catch(e){}
 }
 function hud(){
-  $('lvl').textContent=(G.mode==='tw'?(LANG==='ru'?'🗼 Этаж ':'🗼 Floor ')+S.tower.f:G.mode==='du'?(LANG==='ru'?'⚔️ Дуэль':'⚔️ Duel'):G.mode==='dp'?T('dpHud'):T('level')+S.level)+' · '+T('movesHud')(G.hist.length,par3())+(S.replay===S.level?' · '+T('replayTag'):'')+(G.boss?' · '+T('bossHud')(G.boss-G.hist.length):'')+(G.hot>=0&&!G.hotPaid&&G.hist.length<G.hotN?' · '+T('hotHud')(G.hotN-G.hist.length):'')+(bombLive()?' · 💣 '+(G.bombN-G.hist.length):'');boomHud();
+  $('lvl').textContent=(G.mode==='tw'?(LANG==='ru'?'🗼 Этаж ':'🗼 Floor ')+S.tower.f:G.mode==='du'?(LANG==='ru'?'⚔️ Дуэль':'⚔️ Duel'):G.mode==='dp'?T('dpHud'):T('level')+S.level)+' · '+T('movesHud')(G.hist.length,par3())+(S.replay===S.level?' · '+T('replayTag'):'')+(G.boss?' · '+T('bossHud')(G.boss-G.hist.length):'')+(G.hot>=0&&!G.hotPaid&&G.hist.length<G.hotN?' · '+T('hotHud')(G.hotN-G.hist.length):'')+(bombLive()?' · 💣 '+(G.bombN-G.hist.length):'')+(G.conv?' · 🔁 '+Math.max(0,G.conv.next-G.hist.length):'');boomHud();
   const pr=(id,v)=>{$(id).querySelector('.price').innerHTML=typeof v==='number'?'<span class="coin"></span>'+v:v};
   pr('btnHint',perk('shef')&&!G.perkHint?'⚡ 0':S.freeHint>0?T('freeHint')(S.freeHint):hintCost());
   pr('btnUndo',perk('ninja')?'⚡ 0':(S.level<=10||(G.freeUndo||0)<upg('undo'))?0:2);try{$('btnRestart').dataset.c=restartCost()||''}catch(e){}pr('btnShake',perk('mag')&&!G.perkShake?'⚡ 0':pm(20));pr('btnExtra',extraCost());
@@ -1560,6 +1695,8 @@ function hud(){
   else if(G.ice>=0&&S.level<=14) tip.textContent=T('iceTip');
   else if(G.lock>=0&&S.level<=19) tip.textContent=T('lockTip');
   else if(G.sticky>=0&&S.level<=124) tip.textContent=LANG==='ru'?'🍯 Липкая пароварка: класть можно, доставать нельзя. Думай заранее!':'🍯 Sticky steamer: you can put in but never take out. Plan ahead!';
+  else if(G.small>=0&&S.level<=HARD+14) tip.textContent=LANG==='ru'?'Маленькая пароварка вмещает только 3 пельменя, закрыть её нельзя':'The small steamer holds only 3 and can\'t be closed';
+  else if(G.big>=0&&G.bigCap===6&&S.level<=HARD+30) tip.textContent=LANG==='ru'?'Огромная пароварка вмещает 6 пельменей':'The huge steamer holds 6';
   else if(G.big>=0&&S.level<=145) tip.textContent=LANG==='ru'?'Большая пароварка вмещает 5 пельменей':'The big steamer holds 5 dumplings';
   else if(hiddenFor(S.level)&&S.level<=32) tip.textContent=T('hiddenTip');
   else if(emptiesFor(S.level)===1&&S.level<=22) tip.textContent=T('oneEmptyTip');
@@ -1605,14 +1742,15 @@ function render(){
   G.cols.forEach((c,i)=>{
     const done=isDone(c);
     const bl=blockedCol(G.cols,i);
-    let cls='col'+(done?' done':'')+(i===G.just?' just':'')+(bl?' '+bl:'')+(i===RULE.sticky?' sticky':'')+(i===RULE.big?' big':'')+(i===G.flour?' flour':'')+(i===RULE.cat?' cat':'');
+    let cls='col'+(done?' done':'')+(i===G.just?' just':'')+(bl?' '+bl:'')+(i===RULE.sticky?' sticky':'')+(i===RULE.big?' big'+(RULE.bigCap===6?' huge':''):'')+(i===RULE.small?' small':'')+(i===G.flour?' flour':'')+(i===RULE.cat?' cat':'');
     if(G.hint){if(G.hint[0]===i)cls+=' hint-from';if(G.hint[1]===i)cls+=' hint-to';}
     const rl=(G.sel===i)?visRun(i):0;if(done)G.hid[i]=0;if(i===G.flour&&(!c.length||done))G.flour=-1;const hd=i===G.flour?c.length:(G.hid[i]||0);  // закрытая пароварка раскрывается целиком
     h+=`<div class="${cls}" data-i="${i}" role="button" tabindex="0" aria-label="${(bl?T(bl+'Aria')+'. ':'')+T('colAria')(i+1,c.map((x,t)=>t<hd?'?':fname(x)).join(', '))}"><div class="steam"><i></i><i></i><i></i></div><div class="lid"></div>${bl==='lock'?`<div class="padlock"><svg viewBox="0 0 40 44"><path d="M11 20v-7a9 9 0 0 1 18 0v7" stroke="#c9ced6" stroke-width="5" fill="none"/><rect x="5" y="19" width="30" height="23" rx="5" fill="#f3c24b" stroke="#8a6410" stroke-width="2"/></svg><span class="pk">${fillSVG(G.key)}</span></div>`:''}${bl==='ice'?'<div class="frost"></div>':''}${i===RULE.cat?'<div class="kitty">🐱</div>':''}<div class="stack">`;
     for(let t=0;t<capOf(i);t++){
       const x=c[t];let dp='';
       if(x!==undefined){const lift=G.sel===i&&t>=c.length-rl;const sp=t<hd?'':(x===G.key&&G.lock>=0&&blockedCol(G.cols,G.lock))?' key':x===G.gold?' gold':(x===G.bomb&&bombLive())?' bomb':(x===G.hot&&!G.hotPaid&&G.hist.length<G.hotN)?' hot':'';dp=`<div class="dp${lift?' lift':''}${t<hd?' hid':''}${sp}">${t<hd?HIDDEN_SVG:fillSVG(x)}</div>`;}
-      h+=`<div class="tier">${dp}</div>`;
+      const bdg=t?'':(i===RULE.small?'<span class="capb s">3</span>':i===RULE.big&&RULE.bigCap===6?'<span class="capb h">6</span>':'')+(G.tmr&&!G.tmr.off&&G.tmr.i===i?`<span class="tmr${G.tmr.left<=3?' hot':''}">⏳${G.tmr.left}</span>`:'');
+      h+=`<div class="tier">${dp}${bdg}</div>`;
     }
     h+='</div></div>';
   });
@@ -1625,10 +1763,10 @@ function layout(){
   // при котором пароварки не становятся заметно мельче: так новая пароварка встаёт рядом, а не одна внизу
   const cand=[];
   for(let rows=1;rows<=4;rows++){const per=Math.ceil(n/rows);if(rows>1&&Math.ceil(n/(rows-1))===per)continue;
-    const r=Math.ceil(n/per);const byW=(W-(per-1)*gx)/per;const byH=(H-(r-1)*gy-r*8)/(r*((RULE.big>=0?5:4)*.66+.46)+0.01);
+    const r=Math.ceil(n/per);const byW=(W-(per-1)*gx)/per;const byH=(H-(r-1)*gy-r*8)/(r*((RULE.big>=0?(RULE.bigCap||5):4)*.66+.46)+0.01);
     cand.push({per,rows:r,cw:Math.min(byW,byH,96)});if(per===1)break}
   const mx=Math.max(...cand.map(c=>c.cw));const best=cand.find(c=>c.cw>=mx*.84)||cand[0];
-  const cw=Math.max(36,Math.floor(best.cw));
+  const cw=Math.max(36,Math.floor(best.cw));G.perRow=best.per;
   document.documentElement.style.setProperty('--cw',cw+'px');
   board.style.width=(best.per*cw+(best.per-1)*gx)+"px";
 }
@@ -1637,7 +1775,8 @@ function toast(msg){const t=$('toast');if(t.parentNode!==document.body)document.
 function shake(i){const el=board.children[i];if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
 
 function tap(i,t){
-  if(G.busy)return;ensureAC();$('boostPop').hidden=true;
+  if(G.busy)return;ensureAC();
+  if(gateLocked(S.level)&&!G.mode&&!S.replay){gateSheet();return}$('boostPop').hidden=true;
   if(G.aim){const k=G.aim;boomAim(false);k==='pin'?pinAt(i):k==='ladle'?ladleAt(i,t):boomAt(i);return}
   const c=G.cols[i];
   if(G.sel===null&&i===RULE.cat){sfx.bad();shake(i);buzz(30);toast(T('catTap'));return}
@@ -1682,8 +1821,8 @@ function move(a,b){
     render();fls.forEach(f=>f.remove());hud();
     if(done){sfx.lid();buzz(30);onDone(b)}
     if(G.hot>=0&&!G.hotPaid&&G.hist.length===G.hotN&&!isDone(G.cols[b])){setTimeout(()=>toast(T('hotLost')),300);render()}
-    bombTick();catTick();
-    G.busy=false;
+    bombTick();catTick();tmrTick();convTick();
+    G.busy=!!G.convAnim;
     if(solved(G.cols)){G.busy=true;setTimeout(win,900)}
     else if(G.boss&&G.hist.length>=G.boss){G.busy=true;setTimeout(bossFail,600)}
   });
@@ -1747,7 +1886,7 @@ function win(){G.leaving=false;
   }
   const passed=S.level,moves=G.hist.length,st=starsFor(moves);
   const crown=G.par&&moves<=G.par&&S.level>=5;S.crown=S.crown||{};const newCrown=crown&&!S.crown[passed];if(crown){S.crown[passed]=1;if(newCrown){S.coins+=10;goal('crown',{level:passed})}}
-  S.best=S.best||{};const prev=S.best[passed]||0;if(st>prev)S.best[passed]=st;wkAdd(Math.max(0,st-prev)+(newCrown?1:0));
+  S.best=S.best||{};const prev=S.best[passed]||0;if(st>prev)S.best[passed]=st;setTimeout(zoneCheck,1200);wkAdd(Math.max(0,st-prev)+(newCrown?1:0));
   goal('level_done',{level:passed,stars:st,moves,par:G.par});
   qEvent('level');if(st===3)qEvent('star3');if(!G.usedHint)qEvent('nohint');
   if(S.replay===passed){ // переигровка: без сюрприза, награда только за улучшение
@@ -1886,6 +2025,8 @@ function album(fromWin){
     ${P.lb?`<button class="alt-btn" id="lbBtn">${T('lbBtn')}</button>`:''}
     ${P.invite?`<button class="alt-btn" id="invBtn">${RTx().btn}</button>`:''}
     ${P.remind?`<button class="ghost-btn" id="remBtn">${S.remind?T('remOff'):T('remOn')}</button>`:''}
+    <button class="alt-btn" id="langBtn">🌐 ${LANG==='ru'?'Language: English':'Язык: русский'}</button>
+    <button class="alt-btn" id="guideBtn">📖 ${LANG==='ru'?'Как играть':'How to play'}</button>
     <button class="alt-btn" id="achBtn">${T('achBtn')(ACH.filter(([id])=>(S.ach||{})[id]).length,ACH.length)}</button>
     ${P.review?`<button class="ghost-btn" id="rateBtn">${T('rateBtn')}</button>`:''}
     ${(P.donateStars||P.donateLink)?`<button class="ghost-btn" id="supBtn">${T('supBtn')}</button>`:''}`);
@@ -1896,7 +2037,8 @@ function album(fromWin){
   if(P.invite)$('invBtn').onclick=()=>invite(()=>album(fromWin));
   if(P.remind)$('remBtn').onclick=()=>setRemind(!S.remind,()=>album(fromWin));
   $('lvBtn2').onclick=()=>levels(()=>album(fromWin));
-  $('achBtn').onclick=()=>achSheet(()=>album(fromWin));
+  $('achBtn').onclick=()=>achSheet(()=>album(fromWin));$('guideBtn').onclick=()=>guide(()=>album(fromWin));
+  $('langBtn').onclick=()=>{S.lang=LANG==='ru'?'en':'ru';save();setLang(S.lang);applyI18n();goal('lang_switch',{lang:S.lang});render();hud();album(fromWin)};
   $('closeAlbum').onclick=()=>{closeOv();if(fromWin)nextLevel()};
   if(P.review)$('rateBtn').onclick=()=>rate(()=>album(fromWin));
   document.querySelectorAll('.card.owned').forEach(el=>{el.onclick=()=>share(CHARS.find(c=>c.id===el.dataset.id),fromWin,true);el.onpointerdown=()=>cardBlob(CHARS.find(c=>c.id===el.dataset.id)).catch(()=>{})});
@@ -1948,7 +2090,7 @@ const touch=matchMedia('(pointer:coarse)').matches;
 board.addEventListener('click',e=>{const c=e.target.closest('.col');if(!c)return;const tr=e.target.closest('.tier');tap(+c.dataset.i,tr?[...tr.parentNode.children].indexOf(tr):null)});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('owned')){e.preventDefault();e.target.click()}});
 board.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const c=e.target.closest('.col');if(c){e.preventDefault();tap(+c.dataset.i)}}});
-$('btnUndo').onclick=undo;$('btnHint').onclick=hint;$('lvlBtn').onclick=()=>{if(G.busy)return;levels()};$('btnExtra').onclick=extra;$('btnShake').onclick=shuffleBoard;$('boomBtn').onclick=boomTap;$('btnAlbum').onclick=()=>{ensureAC();album(false)};
+$('btnUndo').onclick=undo;$('btnHint').onclick=hint;$('lvlBtn').onclick=()=>{if(G.busy)return;levels()};$('btnExtra').onclick=extra;$('btnShake').onclick=shuffleBoard;$('boomBtn').onclick=boomTap;tipWire();$('btnAlbum').onclick=()=>{ensureAC();album(false)};
 $('btnSound').onclick=()=>{S.muted=!S.muted;save();ensureAC();hud();if(!S.muted)sfx.pick()};
 $('coinsBtn').onclick=()=>{if(G.busy)return;ensureAC();sfx.pick();shop()};
 const RESTART_COST=5;const restartCost=()=>!G.hist.length||S.level<=10||G.mode?0:pm(RESTART_COST);
@@ -1959,7 +2101,7 @@ addEventListener('contextmenu',e=>{if(!(e.target.classList&&(e.target.classList.
 
 function start(data){
   load();
-  setLang((()=>{try{return new URLSearchParams(location.search).get('lang')}catch(e){}})()||P.lang||navigator.language);applyI18n();
+  setLang((()=>{try{return new URLSearchParams(location.search).get('lang')}catch(e){}})()||S.lang||P.lang||navigator.language);applyI18n();
   if(SEASON){const gl=$('garland');gl.hidden=false;const cs=['#e85a3c','#f3c24b','#6fd6c8','#a596f2'];gl.innerHTML=Array.from({length:22},(_,i)=>`<i style="--c:${cs[i%4]};animation-delay:${(i%4)*.4}s"></i>`).join('');
     const sn=$('snow');sn.hidden=false;sn.innerHTML=Array.from({length:34},()=>{const z=2+Math.random()*4;return `<i style="left:${Math.random()*100}%;width:${z}px;height:${z}px;--dx:${(Math.random()*60-30).toFixed(0)}px;animation-duration:${(7+Math.random()*8).toFixed(1)}s;animation-delay:-${(Math.random()*15).toFixed(1)}s"></i>`}).join('');}
   if(P.cloud&&typeof P.cloud==='object'&&P.cloud.level&&P.cloud.level>=S.level)S=Object.assign(S,P.cloud);
@@ -1975,7 +2117,7 @@ function start(data){
   setTimeout(refCheck,1500);setTimeout(cafeRemind,4000);setTimeout(duelCheck,1200);
   setTimeout(()=>{setsCheck();rankCheck()},2600);
   setTimeout(()=>{if($('ov').hidden&&!G.busy)evIntro()},1200);
-  window.__pel={pinAt,ladleAt,catTick,boostPop,boomTap,fireAdd,bombLive,advent,advOpen,advState,hLv,reveal,LV_CACHE,lvPrefetch,starterOffer,starterGive,bossFail,surprise,RULE,priceMult,towerStart,duelStart,duelCheck,wkState,tourCheck,rating,pathCheck,stuckHelp,boxPick,rankCheck,setsCheck,hintCost,upg,evNow,evState,evTick,evIntro,qEvent,cafe,cafeTips,album,S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
+  window.__pel={gateSheet,gateLocked,gateHave,guide,chapterOf,zoneCheck,convTick,tmrTick,levels,pinAt,ladleAt,catTick,boostPop,boomTap,fireAdd,bombLive,advent,advOpen,advState,hLv,reveal,LV_CACHE,lvPrefetch,starterOffer,starterGive,bossFail,surprise,RULE,priceMult,towerStart,duelStart,duelCheck,wkState,tourCheck,rating,pathCheck,stuckHelp,boxPick,rankCheck,setsCheck,hintCost,upg,evNow,evState,evTick,evIntro,qEvent,cafe,cafeTips,album,S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
   try{P.ready&&P.ready()}catch(e){}
   goal('game_start',{level:S.level});
   setTimeout(lbPush,1500);
