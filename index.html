@@ -157,6 +157,7 @@ window.PLATFORM={
       try{self.uid=tg.initDataUnsafe.user.id;self.startParam=tg.initDataUnsafe.start_param||''}catch(e){}
       self.ref=ref=>fetch('/api/ref',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({initData:tg.initData,ref:ref||0})}).then(r=>r.ok?r.json():Promise.reject(r.status));
       self.invite=text=>{try{tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent('https://t.me/PelmennayaGameBot/play?startapp=r'+self.uid)+'&text='+encodeURIComponent(text))}catch(e){}};
+      self.remindCafe=at=>fetch('/api/remind',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({initData:tg.initData,cafe:at})}).catch(()=>{});
       self.remind=on=>new Promise(res=>{
         const go=()=>fetch('/api/remind',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({initData:tg.initData,on:!!on,tz:-new Date().getTimezoneOffset(),lang:self.lang||'ru'})}).then(r=>res(r.ok)).catch(()=>res(false));
         if(on&&tg.requestWriteAccess&&tg.isVersionAtLeast&&tg.isVersionAtLeast('6.9')){try{tg.requestWriteAccess(ok=>ok?go():res(false))}catch(e){go()}}else go();});
@@ -347,10 +348,14 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .crown-win{margin-top:6px;font-weight:800;color:var(--coin);font-size:14px;animation:pop .5s .5s both}.mcrown{position:absolute;top:-14px;right:-6px;font-size:14px}
 .seg{display:flex;gap:6px;justify-content:center;margin:6px 0}.seg-b{border:0;border-radius:999px;padding:6px 14px;font:inherit;font-weight:700;background:rgba(0,0,0,.08);color:inherit;cursor:pointer}.seg-b.on{background:var(--accent,#e85a3c);color:#fff}
 .map-modes{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}.map-modes .alt-btn{margin:0;padding:8px 12px;width:auto;font-size:13px}.map-modes .dim{opacity:.6}
-.ad-x2{display:flex;align-items:center;gap:6px;margin:8px auto 0;border:0;border-radius:999px;padding:8px 16px;font:inherit;font-weight:800;font-size:14px;background:linear-gradient(135deg,#f3c24b,#e8a03b);color:#3a2410;cursor:pointer;box-shadow:0 3px 0 #b97a22;animation:pop .4s .6s both}.ad-x2:disabled{opacity:.6}
+.rays{pointer-events:none}.ad-x2{position:relative;z-index:3;display:flex;align-items:center;gap:6px;margin:8px auto 0;border:0;border-radius:999px;padding:8px 16px;font:inherit;font-weight:800;font-size:14px;background:linear-gradient(135deg,#f3c24b,#e8a03b);color:#3a2410;cursor:pointer;box-shadow:0 3px 0 #b97a22;animation:pop .4s .6s both}.ad-x2:disabled{opacity:.6}
 .starter{position:relative;margin:10px 0 4px;padding:14px 12px 10px;border-radius:16px;background:linear-gradient(135deg,rgba(243,194,75,.22),rgba(232,90,60,.2));border:1.5px solid rgba(243,194,75,.6);text-align:center}.starter b{display:block;font-size:17px}.starter small{display:block;margin:4px 0 8px;opacity:.9}.starter .big-btn{margin:0}
 .st-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--coin);color:#3a2410;font-size:11px;font-weight:800;padding:2px 10px;border-radius:999px;white-space:nowrap}
-adsgram-task.ad-task{display:block;margin:6px 0;--adsgram-task-font-size:14px;--adsgram-task-icon-size:40px;--adsgram-task-icon-border-radius:10px;--adsgram-task-button-width:96px}.ad-task-b{padding:7px 10px;border-radius:10px;background:#e85a3c;color:#fff;font-weight:800;text-align:center;font-size:13px}.ad-task-b.done{background:#4f9a5f}.ad-task-rw{font-weight:800;color:var(--coin)}
+adsgram-task.ad-task{display:block;margin:6px 0;--adsgram-task-font-size:14px;--adsgram-task-icon-size:40px;--adsgram-task-icon-border-radius:10px;--adsgram-task-button-width:96px}.ad-task-b{padding:7px 10px;border-radius:10px;background:#e85a3c;color:#fff;font-weight:800;text-align:center;font-size:13px}.ad-task-b.done{background:#4f9a5f}.ad-task-rw{font-weight:800;color:var(--coin)}.ad-task-wrap{min-height:64px;margin:8px 0}
+.lv-b{position:absolute;top:4px;left:4px;min-width:16px;height:16px;border-radius:8px;background:var(--coin);color:#3a2410;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 3px}.hlv-stars{color:var(--coin);font-size:20px;letter-spacing:2px;margin-top:4px}.hlv-line{font-size:13px;margin-top:8px}.hlv-line small{opacity:.75}
+.adv-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:10px 0}.adv-c{aspect-ratio:1;border:0;border-radius:10px;background:rgba(255,255,255,.07);color:inherit;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.adv-c b{font-size:11px;opacity:.8}.adv-c span{font-size:15px;line-height:1.1}.adv-c.fut{opacity:.35;cursor:default}.adv-c.got{background:rgba(79,154,95,.35)}.adv-c.got span::after{content:'✓';font-size:10px;margin-left:1px}
+.adv-c.now{background:linear-gradient(135deg,#e85a3c,#f3c24b);color:#fff;animation:pulse 1.4s infinite}.adv-c.late{background:rgba(243,194,75,.18);box-shadow:inset 0 0 0 1.5px rgba(243,194,75,.5)}
 .rank-line{margin-top:6px;font-size:14px}.rank-line small{opacity:.75}
 .upg{width:100%;border:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
 .ach .ic.sets-ic{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;width:62px;min-width:62px;height:28px;background:none;border-radius:0;overflow:visible}.sets-ic svg{width:24px;height:auto;flex:0 0 24px;margin-right:-5px}
@@ -496,6 +501,7 @@ const CHARS=[
   {id:'zvezdochet',name:'Звездочёт',r:2,col:'#6b6fd6',face:'wink',acc:'wizard',ev:'star'},
   {id:'chempion',name:'Чемпион недели',r:2,col:'#ffd76a',face:'star',acc:'crown+scarf',ev:'tour'},
   {id:'bashnya',name:'Хозяин башни',r:2,col:'#8fb3d9',face:'smug',acc:'chef+mustache',ev:'tower'},
+  {id:'kuranty',name:'Пельмень-Куранты',r:2,col:'#f3d27a',face:'star',acc:'santa+scarf',ev:'advent'},
   {id:'duelyant',name:'Дуэлянт',r:2,col:'#d9534f',face:'wink',acc:'mask+tophat',ev:'duel'}
 ];
 const SEASON=(()=>{if(window.__season!=null)return !!window.__season;const d=new Date(),m=d.getMonth();return m===10||m===11||(m===0&&d.getDate()<=15)})();
@@ -579,7 +585,7 @@ const STR={
   play:'Play',nyTip:'Holiday season: festive heroes are hiding in the surprises!',movesHud:(m,p)=>'moves '+m+(p?'/'+p:''),movesWin:(m,p)=>'Moves: '+m+(p?'. For 3 stars: '+p+' or fewer':''),replayBtn:'Replay for 3 stars',replayTag:'replay',replayBetter:'New best! Coins for the improvement.',replaySame:'No new best this time. Give it another go.',hiddenTip:'Only the top dumpling is visible. The rest show up once you free them.',oneEmptyTip:'Only one empty steamer now. Think one move ahead!',supBtn:'Support the author',supT:'Support Dumpling Sort',supP:'The game is free with no pushy ads. If you enjoy it, you can support the author: it helps bring more heroes and levels.',supStars:n=>n+' ⭐',supBoosty:'Support on Boosty',supThx:'Thank you for your support! 💛',supFail:'Payment did not go through',rateT:'Enjoying Dumpling Sort?',rateP:'Rate the game and leave a few words. Reviews appear in our Telegram channel.',rateAria:n=>n+' of 5 stars',ratePh:'What did you like, or what should we improve? (optional)',rateSend:'Send',rateSending:'Sending…',rateLater:'Not now',rateBtn:'Rate the game',rateThx:'Thanks for your review!',rateFail:'Could not send. Please try again later.',rateNeed:'Pick a number of stars',nyAlbum:'Holiday collection',close:'Close'}
 };
 const FILL_EN=['meat','cabbage','pumpkin','blueberry','cheese','crab','mushroom','beetroot','cherry','spinach','sour cream','chocolate'];
-const NAME_EN={chempion:'Weekly Champion',bashnya:'Tower Master',duelyant:'Duelist',tvorozhok:'Curdy',shpinatik:'Spinach Kid',kukuruzka:'Corny',baklazhan:'Eggplant',perchik:'Pepper',medovik:'Honey Cake',princessa:'Princess Dumpling',baron:'Baron von Dumpling',rocker:'Rocker Bun',zimushka:'Snowy Muffs',imperator:'Dumpling Emperor',feya:'Dough Fairy',ogonyok:'Little Flame',zolotko:'Goldie',zvezdochet:'Stargazer',puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
+const NAME_EN={kuranty:'Midnight Chime Dumpling',chempion:'Weekly Champion',bashnya:'Tower Master',duelyant:'Duelist',tvorozhok:'Curdy',shpinatik:'Spinach Kid',kukuruzka:'Corny',baklazhan:'Eggplant',perchik:'Pepper',medovik:'Honey Cake',princessa:'Princess Dumpling',baron:'Baron von Dumpling',rocker:'Rocker Bun',zimushka:'Snowy Muffs',imperator:'Dumpling Emperor',feya:'Dough Fairy',ogonyok:'Little Flame',zolotko:'Goldie',zvezdochet:'Stargazer',puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
 const P=window.PLATFORM||{};
 let LANG='ru';
 function setLang(l){LANG=(l&&String(l).slice(0,2)==='ru')||['be','uk','kk','uz'].includes(String(l).slice(0,2))?'ru':(l?'en':'ru');document.documentElement.lang=LANG}
@@ -784,6 +790,33 @@ function shop(back){
     S.skin[kind]=x.id;save();applySkin();hud();shop(back);achCheck();
   });
 }
+/* ---------- новогодний адвент-календарь (1–31 декабря) ---------- */
+function advDate(){const d=window.__advDate?new Date(window.__advDate):new Date();return d}
+const advOn=()=>advDate().getMonth()===11,advDay=()=>advDate().getDate();
+function advState(){const y=advDate().getFullYear();if(!S.adv||S.adv.y!==y)S.adv={y,o:{}};return S.adv}
+const advReady=()=>advOn()&&!advState().o[advDay()];
+function advGift(d){if(d===31)return {t:'hero'};if(d%7===0)return {t:'box'};if([15,24].includes(d))return {t:'ny'};if([5,12,19,26].includes(d))return {t:'hints',n:3};return {t:'coins',n:20+d*2}}
+const ADV_LATE=30;
+function advent(back){if(!advOn())return;const RU=LANG==='ru',st=advState(),today=advDay(),opened=Object.keys(st.o).length;
+  const ic=g=>g.t==='hero'?'👑':g.t==='box'?'🎁':g.t==='ny'?'⛄':g.t==='hints'?'💡':'🪙';
+  const cells=Array.from({length:31},(_,i)=>{const d=i+1,g=advGift(d),got=st.o[d],cls=got?'got':d===today?'now':d<today?'late':'fut';
+    return `<button class="adv-c ${cls}" data-d="${d}"${cls==='fut'?' tabindex="-1"':''}><b>${d}</b><span>${got||d<=today?ic(g):'❄'}</span></button>`}).join('');
+  openOv(`<h2>🎄 ${RU?'Новогодний календарь':'Advent calendar'}</h2><p>${RU?`Каждый день декабря новый подарок. Открой 25 окошек, и 31 декабря тебя ждёт эксклюзивный легендарный герой. Пропущенный день можно открыть за ${ADV_LATE} монет или рекламу.`:`A new gift every day of December. Open 25 windows and on December 31 an exclusive legendary hero is yours. A missed day costs ${ADV_LATE} coins or an ad.`}</p>
+    <p style="font-size:13px;margin-top:4px">${RU?`Открыто: ${opened} из 31`:`Opened: ${opened} of 31`}</p><div class="adv-grid">${cells}</div><button class="big-btn" id="advBack">${T('back')}</button>`);
+  $('advBack').onclick=()=>{closeOv();back&&back()};
+  document.querySelectorAll('.adv-c.now,.adv-c.late').forEach(el=>el.onclick=()=>{const d=+el.dataset.d;
+    if(d===today)return advOpen(d,back);
+    const pay=()=>{if(S.coins<ADV_LATE){sfx.bad();toast(T('noCoins')(ADV_LATE-S.coins));return}S.coins-=ADV_LATE;advOpen(d,back)};
+    if(adOk()){openOv(`<h2>${RU?`${d} декабря`:`December ${d}`}</h2><p>${RU?'Этот день пропущен. Как открыть?':'You missed this day. How to open it?'}</p><button class="big-btn" id="alAd">📺 ${RU?'За рекламу':'Watch an ad'}</button><button class="alt-btn" id="alC">${RU?'За':'For'} <span class="coin"></span>${ADV_LATE}</button><button class="ghost-btn" id="alB">${T('back')}</button>`);
+      $('alB').onclick=()=>advent(back);$('alC').onclick=pay;$('alAd').onclick=()=>{$('alAd').disabled=true;P.rewarded(ok=>{if(ok)advOpen(d,back);else{adFailAt=Date.now();toast(T('adFail'));advent(back)}})}}
+    else pay()})}
+function advOpen(d,back){const RU=LANG==='ru',st=advState();if(st.o[d])return;st.o[d]=1;const g=advGift(d);goal('advent',{day:d,gift:g.t});sfx.chime(2);buzz([20,40,20]);
+  const done=(txt)=>{save();hud();openOv(`<h2>🎁 ${RU?`${d} декабря`:`December ${d}`}</h2><p style="font-size:18px;margin:12px 0">${txt}</p><button class="big-btn" id="aoOk">${RU?'К календарю':'Back to calendar'}</button>`);$('aoOk').onclick=()=>advent(back)};
+  if(g.t==='coins'){S.coins+=g.n;return done(`+${g.n} <span class="coin"></span>`)}
+  if(g.t==='hints'){S.freeHint=(S.freeHint||0)+g.n;return done(RU?`+${g.n} бесплатные подсказки 💡`:`+${g.n} free hints 💡`)}
+  if(g.t==='box'){save();return surprise({title:RU?`${d} декабря: сюрприз!`:`December ${d}: surprise!`,sub:RU?'Внутри редкий или легендарный герой':'A rare or legendary hero inside',daily:true,minR:1})}
+  if(g.t==='ny'){const ch=CHARS.find(c=>c.ny&&!S.coll[c.id]);if(!ch){S.coins+=100;return done(`+100 <span class="coin"></span>`)}save();return surprise({title:RU?'Новогодний герой!':'New Year hero!',sub:RU?'Сожми, чтобы открыть':'Squeeze to open',daily:true,pick:ch})}
+  if(g.t==='hero'){if(Object.keys(st.o).length>=25){closeOv();heroPrize('kuranty',RU?'С Новым годом!':'Happy New Year!',200)}else{S.coins+=200;done(RU?`+200 <span class="coin"></span><br><small>Для героя нужно было открыть 25 окошек</small>`:`+200 <span class="coin"></span><br><small>The hero needed 25 windows</small>`)}}}
 /* ---------- стартовый набор (Stars, один раз) ---------- */
 const STARTER={coins:500,hints:5};
 const starterOk=()=>!!(P.buyCoins&&P.buyCoins.packs.some(x=>x[0]==='starter'))&&!S.starter2&&S.level>=10;
@@ -801,12 +834,21 @@ function starterOffer(){if(!starterOk()||S.starterSeen)return false;S.starterSee
   starterWire(closeOv);$('stNo').onclick=()=>{closeOv();startLevel()};goal('starter_offer');return true}
 /* ---------- задания Adsgram (Telegram) ---------- */
 const AD_TASK_COINS=50;
-function adTaskHtml(){if(!P.adTask||S.level<5)return '';const RU=LANG==='ru';
-  return `<div class="shop-h">${RU?'Задания за монеты':'Tasks for coins'}</div><adsgram-task data-block-id="${P.adTask}" class="ad-task"><span slot="reward" class="ad-task-rw">+${AD_TASK_COINS} 🪙</span><div slot="button" class="ad-task-b">${RU?'Выполнить':'Go'}</div><div slot="claim" class="ad-task-b">${RU?'Забрать':'Claim'}</div><div slot="done" class="ad-task-b done">✓</div></adsgram-task>`}
-function adTaskWire(){const el=document.querySelector('adsgram-task');if(!el)return;
-  el.addEventListener('reward',()=>{S.coins+=AD_TASK_COINS;save();hud();sfx.chime(1);toast(LANG==='ru'?`Задание выполнено! +${AD_TASK_COINS} монет`:`Task done! +${AD_TASK_COINS} coins`);goal('ad_task')});
-  const hide=()=>{const h=el.previousElementSibling;el.remove();if(h&&h.classList.contains('shop-h'))h.remove()};
-  el.addEventListener('onBannerNotFound',hide);el.addEventListener('onError',hide)}
+let adTaskNone=0;   // когда Adsgram ответил «заданий нет»: прячем кнопку на 30 минут
+function adTaskHtml(){if(!P.adTask||S.level<5||Date.now()-adTaskNone<30*6e4)return '';const RU=LANG==='ru';
+  return `<button class="alt-btn" id="adTaskBtn" style="margin-top:8px">📋 ${RU?`Задания за монеты · +${AD_TASK_COINS} за каждое`:`Tasks for coins · +${AD_TASK_COINS} each`}</button>`}
+function adTaskWire(back){if(!$('adTaskBtn'))return;$('adTaskBtn').onclick=()=>adTaskOpen(back)}
+function adTaskOpen(back){const RU=LANG==='ru';let settled=false;
+  openOv(`<h2>${RU?'Задания за монеты':'Tasks for coins'}</h2><p>${RU?`Выполни задание партнёра и получи ${AD_TASK_COINS} монет.`:`Complete a partner task and get ${AD_TASK_COINS} coins.`}</p>
+    <div class="ad-task-wrap"><adsgram-task data-block-id="${P.adTask}" class="ad-task"><span slot="reward" class="ad-task-rw">+${AD_TASK_COINS} 🪙</span><div slot="button" class="ad-task-b">${RU?'Выполнить':'Go'}</div><div slot="claim" class="ad-task-b">${RU?'Забрать':'Claim'}</div><div slot="done" class="ad-task-b done">✓</div></adsgram-task></div>
+    <button class="ghost-btn" id="atBack">${T('back')}</button>`);
+  $('atBack').onclick=()=>{closeOv();back&&back()};
+  const el=document.querySelector('adsgram-task'),none=()=>{if(settled)return;settled=true;adTaskNone=Date.now();closeOv();toast(RU?'Заданий пока нет, загляни позже':'No tasks right now, check back later');back&&back()};
+  el.addEventListener('reward',()=>{S.coins+=AD_TASK_COINS;save();hud();sfx.chime(1);toast(RU?`Задание выполнено! +${AD_TASK_COINS} монет`:`Task done! +${AD_TASK_COINS} coins`);goal('ad_task')});
+  el.addEventListener('onBannerNotFound',none);el.addEventListener('onError',none);el.addEventListener('onTooLongSession',none);
+  // запасной вариант: если за 7 секунд задание так и не загрузилось (серые заглушки), считаем, что заданий нет
+  setTimeout(()=>{if(settled||!document.body.contains(el))return;const r=el.shadowRoot;if(r&&!r.querySelector('img[src]:not([src=""])'))none()},7000);
+  goal('ad_task_open')}
 /* ---------- моя пельменная ---------- */
 // [id, цена, монет в час]
 const CAFE=[['sign',50,1],['lamp',80,1],['pic',100,1],['plant',120,1],['table1',150,2],['counter',200,2],['samovar',250,2],['table2',300,2],['garland',350,2],['chef',450,3],['table3',500,2],
@@ -820,6 +862,7 @@ const CT={ru:{t:'Моя пельменная',p:'Обустраивай кафе
 const CTx=()=>CT[LANG]||CT.en;
 function cafeRate(){const o=(S.cafe&&S.cafe.own)||{};return Math.round((1+CAFE.reduce((s,[id,,r])=>s+(o[id]?r:0),0))*[1,1.25,1.5,2][upg('tips')]*10)/10}
 function cafeTips(){if(!S.cafe||!S.cafe.t||!Object.keys(S.cafe.own||{}).length)return 0;const h=Math.min(CAFE_CAP,(Date.now()-S.cafe.t)/36e5);return Math.floor(h*cafeRate())}
+function cafeRemind(){try{if(!P.remindCafe||!S.remind||!S.cafe||!S.cafe.t||!Object.keys(S.cafe.own||{}).length)return;const at=S.cafe.t+CAFE_CAP*36e5;if(S.cafe.rAt===at)return;S.cafe.rAt=at;save();P.remindCafe(at)}catch(e){}}
 function cafeScene2(){
   const o=S.cafe.own,has=id=>!!o[id];
   let s=`<svg viewBox="0 0 320 200" class="cafe-bg" aria-hidden="true"><rect width="320" height="132" fill="#2f3f5a"/>${Array.from({length:8},(_,i)=>`<rect x="${i*40+18}" y="0" width="2" height="132" fill="#3b4d6b"/>`).join('')}
@@ -878,13 +921,13 @@ function cafe(back,fl){
     <button class="ghost-btn" id="cafeBack">${T('back')}</button>`);
   $('cafeBack').onclick=()=>{closeOv();back&&back()};
   document.querySelectorAll('.seg-b').forEach(b=>b.onclick=()=>{sfx.pick();cafe(back,+b.dataset.fl)});
-  if($('cafeTake'))$('cafeTake').onclick=()=>{const n=cafeTips();if(!n)return;S.coins+=n;S.cafe.t=Date.now();save();hud();sfx.chime(1);buzz([20,40,20]);toast(C.got(n));goal('cafe_tips',{n});qEvent&&qEvent('cafe');cafe(back,fl)};
+  if($('cafeTake'))$('cafeTake').onclick=()=>{const n=cafeTips();if(!n)return;S.coins+=n;S.cafe.t=Date.now();save();hud();sfx.chime(1);buzz([20,40,20]);toast(C.got(n));goal('cafe_tips',{n});cafeRemind();qEvent&&qEvent('cafe');cafe(back,fl)};
   document.querySelectorAll('.cafe-it').forEach(el=>el.onclick=()=>{
     const [id,p]=CAFE.find(x=>x[0]===el.dataset.id);
     if(S.coins<p){sfx.bad();buzz(30);toast(T('noCoins')(p-S.coins));return}
     const pend=cafeTips();S.coins-=p;S.cafe.own[id]=1;
     if(!S.cafe.t)S.cafe.t=Date.now();else{S.coins+=pend;S.cafe.t=Date.now()} // при покупке отдаём накопленное по старой ставке
-    save();hud();sfx.chime(2);buzz([20,40,20]);toast(C.bought);goal('cafe_buy',{item:id,price:p});cafe(back,fl);achCheck();
+    save();hud();sfx.chime(2);buzz([20,40,20]);toast(C.bought);cafeRemind();goal('cafe_buy',{item:id,price:p});cafe(back,fl);achCheck();
   });
 }
 /* ---------- пригласи друга (только Telegram) ---------- */
@@ -1060,6 +1103,9 @@ function questsHtml(){
 }
 /* ---------- помощники ---------- */
 const perk=id=>S.helper===id&&!!S.coll[id];
+/* уровни героев: каждый повтор поднимает уровень (до 5), помощник сильнее */
+const HMAX=5,hLv=id=>1+Math.min(HMAX-1,(S.hlv&&S.hlv[id])||0);
+const helperBonus=()=>S.helper&&S.coll[S.helper]?(hLv(S.helper)-1)*2:0;
 function helperHtml(){const c=CHARS.find(x=>x.id===S.helper&&S.coll[x.id]);return `<div class="shop-h">${T('helperT')}</div><p style="text-align:left;margin:2px 0 0">${c?T('helperIs')(cname(c),T('perk')[c.id]):T('helperNone')}</p>`}
 /* ---------- лёд, замок, боссы ---------- */
 const isBoss=L=>L>=10&&L%10===0;
@@ -1204,7 +1250,7 @@ function duelCheck(){let prm=P.startParam||'';try{prm=new URLSearchParams(locati
   const k=m[1]+'_'+vs;S.duelSeen=S.duelSeen||{};if(S.duelSeen[k])return;S.duelSeen[k]=1;save();
   const D=DUx();openOv(`<h2>⚔️ ${D.t}</h2><p>${D.tip({vs})}</p><button class="big-btn" id="duGo">${D.go}</button><button class="ghost-btn" id="duNo">${T('back')}</button>`);
   $('duGo').onclick=()=>duelStart(seed,L,vs);$('duNo').onclick=closeOv}
-function setRemind(on,after){P.remind(on).then(ok=>{if(ok){S.remind=on;save();toast(on?T('remYes'):T('remOffOk'));sfx.chime(1)}else toast(T('remNo'));after&&after()})}
+function setRemind(on,after){P.remind(on).then(ok=>{if(ok){S.remind=on;if(S.cafe)S.cafe.rAt=0;save();toast(on?T('remYes'):T('remOffOk'));sfx.chime(1);if(on)cafeRemind()}else toast(T('remNo'));after&&after()})}
 /* ---------- экран уровней ---------- */
 function playLevel(n){
   snapMain();G.mode='';
@@ -1256,9 +1302,10 @@ function levels(back,focusK){
     const n=it.n,st=best[n]||0,isCur=n===cur,lock=n>cur;
     nodes+=`<button class="map-lv${isCur?' cur':''}${lock?' locked':''}${isBoss(n)?' boss':''}" data-l="${n}" style="left:${it.x}px;top:${it.y}px"${lock?' tabindex="-1"':''}><b>${n}</b>${(S.crown||{})[n]?'<span class="mcrown">👑</span>':''}${!lock&&!isCur?`<span class="ss">${[1,2,3].map(k=>`<span class="${k<=st?'on':''}">${STAR_SVG}</span>`).join('')}</span>`:''}${isCur?`<span class="me">${dumpling('#f4a39b','happy',null)}</span>`:''}</button>`;
   }
-  openOv(`<div class="map-top"><h2>${T('lvT')}</h2><p>${T('lvP')(cur-1,tot)}</p><div class="map-modes">${P.lb?`<button class="alt-btn" id="mapLb">🏆 ${T('lbBtn')}</button>`:''}<button class="alt-btn${cur<TOWER_MIN?' dim':''}" id="mapTw">${cur<TOWER_MIN?'🔒 ':''}${TWx().btn((S.tower&&S.tower.f)||1)}</button>${P.shareParam?`<button class="alt-btn${cur<10?' dim':''}" id="mapDu">${cur<10?'🔒 ':''}${DUx().btn}</button>`:''}</div></div><div class="map-scroll" id="mapScroll"><div class="map" style="height:${H}px;width:${W}px">${bg}${path}${nodes}</div></div><button class="big-btn" id="lvBack">${T('back')}</button>`,'map-sheet');
+  openOv(`<div class="map-top"><h2>${T('lvT')}</h2><p>${T('lvP')(cur-1,tot)}</p><div class="map-modes">${advOn()?`<button class="alt-btn" id="mapAdv">🎄 ${LANG==='ru'?'Календарь':'Advent'}</button>`:''}${P.lb?`<button class="alt-btn" id="mapLb">🏆 ${T('lbBtn')}</button>`:''}<button class="alt-btn${cur<TOWER_MIN?' dim':''}" id="mapTw">${cur<TOWER_MIN?'🔒 ':''}${TWx().btn((S.tower&&S.tower.f)||1)}</button>${P.shareParam?`<button class="alt-btn${cur<10?' dim':''}" id="mapDu">${cur<10?'🔒 ':''}${DUx().btn}</button>`:''}</div></div><div class="map-scroll" id="mapScroll"><div class="map" style="height:${H}px;width:${W}px">${bg}${path}${nodes}</div></div><button class="big-btn" id="lvBack">${T('back')}</button>`,'map-sheet');
   $('lvBack').onclick=()=>{closeOv();back&&back()};
   if(P.lb)$('mapLb').onclick=()=>rating(()=>levels(back));
+  if($('mapAdv'))$('mapAdv').onclick=()=>advent(()=>levels(back));
   $('mapTw').onclick=()=>{if(cur<TOWER_MIN){toast(TWx().lock);return}towerStart()};
   if($('mapDu'))$('mapDu').onclick=()=>{if(cur<10){toast(DUx().lock);return}duelNew(()=>levels(back))};
   document.querySelectorAll('.map-lv:not(.locked)').forEach(el=>el.onclick=()=>{closeOv();playLevel(+el.dataset.l)});
@@ -1347,17 +1394,29 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}try{P.
 const $=id=>document.getElementById(id);
 const board=$('board'),wrap=$('boardWrap');
 
+/* ---------- уровень считается заранее, пока игрок играет предыдущий ---------- */
+const LV_CACHE=new Map();
+const lvKey=()=>G.mode?G.mode+':'+G.dpL+':'+sideSeed():'L'+S.level;
+function lvPar(){const big=G.cols.flat().length>36;  // 10+ начинок: точный поиск слишком долгий, берём почти точный
+  G.par=shortest(G.cols,big?20000:60000,big?1.3:1)||shortest(G.cols,20000,2)||genLevel.par||0}
+function lvBuild(){RULE.ice=RULE.lock=RULE.key=RULE.sticky=RULE.big=-1;genLevel.par=0;G.cols=G.mode?genLevel(G.dpL,sideSeed()):(genLevel(S.level)||genLevel(1));rollRules();lvPar()}
+function lvStore(k){LV_CACHE.set(k,{cols:JSON.parse(JSON.stringify(G.cols)),par:G.par,ice:G.ice,lock:G.lock,key:G.key,sticky:G.sticky,big:G.big});if(LV_CACHE.size>8)LV_CACHE.delete(LV_CACHE.keys().next().value)}
+function lvPrefetch(L){if(G.mode||G.busy||LV_CACHE.has('L'+L))return;
+  const sv={};['cols','par','ice','lock','key','sticky','big'].forEach(x=>sv[x]=G[x]);const rs={...RULE},lv=S.level;
+  try{S.level=L;lvBuild();lvStore('L'+L)}catch(e){}finally{S.level=lv;Object.assign(G,sv);Object.assign(RULE,rs)}}
+function lvPrefetchSoon(){if(G.mode||S.level<25)return;const L=S.level+1;setTimeout(()=>{const go=()=>{if(G.busy){setTimeout(go,1500);return}lvPrefetch(L)};(window.requestIdleCallback?requestIdleCallback(go,{timeout:4000}):go())},2500)}
 function startLevel(keepCols){
   if(!keepCols&&restoreMain())return;
-  if(!keepCols){RULE.ice=RULE.lock=RULE.key=RULE.sticky=RULE.big=-1;genLevel.par=0;G.cols=G.mode?genLevel(G.dpL,sideSeed()):(genLevel(S.level)||genLevel(1));rollRules();}
-  else{genLevel.par=0;syncRules()}
-  const big=G.cols.flat().length>36;  // 10+ начинок: точный поиск слишком долгий, берём почти точный
-  G.par=shortest(G.cols,big?20000:60000,big?1.3:1)||shortest(G.cols,20000,2)||genLevel.par||0;
-  G.boss=isBoss(curL())&&!G.mode?Math.ceil(G.par*1.5)+3+(perk('angelok')?5:0):0;G.perkHint=G.perkShake=false;G.usedHint=false;
+  if(!keepCols){const k=lvKey(),c=LV_CACHE.get(k);
+    if(c){G.cols=JSON.parse(JSON.stringify(c.cols));['ice','lock','key','sticky','big'].forEach(x=>G[x]=c[x]);syncRules();G.par=c.par}
+    else{lvBuild();lvStore(k)}}
+  else{genLevel.par=0;syncRules();lvPar()}
+  G.boss=isBoss(curL())&&!G.mode?Math.ceil(G.par*1.5)+3+(perk('angelok')?4+hLv('angelok'):0):0;G.perkHint=G.perkShake=false;G.usedHint=false;
   G.hid=G.cols.map(c=>hiddenFor(curL())?Math.max(0,c.length-1):0);
   G.hist=[];G.sel=null;G.extra=0;G.freeUndo=0;G.bossAd=0;G.hint=null;G.just=-1;G.busy=false;
   rollSpecial();
-  render();layout();hud();
+  if(!G.mode&&!S.replay&&S.level>(S.lvSeen||0)){S.lvSeen=S.level;goal('level_start',{level:S.level,first:true})}
+  render();layout();hud();lvPrefetchSoon();
   try{P.gpStart&&P.gpStart()}catch(e){}
 }
 function hud(){
@@ -1388,7 +1447,10 @@ function hud(){
   else tip.textContent=T('tipN')(colorsFor(S.level));
   if(G.mode){tip.innerHTML=`<span>${G.mode==='tw'?TWx().tip(S.tower.f):G.mode==='du'?DUx().tip(G.duel):T('dpTip')}</span> <button class="daily" id="dpBack" style="animation:none">${T('dpBack')}</button>`;$('dpBack').onclick=()=>{if(G.busy)return;G.mode='';startLevel()};return}
   if(S.replay===S.level&&S.lastLevel){tip.innerHTML=`<button class="daily" id="toCur" style="animation:none">${T('toCur')(S.lastLevel)}</button>`;$('toCur').onclick=()=>{if(!G.busy)playLevel(S.lastLevel)};return}
-  if(chestReady()&&!(S.level>=2&&dailyReady())&&!G.mode){const k=chestReady();
+  if(advReady()&&S.level>=3&&!(S.level>=2&&dailyReady())&&!G.mode){
+    tip.innerHTML=`<button class="daily dp-chip adv-chip" id="advChip">🎄 ${LANG==='ru'?`Календарь: подарок ${advDay()} декабря`:`Advent: December ${advDay()} gift`}</button>`;$('advChip').onclick=()=>{if(!G.busy)advent()};
+  }
+  else if(chestReady()&&!(S.level>=2&&dailyReady())&&!G.mode){const k=chestReady();
     tip.innerHTML=`<button class="daily dp-chip" id="chestChip"><svg class="gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="11" rx="2"/><path d="M3 12q0-8 9-8t9 8M10 14h4"/></svg>${LANG==='ru'?`Сундук главы ${k} ждёт!`:`Chapter ${k} chest is ready!`}</button>`;
     $('chestChip').onclick=()=>{if(!G.busy)levels(null,k)};
   }
@@ -1570,7 +1632,7 @@ function win(){
       <button class="big-btn" id="next">${T('toCur')(S.level)}</button>`);
     $('next').onclick=()=>{closeOv();nextLevel()};return;
   }
-  const boss=!!G.boss;const reward=Math.round((10+5*st+(boss?40:0))*(perk('gold')?1.5:1)*(1+(priceMult()-1)/2))+upg('piggy')*2;if(boss)goal('boss_win',{level:passed});S.coins+=reward;S.level++;save();hud();achCheck();lbPush();rankCheck();
+  const boss=!!G.boss;const reward=Math.round((10+5*st+(boss?40:0))*(perk('gold')?1.45+.05*hLv('gold'):1)*(1+(priceMult()-1)/2))+helperBonus()+upg('piggy')*2;if(boss)goal('boss_win',{level:passed});S.coins+=reward;S.level++;save();hud();achCheck();lbPush();rankCheck();
   surprise({title:boss?T('bossWinT')(passed):T('winT')(passed),sub:T('winP'),reward:reward+(newCrown?10:0),x2:1,stars:st,crown,moves,passed,par3:par3(),minR:boss?1:0});
 }
 function surprise(o){
@@ -1595,13 +1657,13 @@ function surprise(o){
 function reveal(o){
   o=o||{};const ch=o.pick||roll(o.minR);
   qEvent('surprise');goal('surprise',{hero:ch.id,rarity:ch.r,isNew:!S.coll[ch.id]});const isNew=!S.coll[ch.id];
-  if(isNew)S.coll[ch.id]=1;else S.coins+=10;save();hud();setTimeout(achCheck,1200);
+  let up=0;if(isNew)S.coll[ch.id]=1;else{S.hlv=S.hlv||{};if(hLv(ch.id)<HMAX){S.hlv[ch.id]=(S.hlv[ch.id]||0)+1;up=hLv(ch.id);S.coins+=10}else S.coins+=30}save();hud();setTimeout(achCheck,1200);
   sfx.chime(ch.r);
   const ray=ch.r===2?'rgba(243,194,75,.35)':ch.r===1?'rgba(111,214,200,.3)':'rgba(247,236,217,.16)';
   openOv(`<div class="mys-wrap" style="--ray:${ray}"><div class="rays"></div><div class="mys char-in">${dumpling(ch.col,ch.face,ch.acc)}</div></div>
     <span class="chip r${ch.r}">${T('rarity')[ch.r]}</span>
     <div class="cname">${cname(ch)}</div>
-    <p>${isNew?T('newHero'):T('dupe')}</p>
+    <p>${isNew?T('newHero'):up?(LANG==='ru'?`Повтор! Герой вырос до <b style="color:var(--coin)">${up} уровня</b>${T('perk')[ch.id]?', помощник стал сильнее':''}. +10 монет.`:`Duplicate! Hero is now <b style="color:var(--coin)">level ${up}</b>${T('perk')[ch.id]?', a stronger helper':''}. +10 coins.`):(LANG==='ru'?'Герой уже максимального уровня. Держи <b style="color:var(--coin)">+30</b> монет.':'Hero is already max level. Here are <b style="color:var(--coin)">+30</b> coins.')}</p>${up?`<div class="hlv-stars">${'★'.repeat(up)}${'☆'.repeat(HMAX-up)}</div>`:''}
     <button class="big-btn" id="next">${o.box?(LANG==='ru'?'В лавку':'Back to shop'):o.daily?T('play'):T('next')}</button>
     <button class="alt-btn" id="share">${T('shareBtn')}</button>
     ${o.stars&&o.stars<3?`<button class="ghost-btn" id="replay">${T('replayBtn')}</button>`:''}
@@ -1689,7 +1751,7 @@ function album(fromWin){
     const has=!!S.coll[c.id];
     if(c.ny&&!vis.some(x=>x.ny&&CHARS.indexOf(x)<CHARS.indexOf(c)))cards+=`<div class="album-h">${T('nyAlbum')}</div>`;
     if(c.ev&&!vis.some(x=>x.ev&&CHARS.indexOf(x)<CHARS.indexOf(c)))cards+=`<div class="album-h">${LANG==='ru'?'Герои событий недели':'Weekly event heroes'}</div>`;
-    cards+=`<div class="card${has?' owned r'+c.r:' locked'}${S.helper===c.id&&has?' helper':''}"${has?` data-id="${c.id}" role="button" tabindex="0"`:''}>${T('perk')[c.id]?'<span class="perk-b">⚡</span>':''}${has?dumpling(c.col,c.face,c.acc):dumpling(c.col,c.face,null,{silhouette:true})}<div class="n">${has?cname(c):'???'}</div>${has?`<span class="chip r${c.r}" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`:`<span class="chip" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`}</div>`;
+    cards+=`<div class="card${has?' owned r'+c.r:' locked'}${S.helper===c.id&&has?' helper':''}"${has?` data-id="${c.id}" role="button" tabindex="0"`:''}>${T('perk')[c.id]?'<span class="perk-b">⚡</span>':''}${has&&hLv(c.id)>1?`<span class="lv-b">${hLv(c.id)}</span>`:''}${has?dumpling(c.col,c.face,c.acc):dumpling(c.col,c.face,null,{silhouette:true})}<div class="n">${has?cname(c):'???'}</div>${has?`<span class="chip r${c.r}" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`:`<span class="chip" style="font-size:9px;padding:2px 6px">${T('rarity')[c.r]}</span>`}</div>`;
   }
   openOv(`<h2>${T('albumT')}</h2>${rankHtml()}${pathHtml()}${evHtml()}${questsHtml()}${helperHtml()}<p style="margin-top:14px">${T('albumP')(got,vis.length)}</p><div class="album">${cards}</div>${setsHtml()}
     <button class="big-btn" id="closeAlbum">${fromWin?T('next'):T('back')}</button>
@@ -1748,7 +1810,7 @@ const touch=matchMedia('(pointer:coarse)').matches;
   openOv(`<h2>${T('shareT')}</h2><img class="share-img" src="${url}" alt="${cname(ch)}"><p style="margin-top:10px">${touch?T('shareHint'):T('shareHintDesk')}</p>
     ${P.shareLink?`<button class="big-btn" id="shTg">${T('shareTg')}</button>`:''}
     ${!P.shareLink&&canNative&&touchDev?`<button class="big-btn" id="shNative">${LANG==='ru'?'Поделиться':'Share'}</button>`:''}
-    ${fromAlbum&&T('perk')[ch.id]&&S.coll[ch.id]?(S.helper===ch.id?`<p class="chip r2" style="margin-top:10px">${T('helperOn')}</p>`:`<button class="alt-btn" id="shHelp">⚡ ${T('helperTake')}</button><p style="font-size:13px;margin-top:6px">${T('perk')[ch.id]}</p>`):''}
+    ${fromAlbum&&T('perk')[ch.id]&&S.coll[ch.id]?(S.helper===ch.id?`<p class="chip r2" style="margin-top:10px">${T('helperOn')}</p>`:`<button class="alt-btn" id="shHelp">⚡ ${T('helperTake')}</button><p style="font-size:13px;margin-top:6px">${T('perk')[ch.id]}</p>`):''}${fromAlbum&&S.coll[ch.id]?`<p class="hlv-line">${'★'.repeat(hLv(ch.id))}${'☆'.repeat(HMAX-hLv(ch.id))} ${LANG==='ru'?`Уровень ${hLv(ch.id)} из ${HMAX}`:`Level ${hLv(ch.id)} of ${HMAX}`}${T('perk')[ch.id]&&hLv(ch.id)>1?(LANG==='ru'?` · помощником даёт +${(hLv(ch.id)-1)*2} монет за уровень`:` · as helper +${(hLv(ch.id)-1)*2} coins per level`):''}<br><small>${LANG==='ru'?'Повторы героя из сюрпризов повышают уровень':'Duplicates from surprises level the hero up'}</small></p>`:''}
     <button class="ghost-btn" id="shClose">${fromAlbum?T('albumT'):T('close')}</button>`);
   {const im=document.querySelector('#ov .share-img');im.classList.add('pending');cardBlob(ch).then(c=>{if(im.isConnected){im.src=c.url;im.classList.remove('pending')}}).catch(()=>{})}
   if(P.shareLink)$('shTg').onclick=()=>P.shareLink(T('shareText')(cname(ch)));
@@ -1782,10 +1844,13 @@ function start(data){
   applySkin();
   if(data&&data.cols){G.cols=data.cols;startLevel(true)}else startLevel();
   if(!S.starter){S.starter=1;if(S.level<=1&&!Object.keys(S.coll).length)S.freeHint=(S.freeHint||0)+3;save()}
-  setTimeout(refCheck,1500);setTimeout(duelCheck,1200);
+  // для воронки: на каком уровне и ходе игрок закрыл игру
+  let endSent=0;const sessEnd=()=>{if(endSent&&Date.now()-endSent<6e4)return;endSent=Date.now();goal('session_end',{level:S.replay?S.lastLevel:S.level,moves:G.hist.length,mode:G.mode||'main',coins:S.coins,restarts:S.rsK===S.level?(S.rsN||0):0})};
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')sessEnd()});window.addEventListener('pagehide',sessEnd);
+  setTimeout(refCheck,1500);setTimeout(cafeRemind,4000);setTimeout(duelCheck,1200);
   setTimeout(()=>{setsCheck();rankCheck()},2600);
   setTimeout(()=>{if($('ov').hidden&&!G.busy)evIntro()},1200);
-  window.__pel={starterOffer,starterGive,bossFail,surprise,RULE,priceMult,towerStart,duelStart,duelCheck,wkState,tourCheck,rating,pathCheck,stuckHelp,boxPick,rankCheck,setsCheck,hintCost,upg,evNow,evState,evTick,evIntro,qEvent,cafe,cafeTips,album,S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
+  window.__pel={advent,advOpen,advState,hLv,reveal,LV_CACHE,lvPrefetch,starterOffer,starterGive,bossFail,surprise,RULE,priceMult,towerStart,duelStart,duelCheck,wkState,tourCheck,rating,pathCheck,stuckHelp,boxPick,rankCheck,setsCheck,hintCost,upg,evNow,evState,evTick,evIntro,qEvent,cafe,cafeTips,album,S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
   try{P.ready&&P.ready()}catch(e){}
   goal('game_start',{level:S.level});
   setTimeout(lbPush,1500);
