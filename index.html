@@ -150,7 +150,7 @@ window.PLATFORM={
         .catch(e=>String(e))}};
     if('57651'&&window.Adsgram){try{const ad=window.Adsgram.init({blockId:'57651'});
       self.rewarded=cb=>{ad.show().then(r=>cb(!!(r&&r.done))).catch(()=>cb(false))}}catch(e){}}
-    if(''&&window.Adsgram)self.adTask='';
+    if('task-57701'&&window.Adsgram)self.adTask='task-57701';
     if(true){
       self.lb=d=>fetch('/api/lb',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({initData:tg.initData},d))})
         .then(r=>r.ok?r.json():Promise.reject(r.status));
