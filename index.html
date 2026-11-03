@@ -143,13 +143,14 @@ window.PLATFORM={
         .then(r=>r.ok?r.json():r.text().then(t=>Promise.reject(r.status+' '+t.slice(0,60))))
         .then(d=>new Promise(res=>{try{tg.openInvoice(d.url,st=>res(st))}catch(e){res('openInvoice')}}))
         .catch(e=>String(e))}};
-    if(tg.openInvoice&&[['c100', 100, 25], ['c300', 300, 60], ['c1000', 1000, 150]].length)self.buyCoins={packs:[['c100', 100, 25], ['c300', 300, 60], ['c1000', 1000, 150]],buy(id){
+    if(tg.openInvoice&&[['c100', 100, 25], ['c300', 300, 60], ['c1000', 1000, 150], ['starter', 500, 49]].length)self.buyCoins={packs:[['c100', 100, 25], ['c300', 300, 60], ['c1000', 1000, 150], ['starter', 500, 49]],buy(id){
       return fetch('/api/buy',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({pack:id})})
         .then(r=>r.ok?r.json():r.text().then(t=>Promise.reject(r.status+' '+t.slice(0,60))))
         .then(d=>new Promise(res=>{try{tg.openInvoice(d.url,st=>res(st))}catch(e){res('openInvoice')}}))
         .catch(e=>String(e))}};
     if('57651'&&window.Adsgram){try{const ad=window.Adsgram.init({blockId:'57651'});
       self.rewarded=cb=>{ad.show().then(r=>cb(!!(r&&r.done))).catch(()=>cb(false))}}catch(e){}}
+    if(''&&window.Adsgram)self.adTask='';
     if(true){
       self.lb=d=>fetch('/api/lb',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({initData:tg.initData},d))})
         .then(r=>r.ok?r.json():Promise.reject(r.status));
@@ -167,7 +168,8 @@ window.PLATFORM={
   saveCloud(d){try{this.tg&&this.tg.CloudStorage&&this.tg.CloudStorage.setItem('save',JSON.stringify(d))}catch(e){}},
   review:window.__review,
   goal(n,p){try{window.ym&&ym(114007164,'reachGoal',n,p)}catch(e){}try{window.phCapture&&phCapture(n,p)}catch(e){}},
-  shareLink(text){try{this.tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent('https://t.me/PelmennayaGameBot/play')+'&text='+encodeURIComponent(text))}catch(e){}}
+  shareLink(text){try{this.tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent('https://t.me/PelmennayaGameBot/play')+'&text='+encodeURIComponent(text))}catch(e){}},
+  shareParam(prm,text){try{this.tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent('https://t.me/PelmennayaGameBot/play?startapp='+prm)+'&text='+encodeURIComponent(text))}catch(e){}}
 };
 </script>
 </head>
@@ -233,6 +235,9 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .col.ice .stack{filter:saturate(.35) brightness(1.15) hue-rotate(160deg)}
 .col .frost{position:absolute;left:-4%;right:-4%;top:calc(var(--cw)*.36);bottom:-2%;z-index:4;border-radius:14px;pointer-events:none;background:linear-gradient(160deg,rgba(214,242,255,.55),rgba(150,210,240,.28) 45%,rgba(214,242,255,.5));box-shadow:inset 0 0 0 2px rgba(230,248,255,.7),inset 0 0 18px rgba(255,255,255,.6);backdrop-filter:blur(1px)}
 .col .frost::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 18px,rgba(255,255,255,.35) 18px 20px,transparent 20px 34px);border-radius:inherit}
+.col.sticky::before{content:'🍯';position:absolute;top:calc(var(--cw)*.02);left:50%;transform:translateX(-50%);font-size:calc(var(--cw)*.32);z-index:2;pointer-events:none}
+.col.sticky::after{content:'';position:absolute;inset:calc(var(--cw)*.42) 4% 0;border-radius:10px;background:linear-gradient(rgba(243,176,40,.38),rgba(217,140,20,.22));box-shadow:inset 0 0 0 2px rgba(243,194,75,.6);pointer-events:none}
+.col.big{filter:drop-shadow(0 0 6px rgba(111,214,200,.55))}
 .col.lock .stack{filter:brightness(.6) saturate(.6)}
 .col .padlock{position:absolute;left:50%;top:calc(var(--cw)*.9);translate:-50% 0;width:calc(var(--cw)*.62);z-index:6;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45))}
 .col .padlock svg{width:100%;display:block}.col .padlock .pk{position:absolute;left:22%;right:22%;bottom:6%;height:52%}.col .padlock .pk svg{width:100%;height:100%}
@@ -339,6 +344,13 @@ header{display:flex;align-items:center;gap:10px;padding-block:12px 4px}
 .stars{display:flex;justify-content:center;gap:6px;margin-top:14px}.stars button{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;color:var(--bamboo-dk);transition:transform .12s}.stars button svg{width:34px;height:34px}.stars button.on{color:#f3c24b}.stars button:active{transform:scale(.9)}
 .rate-txt{margin-top:12px;width:100%;box-sizing:border-box;min-height:84px;resize:none;border:0;border-radius:14px;padding:10px 12px;background:var(--panel);color:var(--text);font:inherit;font-size:15px;user-select:text;-webkit-user-select:text}.rate-txt::placeholder{color:var(--muted)}
 .shop-h{margin:16px 0 6px;font-weight:800;font-size:14px;color:var(--muted);text-align:left}
+.crown-win{margin-top:6px;font-weight:800;color:var(--coin);font-size:14px;animation:pop .5s .5s both}.mcrown{position:absolute;top:-14px;right:-6px;font-size:14px}
+.seg{display:flex;gap:6px;justify-content:center;margin:6px 0}.seg-b{border:0;border-radius:999px;padding:6px 14px;font:inherit;font-weight:700;background:rgba(0,0,0,.08);color:inherit;cursor:pointer}.seg-b.on{background:var(--accent,#e85a3c);color:#fff}
+.map-modes{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}.map-modes .alt-btn{margin:0;padding:8px 12px;width:auto;font-size:13px}.map-modes .dim{opacity:.6}
+.ad-x2{display:flex;align-items:center;gap:6px;margin:8px auto 0;border:0;border-radius:999px;padding:8px 16px;font:inherit;font-weight:800;font-size:14px;background:linear-gradient(135deg,#f3c24b,#e8a03b);color:#3a2410;cursor:pointer;box-shadow:0 3px 0 #b97a22;animation:pop .4s .6s both}.ad-x2:disabled{opacity:.6}
+.starter{position:relative;margin:10px 0 4px;padding:14px 12px 10px;border-radius:16px;background:linear-gradient(135deg,rgba(243,194,75,.22),rgba(232,90,60,.2));border:1.5px solid rgba(243,194,75,.6);text-align:center}.starter b{display:block;font-size:17px}.starter small{display:block;margin:4px 0 8px;opacity:.9}.starter .big-btn{margin:0}
+.st-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--coin);color:#3a2410;font-size:11px;font-weight:800;padding:2px 10px;border-radius:999px;white-space:nowrap}
+adsgram-task.ad-task{display:block;margin:6px 0;--adsgram-task-font-size:14px;--adsgram-task-icon-size:40px;--adsgram-task-icon-border-radius:10px;--adsgram-task-button-width:96px}.ad-task-b{padding:7px 10px;border-radius:10px;background:#e85a3c;color:#fff;font-weight:800;text-align:center;font-size:13px}.ad-task-b.done{background:#4f9a5f}.ad-task-rw{font-weight:800;color:var(--coin)}
 .rank-line{margin-top:6px;font-size:14px}.rank-line small{opacity:.75}
 .upg{width:100%;border:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
 .ach .ic.sets-ic{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;width:62px;min-width:62px;height:28px;background:none;border-radius:0;overflow:visible}.sets-ic svg{width:24px;height:auto;flex:0 0 24px;margin-right:-5px}
@@ -481,7 +493,10 @@ const CHARS=[
   {id:'feya',name:'Фея Теста',r:2,col:'#f9d3ec',face:'star',acc:'tiara+wings'},
   {id:'ogonyok',name:'Огонёк',r:2,col:'#e8452c',face:'smug',acc:'mask+scarf',ev:'hot'},
   {id:'zolotko',name:'Золотко',r:2,col:'#f3c24b',face:'star',acc:'tophat+mustache',ev:'gold'},
-  {id:'zvezdochet',name:'Звездочёт',r:2,col:'#6b6fd6',face:'wink',acc:'wizard',ev:'star'}
+  {id:'zvezdochet',name:'Звездочёт',r:2,col:'#6b6fd6',face:'wink',acc:'wizard',ev:'star'},
+  {id:'chempion',name:'Чемпион недели',r:2,col:'#ffd76a',face:'star',acc:'crown+scarf',ev:'tour'},
+  {id:'bashnya',name:'Хозяин башни',r:2,col:'#8fb3d9',face:'smug',acc:'chef+mustache',ev:'tower'},
+  {id:'duelyant',name:'Дуэлянт',r:2,col:'#d9534f',face:'wink',acc:'mask+tophat',ev:'duel'}
 ];
 const SEASON=(()=>{if(window.__season!=null)return !!window.__season;const d=new Date(),m=d.getMonth();return m===10||m===11||(m===0&&d.getDate()<=15)})();
 const visibleChars=()=>CHARS.filter(c=>c.ev?(S.coll[c.id]||(S.level>=8&&evNow().id===c.ev)):(!c.ny||SEASON||S.coll[c.id]));
@@ -507,7 +522,7 @@ const STR={
   shake:'Встряхнуть',shakeNo:'Нечего встряхивать',shakeDone:'Перемешал! Решение есть.',need20:'Нужно 20 монет',noUndoShake:'Встряску не отменить',
   combo:(n,b)=>'Комбо ×'+n+'! +'+b,goldGot:'Золотые пельмени! +15',hotTip:n=>'Острые! Закрой их за '+n+' ходов и получи +20',hotGot:'Остудил острые! +20',hotLost:'Острые остыли, бонус сгорел',hotHud:n=>'🌶 '+n,
   achT:'Достижения',achBtn:(g,t)=>'Достижения '+g+'/'+t,achGot:(n,c)=>'Достижение: '+n+' +'+c,
-  ach:{first3:['Отличник','Пройти уровень на 3 звезды'],stars25:['Перфекционист','25 уровней на 3 звезды'],lvl20:['Повар','Дойти до 20 уровня'],lvl30:['Шеф','Дойти до 30 уровня'],lvl50:['Мастер теста','Дойти до 50 уровня'],
+  ach:{tower10:['Покоритель башни','Пройти 10 этажей Башни шефа'],lvl100:['Сотня','Пройти 100 уровней'],lvl200:['Двухсотка','Пройти 200 уровней'],lvl300:['Трёхсотка','Пройти 300 уровней'],crown10:['Коронованный','10 корон мастера'],crown50:['Король кухни','50 корон мастера'],first3:['Отличник','Пройти уровень на 3 звезды'],stars25:['Перфекционист','25 уровней на 3 звезды'],lvl20:['Повар','Дойти до 20 уровня'],lvl30:['Шеф','Дойти до 30 уровня'],lvl50:['Мастер теста','Дойти до 50 уровня'],
     heroes10:['Коллекционер','Собрать 10 героев'],heroesAll:['Полный альбом','Собрать всех героев'],daily7:['Завсегдатай','Подарок 7 дней подряд'],dp3:['Задачник','Пельмень дня 3 дня подряд'],
     combo3:['Скороварка','Комбо ×3'],gold10:['Золотоискатель','Собрать 10 золотых пароварок'],hot5:['Огнеборец','Остудить острые 5 раз'],skin:['Модник','Первая покупка в лавке']},
   wheelBtn:'Колесо удачи',wheelT:'Колесо удачи',wheelP:'Раз в день крути бесплатно.',spin:'Крутить',wheelCoins:n=>'+'+n+' монет!',wheelHints:n=>'+'+n+' бесплатн'+(n>1?'ые подсказки':'ая подсказка')+'!',freeHint:n=>'🎁 '+n,
@@ -544,7 +559,7 @@ const STR={
   shake:'Shuffle',shakeNo:'Nothing to shuffle',shakeDone:'Shuffled! Still solvable.',need20:'You need 20 coins',noUndoShake:"Can't undo a shuffle",
   combo:(n,b)=>'Combo ×'+n+'! +'+b,goldGot:'Golden dumplings! +15',hotTip:n=>'Spicy! Close them within '+n+' moves for +20',hotGot:'Spicy ones cooled! +20',hotLost:'The spicy bonus is gone',hotHud:n=>'🌶 '+n,
   achT:'Achievements',achBtn:(g,t)=>'Achievements '+g+'/'+t,achGot:(n,c)=>'Achievement: '+n+' +'+c,
-  ach:{first3:['Top marks','Beat a level with 3 stars'],stars25:['Perfectionist','25 levels with 3 stars'],lvl20:['Cook','Reach level 20'],lvl30:['Chef','Reach level 30'],lvl50:['Dough master','Reach level 50'],
+  ach:{tower10:['Tower climber','Clear 10 Chef Tower floors'],lvl100:['Century','Beat 100 levels'],lvl200:['Double century','Beat 200 levels'],lvl300:['Triple century','Beat 300 levels'],crown10:['Crowned','10 master crowns'],crown50:['King of the kitchen','50 master crowns'],first3:['Top marks','Beat a level with 3 stars'],stars25:['Perfectionist','25 levels with 3 stars'],lvl20:['Cook','Reach level 20'],lvl30:['Chef','Reach level 30'],lvl50:['Dough master','Reach level 50'],
     heroes10:['Collector','Collect 10 heroes'],heroesAll:['Full album','Collect every hero'],daily7:['Regular','Daily gift 7 days in a row'],dp3:['Puzzler','Puzzle of the day 3 days in a row'],
     combo3:['Pressure cooker','Combo ×3'],gold10:['Gold digger','Close 10 golden steamers'],hot5:['Firefighter','Cool the spicy ones 5 times'],skin:['Trendsetter','First purchase in the shop']},
   wheelBtn:'Lucky wheel',wheelT:'Lucky wheel',wheelP:'One free spin every day.',spin:'Spin',wheelCoins:n=>'+'+n+' coins!',wheelHints:n=>'+'+n+' free hint'+(n>1?'s':'')+'!',freeHint:n=>'🎁 '+n,
@@ -564,7 +579,7 @@ const STR={
   play:'Play',nyTip:'Holiday season: festive heroes are hiding in the surprises!',movesHud:(m,p)=>'moves '+m+(p?'/'+p:''),movesWin:(m,p)=>'Moves: '+m+(p?'. For 3 stars: '+p+' or fewer':''),replayBtn:'Replay for 3 stars',replayTag:'replay',replayBetter:'New best! Coins for the improvement.',replaySame:'No new best this time. Give it another go.',hiddenTip:'Only the top dumpling is visible. The rest show up once you free them.',oneEmptyTip:'Only one empty steamer now. Think one move ahead!',supBtn:'Support the author',supT:'Support Dumpling Sort',supP:'The game is free with no pushy ads. If you enjoy it, you can support the author: it helps bring more heroes and levels.',supStars:n=>n+' ⭐',supBoosty:'Support on Boosty',supThx:'Thank you for your support! 💛',supFail:'Payment did not go through',rateT:'Enjoying Dumpling Sort?',rateP:'Rate the game and leave a few words. Reviews appear in our Telegram channel.',rateAria:n=>n+' of 5 stars',ratePh:'What did you like, or what should we improve? (optional)',rateSend:'Send',rateSending:'Sending…',rateLater:'Not now',rateBtn:'Rate the game',rateThx:'Thanks for your review!',rateFail:'Could not send. Please try again later.',rateNeed:'Pick a number of stars',nyAlbum:'Holiday collection',close:'Close'}
 };
 const FILL_EN=['meat','cabbage','pumpkin','blueberry','cheese','crab','mushroom','beetroot','cherry','spinach','sour cream','chocolate'];
-const NAME_EN={tvorozhok:'Curdy',shpinatik:'Spinach Kid',kukuruzka:'Corny',baklazhan:'Eggplant',perchik:'Pepper',medovik:'Honey Cake',princessa:'Princess Dumpling',baron:'Baron von Dumpling',rocker:'Rocker Bun',zimushka:'Snowy Muffs',imperator:'Dumpling Emperor',feya:'Dough Fairy',ogonyok:'Little Flame',zolotko:'Goldie',zvezdochet:'Stargazer',puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
+const NAME_EN={chempion:'Weekly Champion',bashnya:'Tower Master',duelyant:'Duelist',tvorozhok:'Curdy',shpinatik:'Spinach Kid',kukuruzka:'Corny',baklazhan:'Eggplant',perchik:'Pepper',medovik:'Honey Cake',princessa:'Princess Dumpling',baron:'Baron von Dumpling',rocker:'Rocker Bun',zimushka:'Snowy Muffs',imperator:'Dumpling Emperor',feya:'Dough Fairy',ogonyok:'Little Flame',zolotko:'Goldie',zvezdochet:'Stargazer',puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
 const P=window.PLATFORM||{};
 let LANG='ru';
 function setLang(l){LANG=(l&&String(l).slice(0,2)==='ru')||['be','uk','kk','uz'].includes(String(l).slice(0,2))?'ru':(l?'en':'ru');document.documentElement.lang=LANG}
@@ -667,7 +682,8 @@ const isDone=c=>c.length===CAP&&c.every(x=>x===c[0]);
 const top=c=>c[c.length-1];
 function runLen(c){let n=0;for(let i=c.length-1;i>=0&&c[i]===top(c);i--)n++;return n}
 // лёд: пароварка недоступна, пока не закрыта любая другая; замок: пока не собраны пельмени с ключом
-const RULE={ice:-1,lock:-1,key:-1};
+const RULE={ice:-1,lock:-1,key:-1,sticky:-1,big:-1};
+const capOf=i=>i===RULE.big?5:CAP;
 function blockedCol(s,i){
   if(i===RULE.ice&&!s.some(c=>isDone(c)))return 'ice';
   if(i===RULE.lock&&!s.some(c=>isDone(c)&&c[0]===RULE.key))return 'lock';
@@ -676,10 +692,11 @@ function blockedCol(s,i){
 function canMove(s,a,b){
   if(a===b)return false;const A=s[a],B=s[b];
   if((RULE.ice>=0||RULE.lock>=0)&&(blockedCol(s,a)||blockedCol(s,b)))return false;
-  if(!A.length||isDone(A)||B.length>=CAP)return false;
+  if(a===RULE.sticky)return false;  // из липкой пароварки ничего не достать
+  if(!A.length||isDone(A)||B.length>=capOf(b))return false;
   return !B.length||top(B)===top(A);
 }
-function apply(s,a,b){const n=Math.min(runLen(s[a]),CAP-s[b].length);for(let i=0;i<n;i++)s[b].push(s[a].pop());return n}
+function apply(s,a,b){const n=Math.min(runLen(s[a]),capOf(b)-s[b].length);for(let i=0;i<n;i++)s[b].push(s[a].pop());return n}
 function solved(s){return s.every(c=>!c.length||isDone(c))}
 function solve(start,limit){
   const seen=new Set();let nodes=0;
@@ -735,6 +752,7 @@ function applySkin(){const r=document.documentElement.style,sk=S.skin||{};
   const m=document.querySelector('meta[name=theme-color]');if(m)m.content=bg.v[0];
 }
 const AD_COINS=20,AD_MAX=5;
+let adFailAt=0;const adOk=()=>!!P.rewarded&&Date.now()-adFailAt>15*6e4;
 function adLeft(){const d=dayStr(new Date());return AD_MAX-((S.adDay&&S.adDay[0]===d)?S.adDay[1]:0)}
 function shop(back){
   S.own=S.own||{};S.skin=S.skin||{};
@@ -744,18 +762,18 @@ function shop(back){
     return `<button class="sk${on?' on':''}" data-k="${kind}" data-id="${x.id}">${pv}<span>${T('sk')[x.id]}</span><span class="pr${own?' own':''}">${on?T('wear'):own?T('pick'):`<span class="coin"></span>${x.p}`}</span></button>`};
   openOv(`<h2>${T('shopT')}</h2><p>${T('shopP')}</p>
     <div class="reward" style="margin:8px 0 0"><span class="coin"></span>${S.coins}</div>
-    ${P.buyCoins?`<div class="shop-h">${LANG==='ru'?'Монеты за звёзды':'Coins for Stars'}</div><div class="cafe-list">${P.buyCoins.packs.map(([id,c,st],i)=>`<button class="cafe-it buy-it" data-id="${id}" data-c="${c}"><span class="pr" style="font-size:16px"><span class="coin"></span>${c}</span><small>${i===2?(LANG==='ru'?'выгодно':'best value'):''}&nbsp;</small><b>⭐ ${st}</b></button>`).join('')}</div>`:''}
-    ${P.rewarded&&adLeft()?`<button class="alt-btn" id="adCoins" style="margin-top:8px">📺 ${LANG==='ru'?`+${AD_COINS} монет за рекламу · осталось ${adLeft()}`:`+${AD_COINS} coins for an ad · ${adLeft()} left`}</button>`:''}
-    ${boxHtml()}${upgHtml()}
+    ${starterOk()?starterCard():''}${P.buyCoins?`<div class="shop-h">${LANG==='ru'?'Монеты за звёзды':'Coins for Stars'}</div><div class="cafe-list">${P.buyCoins.packs.filter(x=>x[0]!=='starter').map(([id,c,st],i)=>`<button class="cafe-it buy-it" data-id="${id}" data-c="${c}"><span class="pr" style="font-size:16px"><span class="coin"></span>${c}</span><small>${i===2?(LANG==='ru'?'выгодно':'best value'):''}&nbsp;</small><b>⭐ ${st}</b></button>`).join('')}</div>`:''}
+    ${adOk()&&adLeft()?`<button class="alt-btn" id="adCoins" style="margin-top:8px">📺 ${LANG==='ru'?`+${AD_COINS} монет за рекламу · осталось ${adLeft()}`:`+${AD_COINS} coins for an ad · ${adLeft()} left`}</button>`:''}
+    ${adTaskHtml()}${boxHtml()}${upgHtml()}
     <div class="shop-h">${T('shopSt')}</div><div class="shop">${SKINS.st.map(x=>cell('st',x)).join('')}</div>
     <div class="shop-h">${T('shopBg')}</div><div class="shop">${SKINS.bg.map(x=>cell('bg',x)).join('')}</div>
     <button class="big-btn" id="shopBack">${T('back')}</button>`);
-  $('shopBack').onclick=()=>{closeOv();back&&back()};upgWire(()=>shop(back));boxWire(back);
+  $('shopBack').onclick=()=>{closeOv();back&&back()};upgWire(()=>shop(back));boxWire(back);starterWire(()=>shop(back));adTaskWire(()=>shop(back));
   document.querySelectorAll('.buy-it').forEach(el=>el.onclick=()=>{if(el.disabled)return;el.disabled=true;const c=+el.dataset.c;goal('buy_start',{pack:el.dataset.id});
     P.buyCoins.buy(el.dataset.id).then(st=>{el.disabled=false;
       if(st==='paid'){S.coins+=c;S.paid=(S.paid||0)+1;save();hud();sfx.chime(2);buzz([20,40,20]);toast(LANG==='ru'?`+${c} монет. Спасибо!`:`+${c} coins. Thank you!`);goal('buy_coins',{pack:el.dataset.id,coins:c});shop(back)}
       else if(st!=='cancelled')toast(LANG==='ru'?'Оплата не прошла, попробуй ещё раз':'Payment failed, try again')})});
-  if($('adCoins'))$('adCoins').onclick=()=>{const b=$('adCoins');b.disabled=true;P.rewarded(ok=>{b.disabled=false;if(ok){S.adDay=[dayStr(new Date()),((S.adDay&&S.adDay[0]===dayStr(new Date()))?S.adDay[1]:0)+1];S.coins+=AD_COINS;save();hud();sfx.chime(1);toast(T('adGot'));goal('ad_coins');shop(back)}else toast(T('adFail'))})};
+  if($('adCoins'))$('adCoins').onclick=()=>{const b=$('adCoins');b.disabled=true;P.rewarded(ok=>{b.disabled=false;if(ok){S.adDay=[dayStr(new Date()),((S.adDay&&S.adDay[0]===dayStr(new Date()))?S.adDay[1]:0)+1];S.coins+=AD_COINS;save();hud();sfx.chime(1);toast(T('adGot'));goal('ad_coins');shop(back)}else{adFailAt=Date.now();toast(T('adFail'));shop(back)}})};
   document.querySelectorAll('.sk').forEach(el=>el.onclick=()=>{
     if(el.dataset.set){sfx.bad();toast(LANG==='ru'?'Этот скин даётся за коллекцию героев. Смотри в альбоме':'This skin is a hero collection reward. See the album');return}
     const kind=el.dataset.k,x=SKINS[kind].find(y=>y.id===el.dataset.id),key=kind+':'+x.id;
@@ -766,17 +784,58 @@ function shop(back){
     S.skin[kind]=x.id;save();applySkin();hud();shop(back);achCheck();
   });
 }
+/* ---------- стартовый набор (Stars, один раз) ---------- */
+const STARTER={coins:500,hints:5};
+const starterOk=()=>!!(P.buyCoins&&P.buyCoins.packs.some(x=>x[0]==='starter'))&&!S.starter2&&S.level>=10;
+function starterCard(){const RU=LANG==='ru',st=P.buyCoins.packs.find(x=>x[0]==='starter')[2];
+  return `<div class="starter"><div class="st-badge">${RU?'Один раз · выгода ×3':'One time · 3× value'}</div><b>🎁 ${RU?'Стартовый набор':'Starter pack'}</b>
+  <small>${RU?`${STARTER.coins} монет, ${STARTER.hints} подсказок и редкий герой`:`${STARTER.coins} coins, ${STARTER.hints} hints and a rare hero`}</small>
+  <button class="big-btn" id="starterBuy">⭐ ${st}</button></div>`}
+function starterGive(){S.starter2=1;S.coins+=STARTER.coins;S.freeHint=(S.freeHint||0)+STARTER.hints;const ch=giftRare();save();hud();sfx.chime(2);buzz([20,40,20]);goal('starter_bought');
+  const RU=LANG==='ru';openOv(`<h2>${RU?'Спасибо!':'Thank you!'}</h2>${ch?`<div class="mys-wrap"><div class="rays"></div><div class="mys char-in">${dumpling(ch.col,ch.face,ch.acc)}</div></div><div class="cname">${cname(ch)}</div>`:''}
+    <p>+${STARTER.coins} <span class="coin"></span> · +${STARTER.hints} ${RU?'подсказок':'hints'}</p><button class="big-btn" id="stOk">${T('play')}</button>`);$('stOk').onclick=()=>{closeOv();if(solved(G.cols))startLevel()};achCheck()}
+function starterWire(back){if(!$('starterBuy'))return;$('starterBuy').onclick=()=>{const b=$('starterBuy');if(b.disabled)return;b.disabled=true;goal('buy_start',{pack:'starter'});
+  P.buyCoins.buy('starter').then(st=>{b.disabled=false;if(st==='paid')starterGive();else if(st!=='cancelled')toast(LANG==='ru'?'Оплата не прошла, попробуй ещё раз':'Payment failed, try again')})}}
+function starterOffer(){if(!starterOk()||S.starterSeen)return false;S.starterSeen=1;save();const RU=LANG==='ru';
+  openOv(`<h2>${RU?'Подарок к 10 уровню':'A level 10 treat'}</h2><p>${RU?'Предложение показывается один раз. Потом его можно найти в лавке.':'Shown only once. Later you can find it in the shop.'}</p>${starterCard()}<button class="ghost-btn" id="stNo">${RU?'Не сейчас':'Not now'}</button>`);
+  starterWire(closeOv);$('stNo').onclick=()=>{closeOv();startLevel()};goal('starter_offer');return true}
+/* ---------- задания Adsgram (Telegram) ---------- */
+const AD_TASK_COINS=50;
+function adTaskHtml(){if(!P.adTask||S.level<5)return '';const RU=LANG==='ru';
+  return `<div class="shop-h">${RU?'Задания за монеты':'Tasks for coins'}</div><adsgram-task data-block-id="${P.adTask}" class="ad-task"><span slot="reward" class="ad-task-rw">+${AD_TASK_COINS} 🪙</span><div slot="button" class="ad-task-b">${RU?'Выполнить':'Go'}</div><div slot="claim" class="ad-task-b">${RU?'Забрать':'Claim'}</div><div slot="done" class="ad-task-b done">✓</div></adsgram-task>`}
+function adTaskWire(){const el=document.querySelector('adsgram-task');if(!el)return;
+  el.addEventListener('reward',()=>{S.coins+=AD_TASK_COINS;save();hud();sfx.chime(1);toast(LANG==='ru'?`Задание выполнено! +${AD_TASK_COINS} монет`:`Task done! +${AD_TASK_COINS} coins`);goal('ad_task')});
+  const hide=()=>{const h=el.previousElementSibling;el.remove();if(h&&h.classList.contains('shop-h'))h.remove()};
+  el.addEventListener('onBannerNotFound',hide);el.addEventListener('onError',hide)}
 /* ---------- моя пельменная ---------- */
 // [id, цена, монет в час]
-const CAFE=[['sign',50,1],['lamp',80,1],['pic',100,1],['plant',120,1],['table1',150,2],['counter',200,2],['samovar',250,2],['table2',300,2],['garland',350,2],['chef',450,3],['table3',500,2]];
+const CAFE=[['sign',50,1],['lamp',80,1],['pic',100,1],['plant',120,1],['table1',150,2],['counter',200,2],['samovar',250,2],['table2',300,2],['garland',350,2],['chef',450,3],['table3',500,2],
+  ['stairs',1000,3,2],['piano',1500,4,2],['aqua',1200,3,2],['fire',2000,4,2],['tableV',1300,3,2],['chand',2500,5,2],['band',3000,5,2]];
+const cafeFl1Done=()=>CAFE.filter(x=>!x[3]).every(([id])=>S.cafe&&S.cafe.own[id]);
 const CAFE_CAP=8; // часов копятся чаевые
 const CT={ru:{t:'Моя пельменная',p:'Обустраивай кафе. Гости оставляют чаевые, даже когда ты не играешь. Копятся до 8 часов.',tips:'Чаевые',take:'Собрать',rate:n=>`+${n} в час`,buy:'Купить',all:'Пельменная обустроена полностью!',got:n=>`Чаевые собраны! +${n}`,chip:n=>`Чаевые в пельменной: ${n}`,btn:'🏠 Моя пельменная',bought:'Готово! Гостей станет больше',empty:'Пока пусто. Купи первый предмет, и придут гости.',guests:n=>`Гостей сегодня: ${n}`,
-  it:{sign:'Вывеска',lamp:'Лампы',pic:'Картина',plant:'Фикус',table1:'Столик',counter:'Стойка',samovar:'Самовар',table2:'Второй столик',garland:'Гирлянда',chef:'Повар',table3:'Третий столик'}},
+  it:{sign:'Вывеска',lamp:'Лампы',pic:'Картина',plant:'Фикус',table1:'Столик',counter:'Стойка',samovar:'Самовар',table2:'Второй столик',garland:'Гирлянда',chef:'Повар',table3:'Третий столик',stairs:'Лестница наверх',piano:'Рояль',aqua:'Аквариум',fire:'Камин',tableV:'VIP-столик',chand:'Люстра',band:'Оркестр'},fl:['1 этаж','2 этаж'],fl2:'Открыт второй этаж! Новые предметы и больше чаевых'},
  en:{t:'My Dumpling Café',p:'Decorate your café. Guests leave tips even while you are away. Tips pile up for 8 hours.',tips:'Tips',take:'Collect',rate:n=>`+${n} per hour`,buy:'Buy',all:'Your café is complete!',got:n=>`Tips collected! +${n}`,chip:n=>`Café tips: ${n}`,btn:'🏠 My café',bought:'Done! More guests will come',empty:'Empty for now. Buy the first item and guests will come.',guests:n=>`Guests today: ${n}`,
-  it:{sign:'Sign',lamp:'Lamps',pic:'Painting',plant:'Plant',table1:'Table',counter:'Counter',samovar:'Samovar',table2:'Second table',garland:'Garland',chef:'Chef',table3:'Third table'}}};
+  it:{sign:'Sign',lamp:'Lamps',pic:'Painting',plant:'Plant',table1:'Table',counter:'Counter',samovar:'Samovar',table2:'Second table',garland:'Garland',chef:'Chef',table3:'Third table',stairs:'Stairs up',piano:'Grand piano',aqua:'Aquarium',fire:'Fireplace',tableV:'VIP table',chand:'Chandelier',band:'Band'},fl:['Floor 1','Floor 2'],fl2:'Second floor is open! New items and more tips'}};
 const CTx=()=>CT[LANG]||CT.en;
 function cafeRate(){const o=(S.cafe&&S.cafe.own)||{};return Math.round((1+CAFE.reduce((s,[id,,r])=>s+(o[id]?r:0),0))*[1,1.25,1.5,2][upg('tips')]*10)/10}
 function cafeTips(){if(!S.cafe||!S.cafe.t||!Object.keys(S.cafe.own||{}).length)return 0;const h=Math.min(CAFE_CAP,(Date.now()-S.cafe.t)/36e5);return Math.floor(h*cafeRate())}
+function cafeScene2(){
+  const o=S.cafe.own,has=id=>!!o[id];
+  let s=`<svg viewBox="0 0 320 200" class="cafe-bg" aria-hidden="true"><rect width="320" height="132" fill="#2f3f5a"/>${Array.from({length:8},(_,i)=>`<rect x="${i*40+18}" y="0" width="2" height="132" fill="#3b4d6b"/>`).join('')}
+  <rect y="128" width="320" height="72" fill="#7a3f3a"/>${Array.from({length:6},(_,i)=>`<rect x="${i*56}" y="128" width="28" height="72" fill="#86463f"/>`).join('')}<rect y="126" width="320" height="5" fill="#c8954e"/>
+  <rect x="120" y="20" width="80" height="70" rx="40" fill="#1d2a40"/><circle cx="150" cy="44" r="2" fill="#fff"/><circle cx="178" cy="60" r="1.5" fill="#fff"/><circle cx="165" cy="36" r="9" fill="#fff4c2"/>`;
+  if(has('stairs'))s+=`<path d="M0 200h40v-14h14v-14h14v-14h14v-14h14v-16H0z" fill="#8a5a3c"/>`;
+  if(has('chand'))s+=`<path d="M160 0v18" stroke="#c8954e" stroke-width="2"/><path d="M136 22q24 14 48 0" fill="none" stroke="#f3c24b" stroke-width="3"/>${[136,148,160,172,184].map(x=>`<circle cx="${x}" cy="${x===160?30:26}" r="3.5" fill="#fff4c2"/>`).join('')}<path d="M110 30l-30 90h160l-30-90z" fill="#fff4c2" opacity=".08"/>`;
+  if(has('fire'))s+=`<rect x="236" y="70" width="72" height="62" fill="#9b5a46"/><rect x="230" y="64" width="84" height="8" rx="2" fill="#6b3a2c"/><rect x="250" y="92" width="44" height="40" rx="20" fill="#2a1a14"/><path d="M262 132q-4-16 6-24q-2 10 6 12q2-12 8-14q6 14-2 26z" fill="#f3a03b"/><path d="M268 132q0-10 6-14q4 8 2 14z" fill="#ffe08a"/>`;
+  if(has('aqua'))s+=`<rect x="20" y="70" width="70" height="44" rx="4" fill="#6fd6c8" opacity=".75"/><rect x="20" y="70" width="70" height="44" rx="4" fill="none" stroke="#c8954e" stroke-width="3"/><path d="M40 92l8-5v10z M44 92q6-6 12 0q-6 6-12 0" fill="#f39a3b"/><path d="M66 100l6-4v8z M69 100q5-5 10 0q-5 5-10 0" fill="#e85a3c"/><rect x="26" y="114" width="58" height="16" fill="#5a3a28"/>`;
+  if(has('piano'))s+=`<g transform="translate(96 120)"><path d="M0 30h70q10-28-20-30H0z" fill="#1a1a22"/><rect x="0" y="26" width="52" height="5" fill="#f7ecd9"/><rect x="4" y="34" width="4" height="22" fill="#1a1a22"/><rect x="60" y="34" width="4" height="22" fill="#1a1a22"/></g>`;
+  if(has('tableV'))s+=`<g><ellipse cx="200" cy="186" rx="30" ry="5" fill="#000" opacity=".15"/><rect x="172" y="150" width="56" height="8" rx="3" fill="#e85a3c"/><rect x="197" y="158" width="6" height="26" fill="#6b3a2c"/><circle cx="192" cy="145" r="5" fill="#f7ecd9"/><path d="M208 136v12" stroke="#f3c24b" stroke-width="2"/><circle cx="208" cy="134" r="3" fill="#fff4c2"/></g>`;
+  if(has('band'))s+=`<g transform="translate(248 140)">${[0,22,44].map((x,i)=>`<ellipse cx="${x+10}" cy="44" rx="9" ry="3" fill="#000" opacity=".2"/><path d="M${x} 42q10-34 20 0z" fill="#f7ecd9"/><circle cx="${x+7}" cy="30" r="1.2" fill="#3a2a20"/><circle cx="${x+13}" cy="30" r="1.2" fill="#3a2a20"/><path d="M${x+4} 18h12l-6-10z" fill="${['#e85a3c','#a596f2','#6fd6c8'][i]}"/>`).join('')}</g>`;
+  s+='</svg>';
+  const n=Object.keys(o).filter(k=>CAFE.find(x=>x[0]===k&&x[3])).length;
+  return {html:`<div class="cafe">${s}</div>`,guests:n*2};
+}
 function cafeScene(){
   const o=S.cafe.own,has=id=>!!o[id];
   let s=`<svg viewBox="0 0 320 200" class="cafe-bg" aria-hidden="true">
@@ -805,24 +864,27 @@ function cafeScene(){
   if(has('chef')){const c=CHARS.find(x=>x.id==='shef');g+=`<div class="cafe-g chef" style="left:${52/3.2}%;top:${62/2}%">${dumpling(c.col,c.face,c.acc)}</div>`}
   return {html:`<div class="cafe">${s}${g}</div>`,guests:n};
 }
-function cafe(back){
-  S.cafe=S.cafe||{own:{},t:0};const C=CTx(),tips=cafeTips(),sc=cafeScene();
-  const next=CAFE.filter(([id])=>!S.cafe.own[id]);
+function cafe(back,fl){
+  S.cafe=S.cafe||{own:{},t:0};const C=CTx(),tips=cafeTips(),f2=cafeFl1Done();fl=f2?(fl||S.cafe.fl||2):1;S.cafe.fl=fl;
+  if(f2&&!S.cafe.f2seen){S.cafe.f2seen=1;setTimeout(()=>toast(C.fl2),300)}
+  const sc=fl===2?cafeScene2():cafeScene();
+  const next=CAFE.filter(([id,,,f])=>!S.cafe.own[id]&&(f||1)===fl);
   const items=next.slice(0,3).map(([id,p,r])=>`<button class="cafe-it" data-id="${id}"><b>${C.it[id]}</b><small>${C.rate(r)}</small><span class="pr"><span class="coin"></span>${p}</span></button>`).join('');
-  openOv(`<h2>${C.t}</h2><p>${C.p}</p>${sc.html}
+  openOv(`<h2>${C.t}</h2><p>${C.p}</p>${f2?`<div class="seg">${C.fl.map((t,i)=>`<button class="seg-b${fl===i+1?' on':''}" data-fl="${i+1}">${t}</button>`).join('')}</div>`:''}${sc.html}
     <p style="margin-top:8px;font-size:13px">${Object.keys(S.cafe.own).length?C.guests(sc.guests)+' · '+C.rate(cafeRate()):C.empty}</p>
     ${Object.keys(S.cafe.own).length?`<button class="big-btn" id="cafeTake"${tips?'':' disabled'}>${C.take} <span class="coin"></span>${tips}</button>`:''}
     <div class="reward" style="margin:10px 0 4px"><span class="coin"></span>${S.coins}</div>
     ${next.length?`<div class="cafe-list">${items}</div>`:`<p class="chip r2" style="margin-top:8px">${C.all}</p>`}
     <button class="ghost-btn" id="cafeBack">${T('back')}</button>`);
   $('cafeBack').onclick=()=>{closeOv();back&&back()};
-  if($('cafeTake'))$('cafeTake').onclick=()=>{const n=cafeTips();if(!n)return;S.coins+=n;S.cafe.t=Date.now();save();hud();sfx.chime(1);buzz([20,40,20]);toast(C.got(n));goal('cafe_tips',{n});qEvent&&qEvent('cafe');cafe(back)};
+  document.querySelectorAll('.seg-b').forEach(b=>b.onclick=()=>{sfx.pick();cafe(back,+b.dataset.fl)});
+  if($('cafeTake'))$('cafeTake').onclick=()=>{const n=cafeTips();if(!n)return;S.coins+=n;S.cafe.t=Date.now();save();hud();sfx.chime(1);buzz([20,40,20]);toast(C.got(n));goal('cafe_tips',{n});qEvent&&qEvent('cafe');cafe(back,fl)};
   document.querySelectorAll('.cafe-it').forEach(el=>el.onclick=()=>{
     const [id,p]=CAFE.find(x=>x[0]===el.dataset.id);
     if(S.coins<p){sfx.bad();buzz(30);toast(T('noCoins')(p-S.coins));return}
     const pend=cafeTips();S.coins-=p;S.cafe.own[id]=1;
     if(!S.cafe.t)S.cafe.t=Date.now();else{S.coins+=pend;S.cafe.t=Date.now()} // при покупке отдаём накопленное по старой ставке
-    save();hud();sfx.chime(2);buzz([20,40,20]);toast(C.bought);goal('cafe_buy',{item:id,price:p});cafe(back);achCheck();
+    save();hud();sfx.chime(2);buzz([20,40,20]);toast(C.bought);goal('cafe_buy',{item:id,price:p});cafe(back,fl);achCheck();
   });
 }
 /* ---------- пригласи друга (только Telegram) ---------- */
@@ -875,7 +937,7 @@ function evIntro(){if(S.level<8)return false;const st=evState();if(st.seen)retur
 const RANKS=[[1,'Поварёнок','Kitchen Kid'],[10,'Помощник повара','Kitchen Helper'],[25,'Повар','Cook'],[50,'Су-шеф','Sous-chef'],[80,'Шеф','Chef'],[120,'Мастер пельменей','Dumpling Master'],[180,'Легенда кухни','Kitchen Legend'],[250,'Гранд-шеф','Grand Chef'],[350,'Пельменный император','Dumpling Emperor']];
 function rankIdx(L){let i=0;RANKS.forEach((r,k)=>{if((L||S.level)>=r[0])i=k});return i}
 const rankName=i=>RANKS[i][LANG==='ru'?1:2];
-function rankHtml(){const i=rankIdx(),nx=RANKS[i+1];return `<div class="rank-line">👨‍🍳 ${LANG==='ru'?'Звание':'Rank'}: <b>${rankName(i)}</b>${nx?` · <small>${LANG==='ru'?`до «${rankName(i+1)}» ${nx[0]-S.level} ур.`:`${nx[0]-S.level} levels to ${rankName(i+1)}`}</small>`:''}</div>`}
+function rankHtml(){const i=rankIdx(),nx=RANKS[i+1],cr=Object.keys(S.crown||{}).length;return `<div class="rank-line">👨‍🍳 ${LANG==='ru'?'Звание':'Rank'}: <b>${rankName(i)}</b>${cr?` · 👑 ${cr}`:''}${nx?` · <small>${LANG==='ru'?`до «${rankName(i+1)}» ${nx[0]-S.level} ур.`:`${nx[0]-S.level} levels to ${rankName(i+1)}`}</small>`:''}</div>`}
 function rankCheck(){const i=rankIdx();if(S.rankSeen==null){S.rankSeen=i>0?i-1:0}if(i<=S.rankSeen)return;S.rankSeen=i;
   const c=50*i,h=Math.min(1+Math.floor(i/2),4);S.coins+=c;S.freeHint=(S.freeHint||0)+h;save();hud();goal('rank_up',{rank:i});
   const show=()=>{sfx.chime(2);buzz([20,40,20]);openOv(`<h2>${LANG==='ru'?'Новое звание!':'New rank!'}</h2><div class="mys-wrap" style="--ray:rgba(243,194,75,.35)"><div class="rays"></div><div class="mys char-in">${dumpling('#f7ecd9','smug','chef')}</div></div><div class="cname">${rankName(i)}</div><p>+${c} <span class="coin"></span> · +${h} 💡</p>${RANKS[i+1]?`<p style="font-size:13px">${LANG==='ru'?`Следующее звание «${rankName(i+1)}» на ${RANKS[i+1][0]} уровне`:`Next rank ${rankName(i+1)} at level ${RANKS[i+1][0]}`}</p>`:''}<button class="big-btn" id="rkOk">${LANG==='ru'?'Ура!':'Yay!'}</button>`);$('rkOk').onclick=closeOv};
@@ -886,7 +948,9 @@ const UPG={eye:[[200,500,1000],'👁','Острый глаз','Sharp Eye',n=>LAN
   tips:[[300,700,1500],'☕','Щедрые гости','Generous Guests',n=>LANG==='ru'?`Чаевые в пельменной ×${[1,1.25,1.5,2][n]}`:`Café tips ×${[1,1.25,1.5,2][n]}`],
   piggy:[[250,600,1200],'🐷','Копилка','Piggy Bank',n=>LANG==='ru'?`+${n*2} монет за каждый уровень`:`+${n*2} coins per level`]};
 const upg=id=>(S.upg&&S.upg[id])||0;
-function hintCost(){return [10,8,6,4][upg('eye')]}
+function priceMult(){const L=S.level;return L<30?1:L<80?1.5:L<150?2:3}
+const pm=v=>Math.round(v*priceMult());
+function hintCost(){return pm([10,8,6,4][upg('eye')])}
 function upgHtml(){if(S.level<30)return '';return `<div class="shop-h">${LANG==='ru'?'Мастерская: навсегда':'Workshop: permanent'}</div><div class="ach-list" style="margin-top:4px">${Object.entries(UPG).map(([id,u])=>{const n=upg(id),max=n>=3;
   return `<button class="ach upg${max?' got':''}" data-u="${id}"><span class="ic" style="font-size:18px">${u[1]}</span><span><b>${u[LANG==='ru'?2:3]} ${'●'.repeat(n)}${'○'.repeat(3-n)}</b><small>${max?u[4](n):(LANG==='ru'?'Дальше: ':'Next: ')+u[4](n+1)}</small></span><span class="rw">${max?'✓':`<span class="coin"></span>${u[0][n]}`}</span></button>`}).join('')}</div>`}
 function upgWire(again){document.querySelectorAll('.upg').forEach(el=>el.onclick=()=>{const id=el.dataset.u,n=upg(id);if(n>=3)return;const p=UPG[id][0][n];
@@ -928,14 +992,15 @@ function pathCheck(){if(!pathActive())return;S.path=S.path||{};let msg=[];for(co
 function pathHtml(){if(!pathActive())return '';S.path=S.path||{};const d=PATH.filter(p=>S.path[p[0]]).length;
   return `<div class="shop-h">${LANG==='ru'?'Первые шаги':'First steps'} · ${d}/${PATH.length}</div><div class="ach-list" style="margin-top:4px">${PATH.filter(p=>!S.path[p[0]]).slice(0,3).map(([id,c,ru,en])=>`<div class="ach"><span class="ic">🐣</span><span><b>${LANG==='ru'?ru:en}</b></span><span class="rw">+${c}</span></div>`).join('')}</div>`}
 /* ---------- помощь, если застрял ---------- */
-function stuckHelp(why){S.helped=S.helped||{};const k=G.mode==='dp'?'dp'+dayStr(new Date()):S.level;if(S.helped[k])return;S.helped[k]=1;S.freeHint=(S.freeHint||0)+1;save();hud();goal('stuck_help',{why,level:S.level});
+function stuckHelp(why){S.helped=S.helped||{};const k=G.mode?G.mode+(G.mode==='dp'?dayStr(new Date()):G.seed):S.level;if(S.helped[k])return;S.helped[k]=1;S.freeHint=(S.freeHint||0)+1;save();hud();goal('stuck_help',{why,level:S.level});
   setTimeout(()=>{toast(LANG==='ru'?'Похоже, тут непросто. Держи бесплатную подсказку 💡':'Looks tricky. Here is a free hint 💡');sfx.chime(1)},400)}
 /* ---------- достижения ---------- */
-const ACH=[['first3',20],['stars25',100],['lvl20',50],['lvl30',80],['lvl50',150],['heroes10',50],['heroesAll',200],['daily7',100],['dp3',60],['combo3',40],['gold10',60],['hot5',60],['skin',20]];
+const ACH=[['tower10',150],['lvl100',300],['lvl200',500],['lvl300',800],['crown10',60],['crown50',200],['first3',20],['stars25',100],['lvl20',50],['lvl30',80],['lvl50',150],['heroes10',50],['heroesAll',200],['daily7',100],['dp3',60],['combo3',40],['gold10',60],['hot5',60],['skin',20]];
 function achCheck(){
   setsCheck();pathCheck();
   S.ach=S.ach||{};const st=S.stat||{};const b=Object.values(S.best||{}).filter(x=>x===3).length;const got=visibleChars().filter(c=>S.coll[c.id]).length;
-  const ok={first3:b>=1,stars25:b>=25,lvl20:S.level>=20,lvl30:S.level>=30,lvl50:S.level>=50,heroes10:got>=10,heroesAll:got>=visibleChars().length,
+  const crN=Object.keys(S.crown||{}).length;
+  const ok={tower10:((S.tower&&S.tower.best)||0)>=10,lvl100:S.level>100,lvl200:S.level>200,lvl300:S.level>300,crown10:crN>=10,crown50:crN>=50,first3:b>=1,stars25:b>=25,lvl20:S.level>=20,lvl30:S.level>=30,lvl50:S.level>=50,heroes10:got>=10,heroesAll:got>=visibleChars().length,
     daily7:S.daily&&S.daily.streak>=7,dp3:S.dp&&S.dp.streak>=3,combo3:(st.combo||0)>=3,gold10:(st.gold||0)>=10,hot5:(st.hot||0)>=5,skin:Object.keys(S.own||{}).length>0};
   const fresh=[];for(const [id,c] of ACH)if(ok[id]&&!S.ach[id]){S.ach[id]=1;S.coins+=c;fresh.push([id,c]);goal('achievement',{id})}
   if(fresh.length){save();hud();fresh.forEach(([id,c],i)=>setTimeout(()=>{toast('🏆 '+T('achGot')(T('ach')[id][0],c));sfx.chime(2);buzz([20,40,20])},600+i*2200))}
@@ -1000,24 +1065,38 @@ function helperHtml(){const c=CHARS.find(x=>x.id===S.helper&&S.coll[x.id]);retur
 const isBoss=L=>L>=10&&L%10===0;
 const iceFor=L=>L>=12&&[2,5,8].includes(L%10);
 const lockFor=L=>L>=15&&[3,6,9].includes(L%10);
+const stickyFor=L=>L>=110&&[1,4,7].includes(L%10),bigFor=L=>L>=130&&[0,3,6,9].includes(L%10)&&!isBoss(L);
 function rollRules(){
-  const L=curL(),seed=G.mode==='dp'?dpSeed():L*131+7,r=mulberry32(seed);
+  const L=curL(),seed=G.mode?sideSeed():L*131+7,r=mulberry32(seed);
   const order=G.cols.map((c,i)=>i).filter(i=>G.cols[i].length>=2);for(let i=order.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
   if(iceFor(L)){for(const i of order){RULE.ice=i;if(shortest(G.cols,15000,2))break;RULE.ice=-1}}
   if(lockFor(L)){const f=[...new Set(G.cols.flat())];
     outer:for(const i of order){for(const k of f.sort(()=>r()-.5)){if(G.cols[i].filter(x=>x===k).length>=2)continue;RULE.lock=i;RULE.key=k;if(shortest(G.cols,15000,2))break outer;RULE.lock=RULE.key=-1}}}
-  G.ice=RULE.ice;G.lock=RULE.lock;G.key=RULE.key;
+  const empt=G.cols.map((c,i)=>i).filter(i=>!G.cols[i].length);
+  if(G.mode!=='tower'||true){
+    if(bigFor(L)&&empt.length){RULE.big=empt[empt.length-1];}
+    if(stickyFor(L)&&empt.length>=2){for(const i of empt){if(i===RULE.big)continue;RULE.sticky=i;if(shortest(G.cols,15000,2))break;RULE.sticky=-1}}
+  }
+  G.ice=RULE.ice;G.lock=RULE.lock;G.key=RULE.key;G.sticky=RULE.sticky;G.big=RULE.big;
 }
-function syncRules(){RULE.ice=G.ice??-1;RULE.lock=G.lock??-1;RULE.key=G.key??-1}
+function syncRules(){RULE.ice=G.ice??-1;RULE.lock=G.lock??-1;RULE.key=G.key??-1;RULE.sticky=G.sticky??-1;RULE.big=G.big??-1}
 function bossFail(){
   sfx.bad();buzz([40,60,40]);goal('boss_fail',{level:curL()});
-  openOv(`<h2>${T('bossFailT')}</h2><p>${T('bossFailP')}</p><button class="big-btn" id="bRetry">${T('bossRetry')}</button>`);
+  const RU=LANG==='ru',cc=pm(30),adC=adOk()&&!G.bossAd;
+  openOv(`<h2>${T('bossFailT')}</h2><p>${RU?'Можно продолжить с того же места: ещё 5 ходов.':'You can keep going from here: 5 more moves.'}</p>
+    ${adC?`<button class="big-btn" id="bAd">📺 ${RU?'+5 ходов за рекламу':'+5 moves for an ad'}</button>`:''}
+    <button class="${adC?'alt-btn':'big-btn'}" id="bCoins">${RU?'+5 ходов за':'+5 moves for'} <span class="coin"></span>${cc}</button>
+    <button class="ghost-btn" id="bRetry">${T('bossRetry')}</button>`);
+  const more=()=>{closeOv();G.boss+=5;G.busy=false;G.sel=null;render();hud();sfx.chime(1);toast(RU?'Ещё 5 ходов!':'5 more moves!')};
+  if($('bAd'))$('bAd').onclick=()=>{$('bAd').disabled=true;P.rewarded(ok=>{if(ok){G.bossAd=1;goal('boss_more',{by:'ad'});more()}else{adFailAt=Date.now();$('bAd').remove();toast(T('adFail'))}})};
+  $('bCoins').onclick=()=>{if(S.coins<cc){sfx.bad();toast(T('noCoins')(cc-S.coins));return}S.coins-=cc;save();goal('boss_more',{by:'coins'});more()};
   $('bRetry').onclick=()=>{closeOv();G.snap=null;startLevel()};
 }
 /* ---------- особые пельмени, комбо, встряска ---------- */
 function rollSpecial(){
   G.gold=-1;G.hot=-1;G.hotN=0;G.goldPaid=G.hotPaid=false;G.lastDone=-9;G.combo=0;G.shakeAt=0;
   const L=curL(),f=[...new Set(G.cols.flat())];
+  if(G.mode==='du')return;  // в дуэли у обоих одинаковые условия
   if(L>=6&&Math.random()<(perk('pirat')||evOn('gold')?.7:.35))G.gold=f[Math.floor(Math.random()*f.length)];
   if((L>=12||(evOn('hot')&&L>=8))&&Math.random()<(evOn('hot')?.65:.3)){const g=f.filter(x=>x!==G.gold);G.hot=g[Math.floor(Math.random()*g.length)];G.hotN=Math.ceil(Math.max(8,Math.ceil(par3()*.7))*(perk('drakosha')?1.5:1))}
   if(G.hot>=0){const hn=G.hotN,hc=G.hot;setTimeout(()=>{if(G.hot===hc&&G.hotN===hn)toast('🌶 '+T('hotTip')(hn))},700)}
@@ -1038,34 +1117,93 @@ function shuffleBoard(){
   const idx=G.cols.map((c,i)=>i).filter(i=>G.cols[i].length&&!isDone(G.cols[i]));
   if(idx.length<2){toast(T('shakeNo'));sfx.bad();return}
   const sf=perk('mag')&&!G.perkShake;
-  if(!sf&&S.coins<20){if(P.rewarded||P.buyCoins){adOffer();return}toast(T('need20'));sfx.bad();return}
+  if(!sf&&S.coins<pm(20)){if(adOk()||P.buyCoins){adOffer();return}toast(T('noCoins')(pm(20)-S.coins));sfx.bad();return}
   const pool=idx.flatMap(i=>G.cols[i]);let best=null;
   for(let t=0;t<40&&!best;t++){const q=pool.slice();for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}
     const c=G.cols.map(x=>x.slice());let k=0;idx.forEach(i=>{c[i]=q.slice(k,k+G.cols[i].length);k+=G.cols[i].length});
     if(c.some(x=>x.length===CAP&&isDone(x)))continue;if(shortest(c,40000,1.5))best=c}
   if(!best){toast(T('stuck'));sfx.bad();return}
-  if(sf)G.perkShake=true;else S.coins-=20;save();goal('shake');G.busy=true;G.sel=null;G.hint=null;board.classList.add('shaking');sfx.squish(2);buzz([30,30,30]);
+  if(sf)G.perkShake=true;else S.coins-=pm(20);save();goal('shake');G.busy=true;G.sel=null;G.hint=null;board.classList.add('shaking');sfx.squish(2);buzz([30,30,30]);
   setTimeout(()=>{board.classList.remove('shaking');G.cols=best;G.shakeAt=G.hist.length;G.busy=false;render();hud();toast(T('shakeDone'))},500);
 }
 /* ---------- прогресс основного уровня не теряется ---------- */
 const SNAP_KEYS=['cols','hist','hid','extra','shakeAt','gold','hot','hotN','goldPaid','hotPaid','lastDone','combo','par','ice','lock','key','boss','perkHint','perkShake','usedHint'];
-function snapMain(){if(G.mode!=='dp'&&!S.replay&&G.hist.length&&!solved(G.cols)){G.snap={level:S.level};SNAP_KEYS.forEach(k=>G.snap[k]=JSON.parse(JSON.stringify(G[k]===undefined?null:G[k])))}}
-function restoreMain(){const sn=G.snap;if(!sn||G.mode==='dp'||S.replay||sn.level!==S.level)return false;G.snap=null;
+function snapMain(){if(!G.mode&&!S.replay&&G.hist.length&&!solved(G.cols)){G.snap={level:S.level};SNAP_KEYS.forEach(k=>G.snap[k]=JSON.parse(JSON.stringify(G[k]===undefined?null:G[k])))}}
+function restoreMain(){const sn=G.snap;if(!sn||G.mode||S.replay||sn.level!==S.level)return false;G.snap=null;
   SNAP_KEYS.forEach(k=>G[k]=sn[k]);syncRules();G.sel=null;G.hint=null;G.just=-1;G.busy=false;render();layout();hud();try{P.gpStart&&P.gpStart()}catch(e){}return true}
 /* ---------- рейтинг и напоминания (Telegram) ---------- */
 function lbStars(){return Object.values(S.best||{}).reduce((a,b)=>a+b,0)}
-function lbData(){return {stars:lbStars(),level:S.replay?S.lastLevel:S.level,streak:(S.dp&&S.dp.streak)||0}}
-function lbPush(){if(!P.lb)return;const d=lbData();if(d.stars===S.lbSent)return;P.lb(d).then(()=>{S.lbSent=d.stars;save()}).catch(()=>{})}
-function rating(back){
-  openOv(`<h2>${T('lbT')}</h2><p id="lbP">${T('lbLoad')}</p><div class="ach-list" id="lbList"></div><button class="big-btn" id="lbBack">${T('back')}</button>`);
+function lbData(){const w=wkState();return {stars:lbStars(),level:S.replay?S.lastLevel:S.level,streak:(S.dp&&S.dp.streak)||0,tower:(S.tower&&S.tower.best)||0,crowns:Object.keys(S.crown||{}).length,week:w.w,wstars:w.n}}
+function lbPush(){if(!P.lb)return;const d=lbData(),k=[d.stars,d.tower,d.crowns,d.week,d.wstars].join('/');if(k===S.lbSent)return;P.lb(d).then(r=>{S.lbSent=k;save();tourCheck(r)}).catch(()=>{})}
+function rating(back,tab){
+  tab=tab||'all';const RU=LANG==='ru',tabs=[['all',RU?'Звёзды':'Stars'],['week',RU?'Неделя':'Week'],['tower',RU?'Башня':'Tower']];
+  openOv(`<h2>${T('lbT')}</h2><div class="seg">${tabs.map(([k,t])=>`<button class="seg-b${k===tab?' on':''}" data-t="${k}">${t}</button>`).join('')}</div><p id="lbP">${T('lbLoad')}</p><div class="ach-list" id="lbList"></div><button class="big-btn" id="lbBack">${T('back')}</button>`);
   $('lbBack').onclick=()=>{closeOv();back&&back()};
-  P.lb(lbData()).then(r=>{if(!$('lbList'))return;S.lbSent=lbStars();save();
-    $('lbP').textContent=T('lbP')(r.me&&r.me.rank,r.total);
-    let h=r.top.map((x,i)=>`<div class="ach lb${x.me?' got':''}"><span class="ic">${i+1}</span><span><b>${String(x.name).replace(/[<>&]/g,'')}</b><small>${T('lbLv')} ${x.level}</small></span><span class="rw">★ ${x.stars}</span></div>`).join('');
-    if(r.me&&r.me.rank>r.top.length)h+=`<div class="ach lb got"><span class="ic">${r.me.rank}</span><span><b>${LANG==='ru'?'Ты':'You'}</b><small>${T('lbLv')} ${r.me.level}</small></span><span class="rw">★ ${r.me.stars}</span></div>`;
-    $('lbList').innerHTML=h;
+  document.querySelectorAll('.seg-b').forEach(b=>b.onclick=()=>rating(back,b.dataset.t));
+  const esc=x=>String(x).replace(/[<>&]/g,'');
+  P.lb(lbData()).then(r=>{if(!$('lbList'))return;const d=lbData();S.lbSent=[d.stars,d.tower,d.crowns,d.week,d.wstars].join('/');save();tourCheck(r);
+    let rows,me,val,sub;
+    if(tab==='week'){rows=r.week||[];me=r.wme;val=x=>'★ '+x.stars;sub=x=>'';
+      $('lbP').innerHTML=(RU?'Звёзды за эту неделю. Топ‑3 в понедельник получают легендарного <b>Чемпиона недели</b>.':'Stars earned this week. On Monday the top 3 get the legendary <b>Weekly Champion</b>.')+(r.wleft!=null?` ${RU?'До конца':'Ends in'}: ${Math.ceil(r.wleft/864e5)} ${RU?'дн.':'d'}`:'')}
+    else if(tab==='tower'){rows=r.tower||[];me=r.tme;val=x=>'🗼 '+x.tower;sub=x=>'';
+      $('lbP').textContent=RU?'Самые высокие этажи Башни шефа':'Highest Chef Tower floors'}
+    else{rows=r.top;me=r.me;val=x=>'★ '+x.stars;sub=x=>`<small>${T('lbLv')} ${x.level}${x.crowns?' · 👑 '+x.crowns:''}</small>`;$('lbP').textContent=T('lbP')(r.me&&r.me.rank,r.total)}
+    if(!rows){$('lbP').textContent=RU?'Обновляется… загляни чуть позже':'Updating… check back soon';return}
+    let h=rows.map((x,i)=>`<div class="ach lb${x.me?' got':''}"><span class="ic">${i+1}</span><span><b>${esc(x.name)}</b>${sub(x)}</span><span class="rw">${val(x)}</span></div>`).join('');
+    if(me&&me.rank>rows.length)h+=`<div class="ach lb got"><span class="ic">${me.rank}</span><span><b>${RU?'Ты':'You'}</b>${sub(me)}</span><span class="rw">${val(me)}</span></div>`;
+    $('lbList').innerHTML=h||`<p>${RU?'Пока пусто. Будь первым!':'Empty so far. Be the first!'}</p>`;
   }).catch(e=>{if($('lbP'))$('lbP').textContent=T('lbErr')+' ['+e+']'});
 }
+/* ---------- турнир недели ---------- */
+const weekNo=()=>Math.floor((Date.now()/864e5+3)/7);   // недели с понедельника
+function wkState(){const w=weekNo();if(!S.wk||S.wk.w!==w)S.wk={w,n:0};return S.wk}
+function wkAdd(n){if(n>0){wkState().n+=n}}
+function tourCheck(r){if(!r||!r.prev||!r.prev.rank||r.prev.rank>3)return;S.tClaim=S.tClaim||{};if(S.tClaim[r.prev.week])return;S.tClaim[r.prev.week]=1;
+  const RU=LANG==='ru';heroPrize('chempion',RU?`Турнир недели: ${r.prev.rank} место!`:`Weekly tournament: place ${r.prev.rank}!`,[300,200,150][r.prev.rank-1]);goal('tour_prize',{rank:r.prev.rank})}
+function heroPrize(id,title,coins){const ch=CHARS.find(c=>c.id===id);const had=S.coll[id];S.coll[id]=1;S.coins+=coins+(had?100:0);save();hud();
+  const show=()=>{sfx.chime(2);buzz([20,40,20]);const RU=LANG==='ru';openOv(`<h2>${title}</h2><div class="mys-wrap" style="--ray:rgba(243,194,75,.35)"><div class="rays"></div><div class="mys char-in">${dumpling(ch.col,ch.face,ch.acc)}</div></div><span class="chip r2">${T('rarity')[2]}</span><div class="cname">${cname(ch)}</div><p>${had?'':(RU?'Эксклюзивный герой: его нельзя выбить в сюрпризах. ':'Exclusive hero: never drops from surprises. ')}+${coins+(had?100:0)} <span class="coin"></span></p><button class="big-btn" id="hpOk">${T('play')}</button>`);$('hpOk').onclick=closeOv;achCheck()};
+  if($('ov').hidden&&!G.busy)setTimeout(show,300);else{const t=setInterval(()=>{if($('ov').hidden&&!G.busy){clearInterval(t);show()}},1500)}}
+/* ---------- башня шефа ---------- */
+const TOWER_MIN=50,towerL=f=>Math.min(45+5*f,220);
+const TW={ru:{btn:f=>`🗼 Башня шефа · этаж ${f}`,tip:f=>`Башня шефа, этаж ${f}. Каждый этаж сложнее.`,won:f=>`Этаж ${f} покорён!`,next:f=>`Выше, на этаж ${f}`,lock:`Башня шефа откроется на ${TOWER_MIN} уровне`},
+  en:{btn:f=>`🗼 Chef Tower · floor ${f}`,tip:f=>`Chef Tower, floor ${f}. Every floor is harder.`,won:f=>`Floor ${f} cleared!`,next:f=>`Up to floor ${f}`,lock:`Chef Tower opens at level ${TOWER_MIN}`}};
+const TWx=()=>TW[LANG]||TW.en;
+function towerStart(){if(G.busy)return;ensureAC();closeOv();snapMain();S.tower=S.tower||{f:1,best:0};G.mode='tw';G.dpL=towerL(S.tower.f);G.seed=900001+S.tower.f*7919;goal('tower_start',{floor:S.tower.f});startLevel()}
+function towerWin(){G.busy=false;const f=S.tower.f,moves=G.hist.length,st=starsFor(moves),p3=par3();const reward=Math.round((30+5*Math.min(f,40))*(1+(priceMult()-1)/2));
+  S.coins+=reward;S.tower.f=f+1;S.tower.best=Math.max(S.tower.best||0,f);wkAdd(st);G.mode='';save();hud();achCheck();lbPush();goal('tower_floor',{floor:f,stars:st});
+  openOv(`<h2>🗼 ${TWx().won(f)}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,p3)}</p><div class="reward"><span class="coin"></span>+${reward}</div>
+    <button class="big-btn" id="twNext">${TWx().next(f+1)}</button><button class="ghost-btn" id="twOut">${T('dpBack')}</button>`);
+  $('twNext').onclick=()=>towerStart();$('twOut').onclick=()=>{closeOv();startLevel()};
+  if(f===25)heroPrize('bashnya',LANG==='ru'?'25 этажей башни!':'25 tower floors!',200)}
+/* ---------- дуэль с другом ---------- */
+const DU={ru:{btn:'⚔️ Дуэль с другом',tip:d=>d.vs?`Дуэль: друг справился за ${d.vs} ходов. Сделай меньше!`:'Дуэль: пройди уровень за минимум ходов, потом отправь вызов другу.',
+    t:'Дуэль с другом',p:'Ты проходишь уровень, потом отправляешь другу ссылку. Он играет точно такой же уровень. Кто справится за меньшее число ходов, тот победил.',go:'Начать',
+    done:m=>`Готово: ${m} ходов`,send:'Отправить вызов',msg:m=>`⚔️ Вызываю на дуэль в «Пельменной»! Я прошёл уровень за ${m} ходов. Сможешь меньше?`,
+    win:(m,v)=>`Победа! ${m} ходов против ${v}`,lose:(m,v)=>`Друг оказался быстрее: ${v} против твоих ${m}`,draw:m=>`Ничья: по ${m} ходов`,back:'Ответный вызов',lock:'Дуэли откроются на 10 уровне'},
+  en:{btn:'⚔️ Duel a friend',tip:d=>d.vs?`Duel: your friend took ${d.vs} moves. Beat it!`:'Duel: beat the level in as few moves as you can, then challenge a friend.',
+    t:'Duel a friend',p:'You play a level, then send your friend a link. They play the exact same level. Fewer moves wins.',go:'Start',
+    done:m=>`Done: ${m} moves`,send:'Send challenge',msg:m=>`⚔️ I challenge you to a duel in Dumpling Sort! I solved it in ${m} moves. Can you beat that?`,
+    win:(m,v)=>`You win! ${m} moves vs ${v}`,lose:(m,v)=>`Your friend was faster: ${v} vs your ${m}`,draw:m=>`Draw: ${m} moves each`,back:'Challenge back',lock:'Duels unlock at level 10'}};
+const DUx=()=>DU[LANG]||DU.en;
+function duelLink(seed,L,m){const prm=`d${seed.toString(36)}_${L}_${m}`,t=DUx().msg(m);
+  try{if(P.shareParam)return P.shareParam(prm,t);const u=location.origin+location.pathname+'?duel='+prm;
+    if(navigator.share)return navigator.share({text:t,url:u}).catch(()=>{});navigator.clipboard&&navigator.clipboard.writeText(t+' '+u);toast(LANG==='ru'?'Ссылка скопирована':'Link copied')}catch(e){}}
+function duelStart(seed,L,vs){if(G.busy)return;ensureAC();closeOv();snapMain();G.mode='du';G.dpL=L;G.seed=seed;G.duel={seed,L,vs};goal('duel_start',{vs:vs||0});startLevel()}
+function duelNew(back){const D=DUx();if(S.level<10&&!S.replay){toast(D.lock);return}
+  openOv(`<h2>${D.t}</h2><p>${D.p}</p><button class="big-btn" id="duGo">${D.go}</button><button class="ghost-btn" id="duBack">${T('back')}</button>`);
+  $('duBack').onclick=()=>{closeOv();back&&back()};
+  $('duGo').onclick=()=>{const cur=S.replay?S.lastLevel:S.level;duelStart(1+Math.floor(Math.random()*2e9),Math.max(12,Math.min(cur,90)),0)}}
+function duelWin(){G.busy=false;const d=G.duel,m=G.hist.length,D=DUx();G.mode='';let h,rw=0;
+  if(d.vs){if(m<d.vs){h=D.win(m,d.vs);rw=30;S.duelW=(S.duelW||0)+1;wkAdd(2)}else if(m===d.vs){h=D.draw(m);rw=10}else h=D.lose(m,d.vs)}else{h=D.done(m);rw=5}
+  S.coins+=rw;save();hud();lbPush();goal('duel_done',{moves:m,vs:d.vs||0});
+  openOv(`<h2>⚔️ ${h}</h2>${rw?`<div class="reward"><span class="coin"></span>+${rw}</div>`:''}<button class="big-btn" id="duSend">${d.vs?D.back:D.send}</button><button class="ghost-btn" id="duOut">${T('dpBack')}</button>`);
+  $('duSend').onclick=()=>duelLink(d.seed,d.L,m);$('duOut').onclick=()=>{closeOv();startLevel()};
+  if(S.duelW===5)heroPrize('duelyant',LANG==='ru'?'5 побед в дуэлях!':'5 duel wins!',150)}
+function duelCheck(){let prm=P.startParam||'';try{prm=new URLSearchParams(location.search).get('duel')||prm}catch(e){}
+  const m=/^d([0-9a-z]+)_(\d+)_(\d+)$/.exec(prm);if(!m||S.level<3)return;const seed=parseInt(m[1],36),L=Math.max(3,Math.min(+m[2],220)),vs=+m[3];
+  const k=m[1]+'_'+vs;S.duelSeen=S.duelSeen||{};if(S.duelSeen[k])return;S.duelSeen[k]=1;save();
+  const D=DUx();openOv(`<h2>⚔️ ${D.t}</h2><p>${D.tip({vs})}</p><button class="big-btn" id="duGo">${D.go}</button><button class="ghost-btn" id="duNo">${T('back')}</button>`);
+  $('duGo').onclick=()=>duelStart(seed,L,vs);$('duNo').onclick=closeOv}
 function setRemind(on,after){P.remind(on).then(ok=>{if(ok){S.remind=on;save();toast(on?T('remYes'):T('remOffOk'));sfx.chime(1)}else toast(T('remNo'));after&&after()})}
 /* ---------- экран уровней ---------- */
 function playLevel(n){
@@ -1116,11 +1254,13 @@ function levels(back,focusK){
     if(it.t==='chest'){const done=cur>it.k*10,got=S.chest[it.k];
       nodes+=`<button class="map-chest${done&&!got?' ready':''}${got?' open':''}" data-k="${it.k}" style="left:${it.x}px;top:${it.y}px"${done&&!got?'':' tabindex="-1"'}><svg viewBox="0 0 40 34"><rect x="3" y="12" width="34" height="20" rx="3" fill="#a8672c" stroke="#5a3410" stroke-width="2"/><path d="M3 14q0-12 17-12t17 12z" fill="${got?'#6b3f18':'#c47c35'}" stroke="#5a3410" stroke-width="2"/><rect x="17" y="10" width="6" height="9" rx="1.5" fill="#f3c24b" stroke="#8a6410" stroke-width="1.5"/></svg></button>`;continue}
     const n=it.n,st=best[n]||0,isCur=n===cur,lock=n>cur;
-    nodes+=`<button class="map-lv${isCur?' cur':''}${lock?' locked':''}${isBoss(n)?' boss':''}" data-l="${n}" style="left:${it.x}px;top:${it.y}px"${lock?' tabindex="-1"':''}><b>${n}</b>${!lock&&!isCur?`<span class="ss">${[1,2,3].map(k=>`<span class="${k<=st?'on':''}">${STAR_SVG}</span>`).join('')}</span>`:''}${isCur?`<span class="me">${dumpling('#f4a39b','happy',null)}</span>`:''}</button>`;
+    nodes+=`<button class="map-lv${isCur?' cur':''}${lock?' locked':''}${isBoss(n)?' boss':''}" data-l="${n}" style="left:${it.x}px;top:${it.y}px"${lock?' tabindex="-1"':''}><b>${n}</b>${(S.crown||{})[n]?'<span class="mcrown">👑</span>':''}${!lock&&!isCur?`<span class="ss">${[1,2,3].map(k=>`<span class="${k<=st?'on':''}">${STAR_SVG}</span>`).join('')}</span>`:''}${isCur?`<span class="me">${dumpling('#f4a39b','happy',null)}</span>`:''}</button>`;
   }
-  openOv(`<div class="map-top"><h2>${T('lvT')}</h2><p>${T('lvP')(cur-1,tot)}</p>${P.lb?`<button class="alt-btn" id="mapLb" style="margin-top:6px;padding:8px">🏆 ${T('lbBtn')}</button>`:''}</div><div class="map-scroll" id="mapScroll"><div class="map" style="height:${H}px;width:${W}px">${bg}${path}${nodes}</div></div><button class="big-btn" id="lvBack">${T('back')}</button>`,'map-sheet');
+  openOv(`<div class="map-top"><h2>${T('lvT')}</h2><p>${T('lvP')(cur-1,tot)}</p><div class="map-modes">${P.lb?`<button class="alt-btn" id="mapLb">🏆 ${T('lbBtn')}</button>`:''}<button class="alt-btn${cur<TOWER_MIN?' dim':''}" id="mapTw">${cur<TOWER_MIN?'🔒 ':''}${TWx().btn((S.tower&&S.tower.f)||1)}</button>${P.shareParam?`<button class="alt-btn${cur<10?' dim':''}" id="mapDu">${cur<10?'🔒 ':''}${DUx().btn}</button>`:''}</div></div><div class="map-scroll" id="mapScroll"><div class="map" style="height:${H}px;width:${W}px">${bg}${path}${nodes}</div></div><button class="big-btn" id="lvBack">${T('back')}</button>`,'map-sheet');
   $('lvBack').onclick=()=>{closeOv();back&&back()};
   if(P.lb)$('mapLb').onclick=()=>rating(()=>levels(back));
+  $('mapTw').onclick=()=>{if(cur<TOWER_MIN){toast(TWx().lock);return}towerStart()};
+  if($('mapDu'))$('mapDu').onclick=()=>{if(cur<10){toast(DUx().lock);return}duelNew(()=>levels(back))};
   document.querySelectorAll('.map-lv:not(.locked)').forEach(el=>el.onclick=()=>{closeOv();playLevel(+el.dataset.l)});
   document.querySelectorAll('.map-chest.ready').forEach(el=>el.onclick=()=>{
     const k=+el.dataset.k;if(S.chest[k])return;S.chest[k]=1;const c=Math.min(30+20*k,150);S.coins+=c;save();hud();goal('chest',{chapter:k});
@@ -1133,7 +1273,8 @@ function dpReady(){return S.level>=5&&(!S.dp||S.dp.last!==dayStr(new Date()))}
 function dpStreak(){const y=new Date();y.setDate(y.getDate()-1);return S.dp&&S.dp.last===dayStr(y)?S.dp.streak+1:1}
 function dpSeed(){const d=new Date();return (d.getFullYear()*372+d.getMonth()*31+d.getDate())*104729+7}
 function startDaily(){if(G.busy)return;ensureAC();snapMain();G.mode='dp';G.dpL=DP_L[new Date().getDay()];goal('dp_start',{streak:dpStreak()});startLevel()}
-function curL(){return G.mode==='dp'?G.dpL:S.level}
+function curL(){return G.mode?G.dpL:S.level}
+function sideSeed(){return G.mode==='dp'?dpSeed():G.seed}
 function colorsFor(L){return L<41?Math.min(3+Math.floor((L-1)/2),8):Math.min(9+Math.floor((L-41)/20),FILL.length)}  // 41+: 9, 61+: 10, 81+: 11, 101+: 12 начинок
 const emptiesFor=L=>L>=20&&colorsFor(L)<=9?1:2;  // с 61 уровня начинок 10+, им снова нужны две пустые        // с 20-го уровня одна пустая пароварка
 const hiddenFor=L=>L>=30;             // с 30-го видно только верхний пельмень
@@ -1208,22 +1349,22 @@ const board=$('board'),wrap=$('boardWrap');
 
 function startLevel(keepCols){
   if(!keepCols&&restoreMain())return;
-  if(!keepCols){RULE.ice=RULE.lock=RULE.key=-1;genLevel.par=0;G.cols=G.mode==='dp'?genLevel(G.dpL,dpSeed()):(genLevel(S.level)||genLevel(1));rollRules();}
+  if(!keepCols){RULE.ice=RULE.lock=RULE.key=RULE.sticky=RULE.big=-1;genLevel.par=0;G.cols=G.mode?genLevel(G.dpL,sideSeed()):(genLevel(S.level)||genLevel(1));rollRules();}
   else{genLevel.par=0;syncRules()}
   const big=G.cols.flat().length>36;  // 10+ начинок: точный поиск слишком долгий, берём почти точный
   G.par=shortest(G.cols,big?20000:60000,big?1.3:1)||shortest(G.cols,20000,2)||genLevel.par||0;
-  G.boss=isBoss(curL())&&G.mode!=='dp'?Math.ceil(G.par*1.5)+3+(perk('angelok')?5:0):0;G.perkHint=G.perkShake=false;G.usedHint=false;
+  G.boss=isBoss(curL())&&!G.mode?Math.ceil(G.par*1.5)+3+(perk('angelok')?5:0):0;G.perkHint=G.perkShake=false;G.usedHint=false;
   G.hid=G.cols.map(c=>hiddenFor(curL())?Math.max(0,c.length-1):0);
-  G.hist=[];G.sel=null;G.extra=0;G.freeUndo=0;G.hint=null;G.just=-1;G.busy=false;
+  G.hist=[];G.sel=null;G.extra=0;G.freeUndo=0;G.bossAd=0;G.hint=null;G.just=-1;G.busy=false;
   rollSpecial();
   render();layout();hud();
   try{P.gpStart&&P.gpStart()}catch(e){}
 }
 function hud(){
-  $('lvl').textContent=(G.mode==='dp'?T('dpHud'):T('level')+S.level)+' · '+T('movesHud')(G.hist.length,par3())+(S.replay===S.level?' · '+T('replayTag'):'')+(G.boss?' · '+T('bossHud')(G.boss-G.hist.length):'')+(G.hot>=0&&!G.hotPaid&&G.hist.length<G.hotN?' · '+T('hotHud')(G.hotN-G.hist.length):'');
+  $('lvl').textContent=(G.mode==='tw'?(LANG==='ru'?'🗼 Этаж ':'🗼 Floor ')+S.tower.f:G.mode==='du'?(LANG==='ru'?'⚔️ Дуэль':'⚔️ Duel'):G.mode==='dp'?T('dpHud'):T('level')+S.level)+' · '+T('movesHud')(G.hist.length,par3())+(S.replay===S.level?' · '+T('replayTag'):'')+(G.boss?' · '+T('bossHud')(G.boss-G.hist.length):'')+(G.hot>=0&&!G.hotPaid&&G.hist.length<G.hotN?' · '+T('hotHud')(G.hotN-G.hist.length):'');
   const pr=(id,v)=>{$(id).querySelector('.price').innerHTML=typeof v==='number'?'<span class="coin"></span>'+v:v};
   pr('btnHint',perk('shef')&&!G.perkHint?'⚡ 0':S.freeHint>0?T('freeHint')(S.freeHint):hintCost());
-  pr('btnUndo',perk('ninja')?'⚡ 0':(S.level<=10||(G.freeUndo||0)<upg('undo'))?0:2);try{$('btnRestart').dataset.c=restartCost()||''}catch(e){}pr('btnShake',perk('mag')&&!G.perkShake?'⚡ 0':20);pr('btnExtra',extraCost());
+  pr('btnUndo',perk('ninja')?'⚡ 0':(S.level<=10||(G.freeUndo||0)<upg('undo'))?0:2);try{$('btnRestart').dataset.c=restartCost()||''}catch(e){}pr('btnShake',perk('mag')&&!G.perkShake?'⚡ 0':pm(20));pr('btnExtra',extraCost());
   $('coins').textContent=S.coins;
   const got=visibleChars().filter(c=>S.coll[c.id]).length;$('albumCount').textContent=got+'/'+visibleChars().length;
   $('btnUndo').disabled=!G.hist.length;
@@ -1239,11 +1380,13 @@ function hud(){
   else if(G.boss) tip.textContent=T('bossTip')(G.boss);
   else if(G.ice>=0&&S.level<=14) tip.textContent=T('iceTip');
   else if(G.lock>=0&&S.level<=19) tip.textContent=T('lockTip');
+  else if(G.sticky>=0&&S.level<=124) tip.textContent=LANG==='ru'?'🍯 Липкая пароварка: класть можно, доставать нельзя. Думай заранее!':'🍯 Sticky steamer: you can put in but never take out. Plan ahead!';
+  else if(G.big>=0&&S.level<=145) tip.textContent=LANG==='ru'?'Большая пароварка вмещает 5 пельменей':'The big steamer holds 5 dumplings';
   else if(hiddenFor(S.level)&&S.level<=32) tip.textContent=T('hiddenTip');
   else if(emptiesFor(S.level)===1&&S.level<=22) tip.textContent=T('oneEmptyTip');
   else if(SEASON&&S.level%2===0) tip.textContent=T('nyTip');
   else tip.textContent=T('tipN')(colorsFor(S.level));
-  if(G.mode==='dp'){tip.innerHTML=`<span>${T('dpTip')}</span> <button class="daily" id="dpBack" style="animation:none">${T('dpBack')}</button>`;$('dpBack').onclick=()=>{if(G.busy)return;G.mode='';startLevel()};return}
+  if(G.mode){tip.innerHTML=`<span>${G.mode==='tw'?TWx().tip(S.tower.f):G.mode==='du'?DUx().tip(G.duel):T('dpTip')}</span> <button class="daily" id="dpBack" style="animation:none">${T('dpBack')}</button>`;$('dpBack').onclick=()=>{if(G.busy)return;G.mode='';startLevel()};return}
   if(S.replay===S.level&&S.lastLevel){tip.innerHTML=`<button class="daily" id="toCur" style="animation:none">${T('toCur')(S.lastLevel)}</button>`;$('toCur').onclick=()=>{if(!G.busy)playLevel(S.lastLevel)};return}
   if(chestReady()&&!(S.level>=2&&dailyReady())&&!G.mode){const k=chestReady();
     tip.innerHTML=`<button class="daily dp-chip" id="chestChip"><svg class="gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="11" rx="2"/><path d="M3 12q0-8 9-8t9 8M10 14h4"/></svg>${LANG==='ru'?`Сундук главы ${k} ждёт!`:`Chapter ${k} chest is ready!`}</button>`;
@@ -1280,11 +1423,11 @@ function render(){
   G.cols.forEach((c,i)=>{
     const done=isDone(c);
     const bl=blockedCol(G.cols,i);
-    let cls='col'+(done?' done':'')+(i===G.just?' just':'')+(bl?' '+bl:'');
+    let cls='col'+(done?' done':'')+(i===G.just?' just':'')+(bl?' '+bl:'')+(i===RULE.sticky?' sticky':'')+(i===RULE.big?' big':'');
     if(G.hint){if(G.hint[0]===i)cls+=' hint-from';if(G.hint[1]===i)cls+=' hint-to';}
     const rl=(G.sel===i)?visRun(i):0;if(done)G.hid[i]=0;const hd=G.hid[i]||0;  // закрытая пароварка раскрывается целиком
     h+=`<div class="${cls}" data-i="${i}" role="button" tabindex="0" aria-label="${(bl?T(bl+'Aria')+'. ':'')+T('colAria')(i+1,c.map((x,t)=>t<hd?'?':fname(x)).join(', '))}"><div class="steam"><i></i><i></i><i></i></div><div class="lid"></div>${bl==='lock'?`<div class="padlock"><svg viewBox="0 0 40 44"><path d="M11 20v-7a9 9 0 0 1 18 0v7" stroke="#c9ced6" stroke-width="5" fill="none"/><rect x="5" y="19" width="30" height="23" rx="5" fill="#f3c24b" stroke="#8a6410" stroke-width="2"/></svg><span class="pk">${fillSVG(G.key)}</span></div>`:''}${bl==='ice'?'<div class="frost"></div>':''}<div class="stack">`;
-    for(let t=0;t<CAP;t++){
+    for(let t=0;t<capOf(i);t++){
       const x=c[t];let dp='';
       if(x!==undefined){const lift=G.sel===i&&t>=c.length-rl;const sp=t<hd?'':(x===G.key&&G.lock>=0&&blockedCol(G.cols,G.lock))?' key':x===G.gold?' gold':(x===G.hot&&!G.hotPaid&&G.hist.length<G.hotN)?' hot':'';dp=`<div class="dp${lift?' lift':''}${t<hd?' hid':''}${sp}">${t<hd?HIDDEN_SVG:fillSVG(x)}</div>`;}
       h+=`<div class="tier">${dp}</div>`;
@@ -1300,7 +1443,7 @@ function layout(){
   // при котором пароварки не становятся заметно мельче: так новая пароварка встаёт рядом, а не одна внизу
   const cand=[];
   for(let rows=1;rows<=4;rows++){const per=Math.ceil(n/rows);if(rows>1&&Math.ceil(n/(rows-1))===per)continue;
-    const r=Math.ceil(n/per);const byW=(W-(per-1)*gx)/per;const byH=(H-(r-1)*gy-r*8)/(r*(4*.66+.46)+0.01);
+    const r=Math.ceil(n/per);const byW=(W-(per-1)*gx)/per;const byH=(H-(r-1)*gy-r*8)/(r*((RULE.big>=0?5:4)*.66+.46)+0.01);
     cand.push({per,rows:r,cw:Math.min(byW,byH,96)});if(per===1)break}
   const mx=Math.max(...cand.map(c=>c.cw));const best=cand.find(c=>c.cw>=mx*.84)||cand[0];
   const cw=Math.max(36,Math.floor(best.cw));
@@ -1314,6 +1457,7 @@ function shake(i){const el=board.children[i];if(!el)return;el.classList.remove('
 function tap(i){
   if(G.busy)return;ensureAC();
   const c=G.cols[i];
+  if(G.sel===null&&i===RULE.sticky&&c.length&&!isDone(c)){sfx.bad();shake(i);buzz(30);toast(LANG==='ru'?'Липкая пароварка: что положил, то уже не достать':'Sticky steamer: what goes in stays in');return}
   const bl=blockedCol(G.cols,i);if(bl){sfx.bad();shake(i);buzz(30);toast(bl==='ice'?T('iceTap'):T('lockTap'));if(G.sel!==null){G.sel=null;render()}return}
   if(G.sel===null){
     if(!c.length){sfx.bad();shake(i);toast(T('emptyCol'));return}
@@ -1322,7 +1466,7 @@ function tap(i){
   }
   if(G.sel===i){G.sel=null;render();return}
   if(canMove(G.cols,G.sel,i)){move(G.sel,i);return}
-  if(c.length&&!isDone(c)&&c.length===CAP){ // full with other filling: switch selection
+  if(c.length&&!isDone(c)&&c.length===capOf(i)){ // full with other filling: switch selection
     G.sel=i;sfx.pick();render();return;
   }
   if(c.length&&!isDone(c)){G.sel=i;sfx.pick();render();return}
@@ -1332,7 +1476,7 @@ function move(a,b){
   G.busy=true;G.hint=null;
   if(G.par&&G.hist.length+1===Math.max(30,Math.ceil(G.par*2.2))&&!G.boss)stuckHelp('moves');
   G.hist.push(G.cols.map(c=>c.slice()));
-  const n=Math.min(visRun(a),CAP-G.cols[b].length);
+  const n=Math.min(visRun(a),capOf(b)-G.cols[b].length);
   const srcT=board.children[a].querySelectorAll('.tier'),dstT=board.children[b].querySelectorAll('.tier');
   const lenA=G.cols[a].length,lenB=G.cols[b].length;
   const anims=[];
@@ -1365,19 +1509,19 @@ function undo(){if(G.busy||!G.hist.length)return;if(G.hist.length<=G.shakeAt){to
 function hint(){
   if(G.busy)return;ensureAC();
   const pf=perk('shef')&&!G.perkHint,free=pf||(S.freeHint||0)>0;
-  if(!free&&S.coins<hintCost()){if(P.rewarded||P.buyCoins){adOffer();return}toast(T('needHint'));sfx.bad();return}
+  if(!free&&S.coins<hintCost()){if(adOk()||P.buyCoins){adOffer();return}toast(T('needHint'));sfx.bad();return}
   const p=shortest(G.cols,60000,1.5,true)||solve(G.cols,120000); // A*: подсказки не ходят по кругу
   if(!p||!p.length){toast(T('stuck'));sfx.bad();return}
   if(pf)G.perkHint=true;else if(free)S.freeHint--;else S.coins-=hintCost();G.usedHint=true;S.stat=S.stat||{};if(!S.stat.hintUsed){S.stat.hintUsed=1;setTimeout(pathCheck,300)}save();goal('hint');G.hint=p[0];G.sel=null;sfx.pick();render();hud();
 }
 // лишние пароварки: до 30 уровня одна, дальше две, с 60 уровня три; каждая следующая дороже
-function extraMax(){return G.mode==='dp'?2:S.level>=60?3:S.level>=30?2:1}
-function extraCost(){return (perk('krutysh')?15:30)+(G.extra||0)*(perk('krutysh')?5:10)}
+function extraMax(){return G.mode?2:S.level>=60?3:S.level>=30?2:1}
+function extraCost(){return pm((perk('krutysh')?15:30)+(G.extra||0)*(perk('krutysh')?5:10))}
 function extra(){
   if(G.busy)return;ensureAC();
   if(G.extra>=extraMax()){toast(T('oneExtra'));return}
   const ec=extraCost();
-  if(S.coins<ec){if(P.rewarded||P.buyCoins){adOffer();return}toast(T('noCoins')(ec-S.coins));sfx.bad();return}
+  if(S.coins<ec){if(adOk()||P.buyCoins){adOffer();return}toast(T('noCoins')(ec-S.coins));sfx.bad();return}
   S.coins-=ec;save();G.extra=(G.extra||0)+1;G.cols.push([]);G.hid.push(0);G.hint=null;sfx.lid();render();layout();hud();
 }
 
@@ -1399,9 +1543,11 @@ function closeOv(){$('ov').hidden=true}
 function win(){
   try{P.gpStop&&P.gpStop()}catch(e){}
   sfx.win();buzz([20,40,20]);
+  if(G.mode==='tw')return towerWin();
+  if(G.mode==='du')return duelWin();
   if(G.mode==='dp'){
     const moves=G.hist.length,st=starsFor(moves),n=dpStreak(),p3=par3();qEvent('dp');S.dp={last:dayStr(new Date()),streak:n};
-    const reward=25+5*st+Math.min(n,10)*3;S.coins+=reward;G.mode='';save();hud();achCheck();lbPush();goal('dp_done',{streak:n,stars:st,moves});
+    const reward=25+5*st+Math.min(n,10)*3;S.coins+=reward;wkAdd(st);G.mode='';save();hud();achCheck();lbPush();goal('dp_done',{streak:n,stars:st,moves});
     openOv(`<h2>${T('dpWinT')}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,p3)}</p><p>${T('dpWinP')(n)}</p>
       <div class="reward"><span class="coin"></span>+${reward}</div>
       <button class="big-btn" id="next">${T('dpBack')}</button>
@@ -1413,25 +1559,28 @@ function win(){
     return;
   }
   const passed=S.level,moves=G.hist.length,st=starsFor(moves);
-  S.best=S.best||{};const prev=S.best[passed]||0;if(st>prev)S.best[passed]=st;
+  const crown=G.par&&moves<=G.par&&S.level>=5;S.crown=S.crown||{};const newCrown=crown&&!S.crown[passed];if(crown){S.crown[passed]=1;if(newCrown){S.coins+=10;goal('crown',{level:passed})}}
+  S.best=S.best||{};const prev=S.best[passed]||0;if(st>prev)S.best[passed]=st;wkAdd(Math.max(0,st-prev)+(newCrown?1:0));
   goal('level_done',{level:passed,stars:st,moves,par:G.par});
   qEvent('level');if(st===3)qEvent('star3');if(!G.usedHint)qEvent('nohint');
   if(S.replay===passed){ // переигровка: без сюрприза, награда только за улучшение
     const reward=5*Math.max(0,st-prev);S.coins+=reward;S.replay=0;S.level=S.lastLevel||passed+1;save();hud();lbPush();
-    openOv(`<h2>${T('winT')(passed)}</h2>${starsRow(st)}<p>${st>prev?T('replayBetter'):T('replaySame')}</p>
+    openOv(`<h2>${T('winT')(passed)}</h2>${starsRow(st,crown)}<p>${st>prev?T('replayBetter'):T('replaySame')}</p>
       ${reward?`<div class="reward"><span class="coin"></span>+${reward}</div>`:''}
       <button class="big-btn" id="next">${T('toCur')(S.level)}</button>`);
     $('next').onclick=()=>{closeOv();nextLevel()};return;
   }
-  const boss=!!G.boss;const reward=Math.round((10+5*st+(boss?40:0))*(perk('gold')?1.5:1))+upg('piggy')*2;if(boss)goal('boss_win',{level:passed});S.coins+=reward;S.level++;save();hud();achCheck();lbPush();rankCheck();
-  surprise({title:boss?T('bossWinT')(passed):T('winT')(passed),sub:T('winP'),reward,stars:st,moves,passed,par3:par3(),minR:boss?1:0});
+  const boss=!!G.boss;const reward=Math.round((10+5*st+(boss?40:0))*(perk('gold')?1.5:1)*(1+(priceMult()-1)/2))+upg('piggy')*2;if(boss)goal('boss_win',{level:passed});S.coins+=reward;S.level++;save();hud();achCheck();lbPush();rankCheck();
+  surprise({title:boss?T('bossWinT')(passed):T('winT')(passed),sub:T('winP'),reward:reward+(newCrown?10:0),x2:1,stars:st,crown,moves,passed,par3:par3(),minR:boss?1:0});
 }
 function surprise(o){
-  openOv(`<h2>${o.title}</h2>${o.stars?starsRow(o.stars)+`<p class="mv">${T('movesWin')(o.moves,o.par3)}</p>`:''}<p>${o.sub}</p>
-    ${o.reward!=null?`<div class="reward"><span class="coin"></span>+${o.reward}</div>`:''}
+  openOv(`<h2>${o.title}</h2>${o.stars?starsRow(o.stars,o.crown)+`<p class="mv">${T('movesWin')(o.moves,o.par3)}</p>`:''}<p>${o.sub}</p>
+    ${o.reward!=null?`<div class="reward" id="rwVal"><span class="coin"></span>+${o.reward}</div>`:''}
+    ${o.x2&&o.reward>0&&adOk()?`<button class="ad-x2" id="adX2">📺 ${LANG==='ru'?'Удвоить за рекламу':'Double it with an ad'}</button>`:''}
     <div class="mys-wrap"><div class="rays"></div><button class="mys" id="mys" aria-label="${T('squeeze')}">${dumpling('#f7ecd9',null,null,{mystery:true})}</button></div>
     <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
     <p id="mysTip">${T('squeezeTip')}</p>`);
+  if($('adX2'))$('adX2').onclick=()=>{const b=$('adX2');b.disabled=true;goal('ad_x2_start');P.rewarded(ok=>{if(ok){S.coins+=o.reward;save();hud();sfx.chime(1);buzz([20,40,20]);$('rwVal').innerHTML=`<span class="coin"></span>+${o.reward*2}`;b.remove();goal('ad_x2',{coins:o.reward})}else{adFailAt=Date.now();b.remove();toast(T('adFail'))}})};
   let taps=0;const m=$('mys');
   m.addEventListener('click',()=>{
     ensureAC();if(taps>=4)return;taps++;
@@ -1465,7 +1614,8 @@ function reveal(o){
   $('next').focus();
 }
 const STAR_SVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>';
-function starsRow(n){return `<div class="win-stars" aria-label="${T('rateAria')(n).replace(/5/,'3')}">${[1,2,3].map(i=>`<span class="${i<=n?'on':''}" style="animation-delay:${i*.15}s">${STAR_SVG}</span>`).join('')}</div>`}
+function starsRow(n,cr){return starsRow0(n)+(cr?`<div class="crown-win">👑 ${LANG==='ru'?'Корона мастера! Минимум ходов +10':'Master crown! Fewest moves +10'}</div>`:'')}
+function starsRow0(n){return `<div class="win-stars" aria-label="${T('rateAria')(n).replace(/5/,'3')}">${[1,2,3].map(i=>`<span class="${i<=n?'on':''}" style="animation-delay:${i*.15}s">${STAR_SVG}</span>`).join('')}</div>`}
 const RATE_AT=[9,21,41,71];  // спрашиваем оценку после 8, 20, 40 и 70 уровня, пока не оценят
 function nextLevel(){
   const asked=+S.rateAsked||0;
@@ -1474,13 +1624,14 @@ function nextLevel(){
     if(P.review){rate(()=>nextLevel());return}
     if(P.nativeReview){try{P.nativeReview()}catch(e){}}
   }
+  if(S.level>=11&&starterOffer())return;
   if(P.interstitial&&S.level>=4&&S.level%3===1){P.interstitial(()=>startLevel());}else startLevel();
 }
 function adOffer(){
-  openOv(`<h2>${T('adT')}</h2><p>${P.rewarded?T('adP'):(LANG==='ru'?'Монеты можно купить за звёзды Telegram.':'You can buy coins with Telegram Stars.')}</p>${P.rewarded?`<button class="big-btn" id="adYes">${T('adBtn')}</button>`:''}${P.buyCoins?`<button class="${P.rewarded?'alt-btn':'big-btn'}" id="adBuy">⭐ ${LANG==='ru'?'Купить монеты':'Buy coins'}</button>`:''}<button class="ghost-btn" id="adNo">${T('adNo')}</button>`);
+  openOv(`<h2>${T('adT')}</h2><p>${adOk()?T('adP'):(LANG==='ru'?'Монеты можно купить за звёзды Telegram.':'You can buy coins with Telegram Stars.')}</p>${adOk()?`<button class="big-btn" id="adYes">${T('adBtn')}</button>`:''}${P.buyCoins?`<button class="${adOk()?'alt-btn':'big-btn'}" id="adBuy">⭐ ${LANG==='ru'?'Купить монеты':'Buy coins'}</button>`:''}<button class="ghost-btn" id="adNo">${T('adNo')}</button>`);
   $('adNo').onclick=closeOv;
   if($('adBuy'))$('adBuy').onclick=()=>shop();
-  if($('adYes'))$('adYes').onclick=()=>{closeOv();P.rewarded(ok=>{if(ok){S.coins+=20;save();hud();sfx.chime(1);toast(T('adGot'))}else toast(T('adFail'))})};
+  if($('adYes'))$('adYes').onclick=()=>{closeOv();P.rewarded(ok=>{if(ok){S.coins+=20;save();hud();sfx.chime(1);toast(T('adGot'))}else{adFailAt=Date.now();toast(T('adFail'))}})};
 }
 function sparks(el,n,color){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -1613,7 +1764,7 @@ board.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const c=e.
 $('btnUndo').onclick=undo;$('btnHint').onclick=hint;$('lvlBtn').onclick=()=>{if(G.busy)return;levels()};$('btnExtra').onclick=extra;$('btnShake').onclick=shuffleBoard;$('btnAlbum').onclick=()=>{ensureAC();album(false)};
 $('btnSound').onclick=()=>{S.muted=!S.muted;save();ensureAC();hud();if(!S.muted)sfx.pick()};
 $('coinsBtn').onclick=()=>{if(G.busy)return;ensureAC();sfx.pick();shop()};
-const RESTART_COST=5;const restartCost=()=>!G.hist.length||S.level<=10||G.mode==='dp'?0:RESTART_COST;
+const RESTART_COST=5;const restartCost=()=>!G.hist.length||S.level<=10||G.mode?0:pm(RESTART_COST);
 $('btnRestart').onclick=()=>{if(G.busy)return;ensureAC();const rc=restartCost();if(S.coins<rc){sfx.bad();toast(T('noCoins')(rc-S.coins));return}if(rc){S.coins-=rc;save();hud()}const k=G.mode==='dp'?'dp':S.level;G.rs=G.rs||{};S.rsK===k?S.rsN=(S.rsN||0)+1:(S.rsK=k,S.rsN=1);startLevel();toast(T('restarted')+(rc?` −${rc}`:''));if(S.rsN>=3)stuckHelp('restart')};
 $('ov').addEventListener('click',e=>{if(e.target.id==='ov'&&document.getElementById('closeAlbum'))closeOv()});
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(layout,80)});
@@ -1631,10 +1782,10 @@ function start(data){
   applySkin();
   if(data&&data.cols){G.cols=data.cols;startLevel(true)}else startLevel();
   if(!S.starter){S.starter=1;if(S.level<=1&&!Object.keys(S.coll).length)S.freeHint=(S.freeHint||0)+3;save()}
-  setTimeout(refCheck,1500);
+  setTimeout(refCheck,1500);setTimeout(duelCheck,1200);
   setTimeout(()=>{setsCheck();rankCheck()},2600);
   setTimeout(()=>{if($('ov').hidden&&!G.busy)evIntro()},1200);
-  window.__pel={pathCheck,stuckHelp,boxPick,rankCheck,setsCheck,hintCost,upg,evNow,evState,evTick,evIntro,qEvent,cafe,cafeTips,album,S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
+  window.__pel={starterOffer,starterGive,bossFail,surprise,RULE,priceMult,towerStart,duelStart,duelCheck,wkState,tourCheck,rating,pathCheck,stuckHelp,boxPick,rankCheck,setsCheck,hintCost,upg,evNow,evState,evTick,evIntro,qEvent,cafe,cafeTips,album,S,G,solve,shortest,genLevel,tap,startLevel,startDaily,shop,wheel,achSheet,shuffleBoard,levels,playLevel};
   try{P.ready&&P.ready()}catch(e){}
   goal('game_start',{level:S.level});
   setTimeout(lbPush,1500);
