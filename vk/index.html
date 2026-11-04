@@ -132,7 +132,7 @@ window.PLATFORM={
     if(!B)return Promise.resolve();
     self.b=B;const q=new URLSearchParams(location.search);
     self.lang=q.get('vk_language')||'ru';self.startParam=(location.hash||'').slice(1);
-    const app=''||q.get('vk_app_id')||'';self.url=app?'https://vk.com/app'+app:location.origin+location.pathname;
+    const app='54874804'||q.get('vk_app_id')||'';self.url=app?'https://vk.com/app'+app:location.origin+location.pathname;
     B.send('VKWebAppInit').catch(()=>{});
     try{B.subscribe(e=>{const t=e&&e.detail&&e.detail.type;if(t==='VKWebAppViewHide')window.__game&&window.__game.pause();if(t==='VKWebAppViewRestore')window.__game&&window.__game.resume()})}catch(e){}
     self.haptic=ms=>{B.send('VKWebAppTapticImpactOccurred',{style:Array.isArray(ms)||ms>=30?'medium':'light'}).catch(()=>{})};
@@ -406,6 +406,29 @@ adsgram-task.ad-task{display:block;margin:6px 0;--adsgram-task-font-size:14px;--
 .snow i{position:absolute;top:-12px;border-radius:50%;background:#fff;opacity:.7;animation:fall linear infinite}
 @keyframes fall{to{transform:translate(var(--dx),105vh)}}
 .app{position:relative;z-index:1}
+/* широкий экран (компьютер, 16:9): слева панель с уровнем, монетами и кнопками, справа крупное поле */
+@media (min-aspect-ratio:5/4) and (min-width:820px) and (min-height:420px){
+.app{display:grid;grid-template-columns:260px minmax(0,1fr);grid-template-rows:auto auto auto 1fr;column-gap:32px;max-width:1500px;padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px))}
+.app>header{grid-column:1;grid-row:1;flex-wrap:wrap;padding-block:22px 6px;align-self:start}
+.app>header .titles{flex-basis:100%;margin:0 0 10px}
+.app>header .brand{font-size:26px}
+.app>header .coins{margin-right:auto}
+.app>.tip{grid-column:1;grid-row:2;justify-content:flex-start;text-align:left;min-height:0;padding-block:8px 12px;align-self:start}
+.app>.bar{grid-column:1;grid-row:3;grid-template-columns:1fr 1fr;gap:8px;align-self:start;padding-block:4px}
+.app>.bar .tool{flex-direction:row;flex-wrap:wrap;justify-content:flex-start;padding:10px 12px;min-height:50px;font-size:13px;column-gap:7px;text-align:left}
+.app>.bar .tool .price,.app>.bar .tool .count{flex-basis:100%;padding-left:27px;margin-top:-2px}
+.app>.bar .tool:last-child{grid-column:span 2}
+.app>.garland{grid-column:2;grid-row:1;align-self:start;margin-top:18px;position:relative;z-index:2;pointer-events:none}
+.app>.board-wrap{grid-column:2;grid-row:1/5;padding-top:40px}
+}
+@media (min-aspect-ratio:5/4) and (min-width:1500px) and (min-height:850px){
+.app{grid-template-columns:330px minmax(0,1fr);column-gap:48px}
+.app>header .brand{font-size:34px}.app>header .lvl{font-size:14px}
+.app>header .coins{font-size:20px;padding:8px 14px}.app>header .icon-btn{width:44px;height:44px}
+.app>.bar .tool{font-size:16px;min-height:64px;padding:12px 14px}.app>.bar .tool svg{width:24px;height:24px}
+.app>.bar .tool .price,.app>.bar .tool .count{padding-left:31px}
+.app>.tip{font-size:16px}
+}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .steam{display:none!important}
@@ -1736,16 +1759,17 @@ function render(){
   });
   board.innerHTML=h;G.just=-1;
 }
+const WIDE=matchMedia('(min-aspect-ratio:5/4) and (min-width:820px) and (min-height:420px)');
 function layout(){
-  const n=G.cols.length,pad=boomOk()?60:0;wrap.style.paddingBottom=pad+'px';const W=wrap.clientWidth,H=wrap.clientHeight-pad;
+  const n=G.cols.length,pad=boomOk()?60:0;wrap.style.paddingBottom=pad+'px';const W=wrap.clientWidth,H=wrap.clientHeight-pad-(parseFloat(getComputedStyle(wrap).paddingTop)||0);
   const gx=12,gy=18;
   // для каждого числа рядов ставим пароварки поровну, затем берём наименьшее число рядов,
   // при котором пароварки не становятся заметно мельче: так новая пароварка встаёт рядом, а не одна внизу
   const cand=[];
   for(let rows=1;rows<=4;rows++){const per=Math.ceil(n/rows);if(rows>1&&Math.ceil(n/(rows-1))===per)continue;
     const r=Math.ceil(n/per);const byW=(W-(per-1)*gx)/per;const byH=(H-(r-1)*gy-r*8)/(r*((RULE.big>=0?(RULE.bigCap||5):4)*.66+.46)+0.01);
-    cand.push({per,rows:r,cw:Math.min(byW,byH,96)});if(per===1)break}
-  const mx=Math.max(...cand.map(c=>c.cw));const best=cand.find(c=>c.cw>=mx*.84)||cand[0];
+    cand.push({per,rows:r,cw:Math.min(byW,byH,WIDE.matches?128:96)});if(per===1)break}
+  const mx=Math.max(...cand.map(c=>c.cw));const best=cand.find(c=>c.cw>=mx*(WIDE.matches?.95:.84))||cand[0];
   const cw=Math.max(36,Math.floor(best.cw));G.perRow=best.per;
   document.documentElement.style.setProperty('--cw',cw+'px');
   board.style.width=(best.per*cw+(best.per-1)*gx)+"px";
