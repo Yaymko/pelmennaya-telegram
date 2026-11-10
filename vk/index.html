@@ -135,6 +135,12 @@ window.PLATFORM={
     const app='54874804'||q.get('vk_app_id')||'';self.url=app?'https://vk.com/app'+app:location.origin+location.pathname;
     B.send('VKWebAppInit').catch(()=>{});
     try{B.subscribe(e=>{const t=e&&e.detail&&e.detail.type;if(t==='VKWebAppViewHide')window.__game&&window.__game.pause();if(t==='VKWebAppViewRestore')window.__game&&window.__game.resume()})}catch(e){}
+    // общий онлайн-рейтинг: id игрока подтверждается подписью параметров запуска ВК (проверяет воркер)
+    if(q.get('sign')){
+      B.send('VKWebAppGetUserInfo').then(u=>{self.vkName=((u.first_name||'')+(u.last_name?' '+u.last_name[0]+'.':'')).trim()}).catch(()=>{});
+      self.lb=d=>fetch('/api/lb',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({},d,{vk:location.search,nick:self.vkName||''}))})
+        .then(r=>r.ok?r.json():Promise.reject(r.status));
+    }
     self.haptic=ms=>{B.send('VKWebAppTapticImpactOccurred',{style:Array.isArray(ms)||ms>=30?'medium':'light'}).catch(()=>{})};
     self.rewarded=cb=>{const g=window.__game;g&&g.pause();
       B.send('VKWebAppShowNativeAds',{ad_format:'reward'}).then(r=>{g&&g.resume();cb(!!(r&&r.result))}).catch(()=>{g&&g.resume();cb(false)})};
@@ -149,6 +155,8 @@ window.PLATFORM={
   },
   saveCloud(d){if(!this.b)return;clearTimeout(this.st);this.st=setTimeout(()=>{const s=JSON.stringify(d),B=this.b,parts=[];for(let i=0;i<s.length;i+=4000)parts.push(s.slice(i,i+4000));
     Promise.all(parts.map((v,i)=>B.send('VKWebAppStorageSet',{key:'save'+i,value:v}))).then(()=>B.send('VKWebAppStorageSet',{key:'save_n',value:String(parts.length)})).catch(()=>{})},1500)},
+  // монетизация во ВК — как в Android: меньше монет за уровни, дороже подсказки, больше за рекламу
+  econ:{earn:.6,price:1.5,ad:30,adMax:10,inter:2},
   review:window.__review,
   noNativeShare:true,
   goal(n,p){try{window.phCapture&&phCapture(n,p)}catch(e){}}
@@ -630,6 +638,9 @@ const STR={
 const FILL_EN=['meat','cabbage','pumpkin','blueberry','cheese','crab','mushroom','beetroot','cherry','spinach','sour cream','chocolate'];
 const NAME_EN={kochevnik:'Desert Nomad',polyarnik:'Polar Explorer',morskoy:'Sea King',vulkanchik:'Little Volcano',nebesny:'Sky Guardian',kuranty:'Midnight Chime Dumpling',chempion:'Weekly Champion',bashnya:'Tower Master',duelyant:'Duelist',tvorozhok:'Curdy',shpinatik:'Spinach Kid',kukuruzka:'Corny',baklazhan:'Eggplant',perchik:'Pepper',medovik:'Honey Cake',princessa:'Princess Dumpling',baron:'Baron von Dumpling',rocker:'Rocker Bun',zimushka:'Snowy Muffs',imperator:'Dumpling Emperor',feya:'Dough Fairy',ogonyok:'Little Flame',zolotko:'Goldie',zvezdochet:'Stargazer',puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
 const P=window.PLATFORM||{};
+// экономика платформы: earn — множитель наград, price — цен, ad — монет за рекламу, adMax — реклам за монеты в день, inter — межуровневая раз в N уровней
+const EC=Object.assign({earn:1,price:1,ad:20,adMax:5,inter:3},P.econ||{});
+if(EC.ad!==20)for(const k in STR){const d=STR[k];if(d.adP)d.adP=d.adP.replace('20',EC.ad);if(d.adGot)d.adGot=d.adGot.replace('20',EC.ad)}
 let LANG='ru';
 function setLang(l){LANG=(l&&String(l).slice(0,2)==='ru')||['be','uk','kk','uz'].includes(String(l).slice(0,2))?'ru':(l?'en':'ru');document.documentElement.lang=LANG}
 const T=k=>STR[LANG][k];
@@ -801,7 +812,7 @@ function applySkin(){const r=document.documentElement.style,sk=S.skin||{};
   ['--bg','--bg-hi','--panel'].forEach((k,i)=>r.setProperty(k,bg.v[i]));
   const m=document.querySelector('meta[name=theme-color]');if(m)m.content=bg.v[0];
 }
-const AD_COINS=20,AD_MAX=5;
+const AD_COINS=EC.ad,AD_MAX=EC.adMax;
 let adFailAt=0;const adOk=()=>!!P.rewarded&&Date.now()-adFailAt>15*6e4;
 function adLeft(){const d=dayStr(new Date());return AD_MAX-((S.adDay&&S.adDay[0]===d)?S.adDay[1]:0)}
 function shop(back){
@@ -905,7 +916,7 @@ const CT={ru:{t:'Моя пельменная',p:'Обустраивай кафе
   it:{sign:'Sign',lamp:'Lamps',pic:'Painting',plant:'Plant',table1:'Table',counter:'Counter',samovar:'Samovar',table2:'Second table',garland:'Garland',chef:'Chef',table3:'Third table',stairs:'Stairs up',piano:'Grand piano',aqua:'Aquarium',fire:'Fireplace',tableV:'VIP table',chand:'Chandelier',band:'Band'},fl:['Floor 1','Floor 2'],fl2:'Second floor is open! New items and more tips'}};
 const CTx=()=>CT[LANG]||CT.en;
 function cafeRate(){const o=(S.cafe&&S.cafe.own)||{};return Math.round((1+CAFE.reduce((s,[id,,r])=>s+(o[id]?r:0),0))*[1,1.25,1.5,2][upg('tips')]*10)/10}
-function cafeTips(){if(!S.cafe||!S.cafe.t||!Object.keys(S.cafe.own||{}).length)return 0;const h=Math.min(CAFE_CAP,(Date.now()-S.cafe.t)/36e5);return Math.floor(h*cafeRate())}
+function cafeTips(){if(!S.cafe||!S.cafe.t||!Object.keys(S.cafe.own||{}).length)return 0;const h=Math.min(CAFE_CAP,(Date.now()-S.cafe.t)/36e5);return Math.floor(h*cafeRate()*EC.earn)}
 function cafeRemind(){try{if(!P.remindCafe||!S.remind||!S.cafe||!S.cafe.t||!Object.keys(S.cafe.own||{}).length)return;const at=S.cafe.t+CAFE_CAP*36e5;if(S.cafe.rAt===at)return;S.cafe.rAt=at;save();P.remindCafe(at)}catch(e){}}
 function cafeScene2(){
   const o=S.cafe.own,has=id=>!!o[id];
@@ -1035,7 +1046,8 @@ const UPG={eye:[[200,500,1000],'👁','Острый глаз','Sharp Eye',n=>LAN
   tips:[[300,700,1500],'☕','Щедрые гости','Generous Guests',n=>LANG==='ru'?`Чаевые в пельменной ×${[1,1.25,1.5,2][n]}`:`Café tips ×${[1,1.25,1.5,2][n]}`],
   piggy:[[250,600,1200],'🐷','Копилка','Piggy Bank',n=>LANG==='ru'?`+${n*2} монет за каждый уровень`:`+${n*2} coins per level`]};
 const upg=id=>(S.upg&&S.upg[id])||0;
-function priceMult(){const L=S.level;return L<30?1:L<80?1.5:L<150?2:3}
+function tierMult(){const L=S.level;return L<30?1:L<80?1.5:L<150?2:3}
+function priceMult(){return tierMult()*EC.price}
 const pm=v=>Math.round(v*priceMult());
 function hintCost(){return pm([10,8,6,4][upg('eye')])}
 function upgHtml(){if(S.level<30)return '';return `<div class="shop-h">${LANG==='ru'?'Мастерская: навсегда':'Workshop: permanent'}</div><div class="ach-list" style="margin-top:4px">${Object.entries(UPG).map(([id,u])=>{const n=upg(id),max=n>=3;
@@ -1416,12 +1428,21 @@ function restoreMain(){const sn=G.snap;if(!sn||G.mode||S.replay||sn.level!==S.le
   SNAP_KEYS.forEach(k=>G[k]=sn[k]);syncRules();G.sel=null;G.hint=null;G.just=-1;G.busy=false;render();layout();hud();try{P.gpStart&&P.gpStart()}catch(e){}return true}
 /* ---------- рейтинг и напоминания (Telegram) ---------- */
 function lbStars(){return Object.values(S.best||{}).reduce((a,b)=>a+b,0)}
-function lbData(){const w=wkState();return {stars:lbStars(),level:S.replay?S.lastLevel:S.level,streak:(S.dp&&S.dp.streak)||0,tower:(S.tower&&S.tower.best)||0,crowns:Object.keys(S.crown||{}).length,week:w.w,wstars:w.n}}
-function lbPush(){if(!P.lb)return;const d=lbData(),k=[d.stars,d.tower,d.crowns,d.week,d.wstars].join('/');if(k===S.lbSent)return;P.lb(d).then(r=>{S.lbSent=k;save();tourCheck(r)}).catch(()=>{})}
+function lbData(){const w=wkState();return {nick:S.nick||'',stars:lbStars(),level:S.replay?S.lastLevel:S.level,streak:(S.dp&&S.dp.streak)||0,tower:(S.tower&&S.tower.best)||0,crowns:Object.keys(S.crown||{}).length,week:w.w,wstars:w.n}}
+function lbPush(){if(!P.lb||(P.nickNeed&&!S.nick))return;const d=lbData(),k=[d.stars,d.tower,d.crowns,d.week,d.wstars].join('/');if(k===S.lbSent)return;P.lb(d).then(r=>{S.lbSent=k;save();tourCheck(r)}).catch(()=>{})}
+// ник для рейтинга там, где нет аккаунта платформы (Android)
+function nickSheet(next,back){const RU=LANG==='ru';
+  openOv(`<h2>${RU?'Твой ник':'Your nickname'}</h2><p>${RU?'Так тебя увидят другие игроки в рейтинге.':'Other players will see you by this name.'}</p><input class="rate-txt" id="nickIn" maxlength="20" style="min-height:0;text-align:center;font-size:18px" value="${String(S.nick||'').replace(/[<>&"]/g,'')}" placeholder="${RU?'Например, Пельмешка':'e.g. Dumpling'}"><p id="nickErr" style="color:#ff8a7a;min-height:1.2em"></p><button class="big-btn" id="nickOk">${RU?'Сохранить':'Save'}</button><button class="alt-btn" id="nickNo">${T('back')}</button>`);
+  const inp=$('nickIn');setTimeout(()=>inp.focus(),50);
+  $('nickNo').onclick=()=>{closeOv();back&&back()};
+  $('nickOk').onclick=()=>{const v=inp.value.replace(/[<>@&"'`\\]/g,'').replace(/\s+/g,' ').trim().slice(0,20);
+    if(v.length<2){$('nickErr').textContent=RU?'Минимум 2 буквы':'At least 2 characters';return}
+    S.nick=v;S.lbSent='';save();goal('nick_set');closeOv();next()}}
 function rating(back,tab){
-  tab=tab||'all';const RU=LANG==='ru',tabs=[['all',RU?'Звёзды':'Stars'],['week',RU?'Неделя':'Week'],['tower',RU?'Башня':'Tower']];
-  openOv(`<h2>${T('lbT')}</h2><div class="seg">${tabs.map(([k,t])=>`<button class="seg-b${k===tab?' on':''}" data-t="${k}">${t}</button>`).join('')}</div><p id="lbP">${T('lbLoad')}</p><div class="ach-list" id="lbList"></div><button class="big-btn" id="lbBack">${T('back')}</button>`);
-  $('lbBack').onclick=()=>{closeOv();back&&back()};
+  if(P.nickNeed&&!S.nick){nickSheet(()=>rating(back,tab),back);return}
+  tab=tab||'all';const esc0=x=>String(x||'').replace(/[<>&"]/g,'');const RU=LANG==='ru',tabs=[['all',RU?'Звёзды':'Stars'],['week',RU?'Неделя':'Week'],['tower',RU?'Башня':'Tower']];
+  openOv(`<h2>${T('lbT')}</h2><div class="seg">${tabs.map(([k,t])=>`<button class="seg-b${k===tab?' on':''}" data-t="${k}">${t}</button>`).join('')}</div><p id="lbP">${T('lbLoad')}</p><div class="ach-list" id="lbList"></div>${P.nickNeed?`<button class="alt-btn" id="lbNick">✏️ ${RU?'Сменить ник':'Change nickname'}: ${esc0(S.nick)}</button>`:''}<button class="big-btn" id="lbBack">${T('back')}</button>`);
+  $('lbBack').onclick=()=>{closeOv();back&&back()};if($('lbNick'))$('lbNick').onclick=()=>nickSheet(()=>rating(back,tab),()=>rating(back,tab));
   document.querySelectorAll('.seg-b').forEach(b=>b.onclick=()=>rating(back,b.dataset.t));
   const esc=x=>String(x).replace(/[<>&]/g,'');
   P.lb(lbData()).then(r=>{if(!$('lbList'))return;const d=lbData();S.lbSent=[d.stars,d.tower,d.crowns,d.week,d.wstars].join('/');save();tourCheck(r);
@@ -1452,7 +1473,7 @@ const TW={ru:{btn:f=>`🗼 Башня шефа · этаж ${f}`,tip:f=>`Баш�
   en:{btn:f=>`🗼 Chef Tower · floor ${f}`,tip:f=>`Chef Tower, floor ${f}. Every floor is harder.`,won:f=>`Floor ${f} cleared!`,next:f=>`Up to floor ${f}`,lock:`Chef Tower opens at level ${TOWER_MIN}`}};
 const TWx=()=>TW[LANG]||TW.en;
 function towerStart(){if(G.busy)return;ensureAC();closeOv();snapMain();S.tower=S.tower||{f:1,best:0};G.mode='tw';G.dpL=towerL(S.tower.f);G.seed=900001+S.tower.f*7919;goal('tower_start',{floor:S.tower.f});startLevel()}
-function towerWin(){G.busy=false;const f=S.tower.f,moves=G.hist.length,st=starsFor(moves),p3=par3();const reward=Math.round((30+5*Math.min(f,40))*(1+(priceMult()-1)/2));
+function towerWin(){G.busy=false;const f=S.tower.f,moves=G.hist.length,st=starsFor(moves),p3=par3();const reward=Math.round((30+5*Math.min(f,40))*(1+(tierMult()-1)/2)*EC.earn);
   S.coins+=reward;S.tower.f=f+1;S.tower.best=Math.max(S.tower.best||0,f);wkAdd(st);G.mode='';save();hud();achCheck();lbPush();goal('tower_floor',{floor:f,stars:st});
   openOv(`<h2>🗼 ${TWx().won(f)}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,p3)}</p><div class="reward"><span class="coin"></span>+${reward}</div>
     <button class="big-btn" id="twNext">${TWx().next(f+1)}</button><button class="ghost-btn" id="twOut">${T('dpBack')}</button>`);
@@ -1877,7 +1898,7 @@ function win(){G.leaving=false;
   if(G.mode==='du')return duelWin();
   if(G.mode==='dp'){
     const moves=G.hist.length,st=starsFor(moves),n=dpStreak(),p3=par3();qEvent('dp');S.dp={last:dayStr(new Date()),streak:n};
-    const reward=25+5*st+Math.min(n,10)*3;S.coins+=reward;wkAdd(st);G.mode='';save();hud();achCheck();lbPush();goal('dp_done',{streak:n,stars:st,moves});
+    const reward=Math.round((25+5*st+Math.min(n,10)*3)*EC.earn);S.coins+=reward;wkAdd(st);G.mode='';save();hud();achCheck();lbPush();goal('dp_done',{streak:n,stars:st,moves});
     openOv(`<h2>${T('dpWinT')}</h2>${starsRow(st)}<p class="mv">${T('movesWin')(moves,p3)}</p><p>${T('dpWinP')(n)}</p>
       <div class="reward"><span class="coin"></span>+${reward}</div>
       <button class="big-btn" id="next">${T('dpBack')}</button>
@@ -1900,7 +1921,7 @@ function win(){G.leaving=false;
       <button class="big-btn" id="next">${T('toCur')(S.level)}</button>`);
     $('next').onclick=()=>{closeOv();nextLevel()};return;
   }
-  const boss=!!G.boss;const reward=Math.round((10+5*st+(boss?40:0))*(perk('gold')?1.45+.05*hLv('gold'):1)*(1+(priceMult()-1)/2))+helperBonus()+upg('piggy')*2;if(boss)goal('boss_win',{level:passed});S.coins+=reward;S.level++;save();hud();achCheck();lbPush();rankCheck();
+  const boss=!!G.boss;const reward=Math.round((10+5*st+(boss?40:0))*(perk('gold')?1.45+.05*hLv('gold'):1)*(1+(tierMult()-1)/2)*EC.earn)+helperBonus()+upg('piggy')*2;if(boss)goal('boss_win',{level:passed});S.coins+=reward;S.level++;save();hud();achCheck();lbPush();rankCheck();
   surprise({title:boss?T('bossWinT')(passed):T('winT')(passed),sub:T('winP'),reward:reward+(newCrown?10:0),x2:1,stars:st,crown,moves,passed,par3:par3(),minR:boss?1:0});
 }
 function surprise(o){
@@ -1955,13 +1976,13 @@ function nextLevel(){G.leaving=true;
     if(P.nativeReview){try{P.nativeReview()}catch(e){}}
   }
   if(S.level>=11&&starterOffer())return;
-  if(P.interstitial&&S.level>=4&&S.level%3===1){P.interstitial(()=>startLevel());}else startLevel();
+  if(P.interstitial&&S.level>=4&&S.level%EC.inter===1%EC.inter){P.interstitial(()=>startLevel());}else startLevel();
 }
 function adOffer(){
   openOv(`<h2>${T('adT')}</h2><p>${adOk()?T('adP'):(LANG==='ru'?'Монеты можно купить за звёзды Telegram.':'You can buy coins with Telegram Stars.')}</p>${adOk()?`<button class="big-btn" id="adYes">${T('adBtn')}</button>`:''}${P.buyCoins?`<button class="${adOk()?'alt-btn':'big-btn'}" id="adBuy">⭐ ${LANG==='ru'?'Купить монеты':'Buy coins'}</button>`:''}<button class="ghost-btn" id="adNo">${T('adNo')}</button>`);
   $('adNo').onclick=closeOv;
   if($('adBuy'))$('adBuy').onclick=()=>shop();
-  if($('adYes'))$('adYes').onclick=()=>{closeOv();P.rewarded(ok=>{if(ok){S.coins+=20;save();hud();sfx.chime(1);toast(T('adGot'))}else{adFailAt=Date.now();toast(T('adFail'))}})};
+  if($('adYes'))$('adYes').onclick=()=>{closeOv();P.rewarded(ok=>{if(ok){S.coins+=AD_COINS;save();hud();sfx.chime(1);toast(T('adGot'))}else{adFailAt=Date.now();toast(T('adFail'))}})};
 }
 function sparks(el,n,color){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
