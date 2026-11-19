@@ -170,6 +170,8 @@ window.PLATFORM={
   saveCloud(d){try{this.tg&&this.tg.CloudStorage&&this.tg.CloudStorage.setItem('save',JSON.stringify(d))}catch(e){}},
   review:window.__review,
   goal(n,p){try{window.ym&&ym(114007164,'reachGoal',n,p)}catch(e){}try{window.phCapture&&phCapture(n,p)}catch(e){}},
+  get appStore(){try{return this.tg&&this.tg.platform==='android'?'https://www.rustore.ru/catalog/app/casa.pelmennaya.game':null}catch(e){return null}},  // Android-игрокам Telegram предлагаем приложение из RuStore
+  openUrl(u){try{/^https:\/\/t\.me\//.test(u)?this.tg.openTelegramLink(u):this.tg.openLink(u)}catch(e){window.open(u,'_blank')}},
   shareLink(text){try{this.tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent('https://t.me/PelmennayaGameBot/play')+'&text='+encodeURIComponent(text))}catch(e){}},
   shareParam(prm,text){try{this.tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent('https://t.me/PelmennayaGameBot/play?startapp='+prm)+'&text='+encodeURIComponent(text))}catch(e){}}
 };
@@ -568,6 +570,7 @@ const CHARS=[
   {id:'nebesny',name:'Небесный страж',r:2,col:'#f1edff',face:'happy',acc:'halo+wings',ev:'zone'}
 ];
 const SEASON=(()=>{if(window.__season!=null)return !!window.__season;const d=new Date(),m=d.getMonth();return m===10||m===11||(m===0&&d.getDate()<=15)})();
+const HOLIDAY=(()=>{if(window.__holiday!=null)return !!window.__holiday;const d=new Date(),m=d.getMonth(),t=d.getDate();return (m===11&&t>=20)||(m===0&&t<=10)})(); // «Новогодняя Пельменная»: 20.12–10.01, подарок ×2
 const visibleChars=()=>CHARS.filter(c=>c.ev?(S.coll[c.id]||(S.level>=8&&evNow().id===c.ev)):(!c.ny||SEASON||S.coll[c.id]));
 const STR={
  ru:{brand:'Пельменная',restart:'Начать уровень заново',undo:'Отменить',hint:'Подсказка',steamer:'Пароварка',album:'Альбом',
@@ -607,7 +610,7 @@ const STR={
   sk:{bamboo:'Бамбук',lacquer:'Красный лак',porcelain:'Фарфор',gold:'Золото',jade:'Нефрит',night:'Ночь',cherry:'Вишня',dacha:'Дача',snow:'Снежная'},
   dpBtn:n=>'Пельмень дня'+(n>1?' · серия '+n:''),dpHud:'Пельмень дня',dpTip:'Задача дня одна для всех. Реши её, чтобы продлить серию.',dpBack:'К уровням',
   dpWinT:'Пельмень дня решён!',dpWinP:n=>'Серия: '+n+' '+(n%10===1&&n%100!==11?'день':(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20))?'дня':'дней')+' подряд. Завтра будет новый.',dpShare:(n,st)=>'Решил «Пельмень дня» на '+st+'★, серия '+n+'. Попробуй и ты!',
-  play:'Играть',nyTip:'Новогодний сезон: в сюрпризах прячутся праздничные герои!',movesHud:(m,p)=>'ходы '+m+(p?'/'+p:''),movesWin:(m,p)=>'Ходов: '+m+(p?'. На 3 звезды: '+p+' или меньше':''),replayBtn:'Переиграть на 3 звезды',replayTag:'переигровка',replayBetter:'Новый рекорд! Монеты за улучшение.',replaySame:'Рекорд не побит, но ты можешь попробовать ещё.',hiddenTip:'Видно только верхний пельмень. Остальные откроются, когда их освободишь.',oneEmptyTip:'Теперь только одна пустая пароварка. Думай на ход вперёд!',supBtn:'Поддержать автора',supT:'Поддержать «Пельменную»',supP:'Игра бесплатная и без навязчивой рекламы. Если она тебе нравится, можно поддержать автора: так выйдет больше героев и уровней.',supStars:n=>n+' ⭐',supBoosty:'Поддержать на Boosty',supThx:'Спасибо за поддержку! 💛',supFail:'Платёж не прошёл',rateT:'Нравится «Пельменная»?',rateP:'Поставь оценку и напиши пару слов. Отзыв увидят в нашем Telegram-канале.',rateAria:n=>'Оценка '+n+' из 5',ratePh:'Что понравилось или что улучшить? (необязательно)',rateSend:'Отправить',rateSending:'Отправляю…',rateLater:'Не сейчас',rateBtn:'Оценить игру',rateThx:'Спасибо за отзыв!',rateFail:'Не получилось отправить. Попробуй позже.',rateNeed:'Выбери количество звёзд',nyAlbum:'Новогодняя коллекция',close:'Закрыть'},
+  play:'Играть',nyTip:'Новогодний сезон: в сюрпризах прячутся праздничные герои!',holDaily:'🎄 Новогодняя Пельменная: подарок удвоен!',holTip:'🎄 Новогодняя Пельменная до 10 января: ежедневный подарок ×2!',movesHud:(m,p)=>'ходы '+m+(p?'/'+p:''),movesWin:(m,p)=>'Ходов: '+m+(p?'. На 3 звезды: '+p+' или меньше':''),replayBtn:'Переиграть на 3 звезды',replayTag:'переигровка',replayBetter:'Новый рекорд! Монеты за улучшение.',replaySame:'Рекорд не побит, но ты можешь попробовать ещё.',hiddenTip:'Видно только верхний пельмень. Остальные откроются, когда их освободишь.',oneEmptyTip:'Теперь только одна пустая пароварка. Думай на ход вперёд!',supBtn:'Поддержать автора',supT:'Поддержать «Пельменную»',supP:'Игра бесплатная и без навязчивой рекламы. Если она тебе нравится, можно поддержать автора: так выйдет больше героев и уровней.',supStars:n=>n+' ⭐',supBoosty:'Поддержать на Boosty',supThx:'Спасибо за поддержку! 💛',supFail:'Платёж не прошёл',rateT:'Нравится «Пельменная»?',rateP:'Поставь оценку и напиши пару слов. Отзыв увидят в нашем Telegram-канале.',rateAria:n=>'Оценка '+n+' из 5',ratePh:'Что понравилось или что улучшить? (необязательно)',rateSend:'Отправить',rateSending:'Отправляю…',rateLater:'Не сейчас',rateBtn:'Оценить игру',rateThx:'Спасибо за отзыв!',rateFail:'Не получилось отправить. Попробуй позже.',rateNeed:'Выбери количество звёзд',nyAlbum:'Новогодняя коллекция',close:'Закрыть'},
  en:{brand:'Dumpling Sort',restart:'Restart level',undo:'Undo',hint:'Hint',steamer:'Steamer',album:'Album',
   level:'Level ',soundOn:'Sound on',soundOff:'Sound off',
   tip1:'Tap a steamer, then another one. A dumpling hops over if the spot is <b>empty</b> or the top has <b>the same filling</b>.',
@@ -645,7 +648,7 @@ const STR={
   dpBtn:n=>'Puzzle of the day'+(n>1?' · streak '+n:''),dpHud:'Puzzle of the day',dpTip:'Same puzzle for everyone today. Solve it to keep your streak.',dpBack:'Back to levels',
   dpWinT:'Daily puzzle solved!',dpWinP:n=>'Streak: '+n+' day'+(n>1?'s':'')+' in a row. A new one comes tomorrow.',dpShare:(n,st)=>'Solved the Dumpling Sort puzzle of the day with '+st+'★, streak '+n+'. Your turn!',
   dailyBtn:n=>'Daily surprise · day '+n,dailyT:'Daily surprise',dailyP:n=>'Day '+n+' in a row. '+(n%7===0?'A rare hero is guaranteed today!':'Come back tomorrow for a bigger reward. Day 7 gives a rare hero.'),
-  play:'Play',nyTip:'Holiday season: festive heroes are hiding in the surprises!',movesHud:(m,p)=>'moves '+m+(p?'/'+p:''),movesWin:(m,p)=>'Moves: '+m+(p?'. For 3 stars: '+p+' or fewer':''),replayBtn:'Replay for 3 stars',replayTag:'replay',replayBetter:'New best! Coins for the improvement.',replaySame:'No new best this time. Give it another go.',hiddenTip:'Only the top dumpling is visible. The rest show up once you free them.',oneEmptyTip:'Only one empty steamer now. Think one move ahead!',supBtn:'Support the author',supT:'Support Dumpling Sort',supP:'The game is free with no pushy ads. If you enjoy it, you can support the author: it helps bring more heroes and levels.',supStars:n=>n+' ⭐',supBoosty:'Support on Boosty',supThx:'Thank you for your support! 💛',supFail:'Payment did not go through',rateT:'Enjoying Dumpling Sort?',rateP:'Rate the game and leave a few words. Reviews appear in our Telegram channel.',rateAria:n=>n+' of 5 stars',ratePh:'What did you like, or what should we improve? (optional)',rateSend:'Send',rateSending:'Sending…',rateLater:'Not now',rateBtn:'Rate the game',rateThx:'Thanks for your review!',rateFail:'Could not send. Please try again later.',rateNeed:'Pick a number of stars',nyAlbum:'Holiday collection',close:'Close'}
+  play:'Play',nyTip:'Holiday season: festive heroes are hiding in the surprises!',holDaily:'🎄 Holiday event: double gift!',holTip:'🎄 Holiday event until Jan 10: double daily gift!',movesHud:(m,p)=>'moves '+m+(p?'/'+p:''),movesWin:(m,p)=>'Moves: '+m+(p?'. For 3 stars: '+p+' or fewer':''),replayBtn:'Replay for 3 stars',replayTag:'replay',replayBetter:'New best! Coins for the improvement.',replaySame:'No new best this time. Give it another go.',hiddenTip:'Only the top dumpling is visible. The rest show up once you free them.',oneEmptyTip:'Only one empty steamer now. Think one move ahead!',supBtn:'Support the author',supT:'Support Dumpling Sort',supP:'The game is free with no pushy ads. If you enjoy it, you can support the author: it helps bring more heroes and levels.',supStars:n=>n+' ⭐',supBoosty:'Support on Boosty',supThx:'Thank you for your support! 💛',supFail:'Payment did not go through',rateT:'Enjoying Dumpling Sort?',rateP:'Rate the game and leave a few words. Reviews appear in our Telegram channel.',rateAria:n=>n+' of 5 stars',ratePh:'What did you like, or what should we improve? (optional)',rateSend:'Send',rateSending:'Sending…',rateLater:'Not now',rateBtn:'Rate the game',rateThx:'Thanks for your review!',rateFail:'Could not send. Please try again later.',rateNeed:'Pick a number of stars',nyAlbum:'Holiday collection',close:'Close'}
 };
 const FILL_EN=['meat','cabbage','pumpkin','blueberry','cheese','crab','mushroom','beetroot','cherry','spinach','sour cream','chocolate'];
 const NAME_EN={kochevnik:'Desert Nomad',polyarnik:'Polar Explorer',morskoy:'Sea King',vulkanchik:'Little Volcano',nebesny:'Sky Guardian',kuranty:'Midnight Chime Dumpling',chempion:'Weekly Champion',bashnya:'Tower Master',duelyant:'Duelist',tvorozhok:'Curdy',shpinatik:'Spinach Kid',kukuruzka:'Corny',baklazhan:'Eggplant',perchik:'Pepper',medovik:'Honey Cake',princessa:'Princess Dumpling',baron:'Baron von Dumpling',rocker:'Rocker Bun',zimushka:'Snowy Muffs',imperator:'Dumpling Emperor',feya:'Dough Fairy',ogonyok:'Little Flame',zolotko:'Goldie',zvezdochet:'Stargazer',puhlik:'Puffy',kapustin:'Cabbage Kid',tykvochka:'Pumpkin Pie',chernichka:'Blueberry',syrok:'Cheesy',krabik:'Crabby',gribnik:'Shroomy',svekolka:'Beety',sonya:'Sleepyhead',hrustik:'Crunchy',shef:'Chef Dumpling',dj:'DJ Steam',prof:'Professor Dough',ninja:'Gyoza Ninja',snezhok:'Snowball',gold:'Golden Dumpling',rainbow:'Rainbow',cosmo:'Cosmo Dumpling',morkovka:'Carrot Top',kartoshkin:'Spud',vishenka:'Cherry',romashka:'Daisy',usach:'Mr. Whiskers',myatka:'Minty',krevetka:'Shrimpy',lukovka:'Oniony',pirat:'Captain Manti',kovboy:'Cowboy Chebureki',hudozhnik:'Khinkali the Artist',krutysh:'Cool Guy',dzhentlmen:'The Gentleman',viking:'Viking Varenyk',mag:'Wizard Mince',drakosha:'Little Dragon',angelok:'Angel',super:'Super Dumpling',moroz:'Grandpa Frost',snegurka:'Snow Maiden',elka:'Christmas Tree Dumpling'};
@@ -1736,6 +1739,7 @@ function hud(){
   else if(G.big>=0&&S.level<=145) tip.textContent=LANG==='ru'?'Большая пароварка вмещает 5 пельменей':'The big steamer holds 5 dumplings';
   else if(hiddenFor(S.level)&&S.level<=32) tip.textContent=T('hiddenTip');
   else if(emptiesFor(S.level)===1&&S.level<=22) tip.textContent=T('oneEmptyTip');
+  else if(HOLIDAY&&S.level%2===1) tip.textContent=T('holTip');
   else if(SEASON&&S.level%2===0) tip.textContent=T('nyTip');
   else tip.textContent=T('tipN')(colorsFor(S.level));
   if(G.mode){tip.innerHTML=`<span>${G.mode==='tw'?TWx().tip(S.tower.f):G.mode==='du'?DUx().tip(G.duel):T('dpTip')}</span> <button class="daily" id="dpBack" style="animation:none">${T('dpBack')}</button>`;$('dpBack').onclick=()=>{if(G.busy)return;G.mode='';startLevel()};return}
@@ -1769,9 +1773,9 @@ function nextStreak(){const y=new Date();y.setDate(y.getDate()-1);return S.daily
 function daily(){
   ensureAC();if(G.busy||!dailyReady())return;
   const n=nextStreak();S.daily={last:dayStr(new Date()),streak:n};
-  const reward=10*Math.min(n,7);S.coins+=reward;save();hud();
+  const reward=10*Math.min(n,7)*(HOLIDAY?2:1);S.coins+=reward;save();hud();
   goal('daily',{streak:n});setTimeout(achCheck,2500);
-  surprise({title:T('dailyT'),sub:T('dailyP')(n),reward,minR:n%7===0?1:0,daily:true});
+  surprise({title:T('dailyT'),sub:T('dailyP')(n)+(HOLIDAY?' '+T('holDaily'):''),reward,minR:n%7===0?1:0,daily:true});
 }
 function render(){
   let h='';
@@ -1988,6 +1992,7 @@ function nextLevel(){G.leaving=true;
     if(P.nativeReview){try{P.nativeReview()}catch(e){}}
   }
   if(S.level>=11&&starterOffer())return;
+  if(P.appStore&&!S.appAsk&&S.level>=13&&!S.replay){S.appAsk=1;save();appOffer(()=>startLevel());return}
   if(P.interstitial&&S.level>=4&&S.level%EC.inter===1%EC.inter){P.interstitial(()=>startLevel());}else startLevel();
 }
 function adOffer(){
@@ -2040,10 +2045,21 @@ function rate(done){
     const btn=$('rateSend');if(btn.disabled)return;btn.disabled=true;btn.textContent=T('rateSending');
     const timeout=new Promise((_,rej)=>setTimeout(()=>rej(0),12000));
     Promise.race([Promise.resolve(P.review({stars:n,text,level:S.level,lang:LANG,heroes:Object.keys(S.coll).length})),timeout])
-      .then(ok=>{if(ok!==true&&ok!==undefined)throw ok;S.rated=n;save();goal('review',{stars:n,has_text:!!text});fin();toast(T('rateThx'))})
+      .then(ok=>{if(ok!==true&&ok!==undefined)throw ok;S.rated=n;save();goal('review',{stars:n,has_text:!!text});fin();toast(T('rateThx'));if(n>=4&&P.nativeReview)setTimeout(()=>{try{P.nativeReview()}catch(e){}},900)})
       .catch(e=>{btn.disabled=false;btn.textContent=T('rateSend');const why=typeof e==='string'?e:(e===0?'timeout':'network');goal('review_fail',{stars:n,why});toast(T('rateFail')+' ['+why+']')});
   };
 }
+const CHANNEL_URL='https://t.me/game_pelmennaya';
+function openUrl(u){try{if(P.openUrl)return P.openUrl(u)}catch(e){}window.open(u,'_blank','noopener')}
+// Android: обновление скачано в фоне — предлагаем перезапустить игру
+function updateReady(){if(G.busy){setTimeout(updateReady,4000);return}
+  openOv(`<h2>${LANG==='ru'?'Обновление готово':'Update ready'}</h2><p>${LANG==='ru'?'Новая версия игры скачана. Перезапустить сейчас? Прогресс сохранится.':'A new version has been downloaded. Restart now? Your progress is saved.'}</p>
+    <button class="big-btn" id="updGo">${LANG==='ru'?'Перезапустить':'Restart'}</button><button class="ghost-btn" id="updNo">${LANG==='ru'?'Позже':'Later'}</button>`);
+  $('updGo').onclick=()=>{save();try{P.applyUpdate()}catch(e){}};$('updNo').onclick=closeOv}
+function appOffer(done){goal('app_offer');
+  openOv(`<h2>📱 ${LANG==='ru'?'Пельменная для Android':'Pelmennaya for Android'}</h2><p>${LANG==='ru'?'Есть отдельное приложение в RuStore: играет даже без интернета и не зависит от Telegram. Рейтинг общий.':'There is a standalone app in RuStore: works offline and without Telegram. The leaderboard is shared.'}</p>
+    <button class="big-btn" id="appGo">${LANG==='ru'?'Открыть RuStore':'Open RuStore'}</button><button class="ghost-btn" id="appNo">${LANG==='ru'?'Играть дальше здесь':'Keep playing here'}</button>`);
+  $('appGo').onclick=()=>{goal('app_click',{from:'offer'});openUrl(P.appStore);closeOv();done()};$('appNo').onclick=()=>{closeOv();done()}}
 function album(fromWin){
   if(!S.seenAlbum){S.seenAlbum=1;save();setTimeout(pathCheck,300)}
   const vis=visibleChars();const got=vis.filter(c=>S.coll[c.id]).length;
@@ -2063,6 +2079,8 @@ function album(fromWin){
     ${P.invite?`<button class="alt-btn" id="invBtn">${RTx().btn}</button>`:''}
     ${P.remind?`<button class="ghost-btn" id="remBtn">${S.remind?T('remOff'):T('remOn')}</button>`:''}
     <button class="alt-btn" id="langBtn">🌐 ${LANG==='ru'?'Language: English':'Язык: русский'}</button>
+    ${P.appStore?`<button class="alt-btn" id="appBtn">📱 ${LANG==='ru'?'Игра для Android в RuStore':'Android app in RuStore'}</button>`:''}
+    ${P.channel!==null?`<button class="alt-btn" id="chanBtn">📣 ${LANG==='ru'?'Наш канал в Telegram':'Our Telegram channel'}</button>`:''}
     <button class="alt-btn" id="guideBtn">📖 ${LANG==='ru'?'Как играть':'How to play'}</button>
     <button class="alt-btn" id="achBtn">${T('achBtn')(ACH.filter(([id])=>(S.ach||{})[id]).length,ACH.length)}</button>
     ${P.review?`<button class="ghost-btn" id="rateBtn">${T('rateBtn')}</button>`:''}
@@ -2074,7 +2092,9 @@ function album(fromWin){
   if(P.invite)$('invBtn').onclick=()=>invite(()=>album(fromWin));
   if(P.remind)$('remBtn').onclick=()=>setRemind(!S.remind,()=>album(fromWin));
   $('lvBtn2').onclick=()=>levels(()=>album(fromWin));
-  $('achBtn').onclick=()=>achSheet(()=>album(fromWin));$('guideBtn').onclick=()=>guide(()=>album(fromWin));
+  $('achBtn').onclick=()=>achSheet(()=>album(fromWin));
+  if($('appBtn'))$('appBtn').onclick=()=>{goal('app_click',{from:'album'});openUrl(P.appStore)};
+  if($('chanBtn'))$('chanBtn').onclick=()=>{goal('channel_click');openUrl(CHANNEL_URL)};$('guideBtn').onclick=()=>guide(()=>album(fromWin));
   $('langBtn').onclick=()=>{S.lang=LANG==='ru'?'en':'ru';save();setLang(S.lang);applyI18n();goal('lang_switch',{lang:S.lang});render();hud();album(fromWin)};
   $('closeAlbum').onclick=()=>{closeOv();if(fromWin)nextLevel()};
   if(P.review)$('rateBtn').onclick=()=>rate(()=>album(fromWin));
@@ -2140,12 +2160,13 @@ function start(data){
   load();
   setLang((()=>{try{return new URLSearchParams(location.search).get('lang')}catch(e){}})()||S.lang||P.lang||navigator.language);applyI18n();
   if(SEASON){const gl=$('garland');gl.hidden=false;const cs=['#e85a3c','#f3c24b','#6fd6c8','#a596f2'];gl.innerHTML=Array.from({length:22},(_,i)=>`<i style="--c:${cs[i%4]};animation-delay:${(i%4)*.4}s"></i>`).join('');
-    const sn=$('snow');sn.hidden=false;sn.innerHTML=Array.from({length:34},()=>{const z=2+Math.random()*4;return `<i style="left:${Math.random()*100}%;width:${z}px;height:${z}px;--dx:${(Math.random()*60-30).toFixed(0)}px;animation-duration:${(7+Math.random()*8).toFixed(1)}s;animation-delay:-${(Math.random()*15).toFixed(1)}s"></i>`}).join('');}
+    const sn=$('snow');sn.hidden=false;sn.innerHTML=Array.from({length:HOLIDAY?60:34},()=>{const z=2+Math.random()*4;return `<i style="left:${Math.random()*100}%;width:${z}px;height:${z}px;--dx:${(Math.random()*60-30).toFixed(0)}px;animation-duration:${(7+Math.random()*8).toFixed(1)}s;animation-delay:-${(Math.random()*15).toFixed(1)}s"></i>`}).join('');}
   if(P.cloud&&typeof P.cloud==='object'&&P.cloud.level&&P.cloud.level>=S.level)S=Object.assign(S,P.cloud);
   if(data&&data.S)S=Object.assign(S,data.S);
   // старые игроки проходили уровни до появления звёзд: засчитываем им по 2 звезды, можно переиграть на 3
   if(!S.mig1){S.best=S.best||{};const top=(S.replay?S.lastLevel:S.level)||1;for(let i=1;i<top;i++)if(!S.best[i])S.best[i]=2;S.mig1=1;save()}
   applySkin();
+  if(P.onUpdateReady)try{P.onUpdateReady(updateReady)}catch(e){}
   if(data&&data.cols){G.cols=data.cols;startLevel(true)}else startLevel();
   if(!S.starter){S.starter=1;if(S.level<=1&&!Object.keys(S.coll).length)S.freeHint=(S.freeHint||0)+3;save()}
   // для воронки: на каком уровне и ходе игрок закрыл игру
